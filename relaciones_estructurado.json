@@ -1,0 +1,458 @@
+[
+  {
+    "from_table": "Marca",
+    "from_column": "KeyProduct",
+    "from_cardinality": "Muchos",
+    "to_table": "Key Product",
+    "to_column": "KeyProduct",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Marca",
+    "from_column": "IdMarca",
+    "from_cardinality": "1",
+    "to_table": "DimProductoSup",
+    "to_column": "Cod_Marca",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Marca",
+    "from_column": "IdMarca",
+    "from_cardinality": "1",
+    "to_table": "Marca Paragua",
+    "to_column": "Código",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Período",
+    "from_column": "Fecha",
+    "from_cardinality": "Muchos",
+    "to_table": "LocalDateTable_05e7b9c0-c017-41b3-a039-63074065d04b",
+    "to_column": "Date",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdCanal",
+    "from_cardinality": "Muchos",
+    "to_table": "Canal",
+    "to_column": "IdCanal",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdCompania",
+    "from_cardinality": "Muchos",
+    "to_table": "Compañia",
+    "to_column": "IdCompania",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdFamilia",
+    "from_cardinality": "Muchos",
+    "to_table": "Familia",
+    "to_column": "IdFamilia",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdLinea",
+    "from_cardinality": "Muchos",
+    "to_table": "Linea Comercial",
+    "to_column": "IdLinea",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdProductoMPh",
+    "from_cardinality": "Muchos",
+    "to_table": "Producto MPh",
+    "to_column": "IdProductoMPh",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdAreaTerapeutica",
+    "from_cardinality": "Muchos",
+    "to_table": "Área Terapéutica",
+    "to_column": "IdAreaTerapeutica",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdTipoProducto",
+    "from_cardinality": "Muchos",
+    "to_table": "Tipo de Producto",
+    "to_column": "IdTipoProducto",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdFabricante",
+    "from_cardinality": "Muchos",
+    "to_table": "Fabricante",
+    "to_column": "IdFabricante",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdProducto",
+    "from_cardinality": "Muchos",
+    "to_table": "SubFamilia",
+    "to_column": "IdProducto",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "Fecha",
+    "from_cardinality": "Muchos",
+    "to_table": "Período",
+    "to_column": "Fecha",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdCompania-IdProductoCompania",
+    "from_cardinality": "Muchos",
+    "to_table": "Producto Compañía",
+    "to_column": "IdCompania-IdProductoCompania",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdPais-IdZonaGestion",
+    "from_cardinality": "Muchos",
+    "to_table": "País / Zona-Gestión",
+    "to_column": "IdPais-IdZonaGestion",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "Fecha",
+    "from_cardinality": "Muchos",
+    "to_table": "Período IMS",
+    "to_column": "Fecha",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdCliente",
+    "from_cardinality": "Muchos",
+    "to_table": "Cliente",
+    "to_column": "IdCategoria",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdFormaFarmaceutica",
+    "from_cardinality": "Muchos",
+    "to_table": "Forma Farmacéutica",
+    "to_column": "IdFormaFarmaceutica",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "Fecha Lanz",
+    "from_cardinality": "Muchos",
+    "to_table": "LocalDateTable_46b89e6d-3d45-45f5-81aa-ccc33bf3fd54",
+    "to_column": "Date",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "TargetProduct",
+    "from_cardinality": "Muchos",
+    "to_table": "Target Product",
+    "to_column": "Target Product",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "CovidProduct",
+    "from_cardinality": "Muchos",
+    "to_table": "Covid19 Products",
+    "to_column": "CovidProduct",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdProductoMPh",
+    "from_cardinality": "Muchos",
+    "to_table": "FormulasFinales",
+    "to_column": "IdProductoMPH",
+    "to_cardinality": "Muchos"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdProducto",
+    "from_cardinality": "Muchos",
+    "to_table": "Marca",
+    "to_column": "IdProducto",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "ConcatPaisMarca",
+    "from_cardinality": "Muchos",
+    "to_table": "ConcatenadoPaisMarca",
+    "to_column": "ConcatPaisMarca",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "IdCompania-IdProductoCompania",
+    "from_cardinality": "Muchos",
+    "to_table": "EstimadoPptoBudget",
+    "to_column": "IdCompania-IdProductoCompania",
+    "to_cardinality": "Muchos"
+  },
+  {
+    "from_table": "Ventas Mensuales",
+    "from_column": "Fecha",
+    "from_cardinality": "Muchos",
+    "to_table": "Período a Analizar",
+    "to_column": "Fecha",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Período a Analizar",
+    "from_column": "Quarter",
+    "from_cardinality": "Muchos",
+    "to_table": "Quarter Créditos por Venta",
+    "to_column": "Quarter",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Período a Analizar",
+    "from_column": "Fecha",
+    "from_cardinality": "Muchos",
+    "to_table": "LocalDateTable_57247009-cdf0-4032-85d2-ade741a55f1a",
+    "to_column": "Date",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Producto Compañía",
+    "from_column": "FechaLanzamiento",
+    "from_cardinality": "Muchos",
+    "to_table": "LocalDateTable_137e1dec-064b-4de5-94b7-3e81c919e5c1",
+    "to_column": "Date",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "País / Zona-Gestión",
+    "from_column": "Zona",
+    "from_cardinality": "Muchos",
+    "to_table": "Zona PBI",
+    "to_column": "Zona",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "País / Zona-Gestión",
+    "from_column": "IdPais",
+    "from_cardinality": "Muchos",
+    "to_table": "País",
+    "to_column": "IdPais",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "IdFabricante",
+    "from_cardinality": "Muchos",
+    "to_table": "Fabricante",
+    "to_column": "IdFabricante",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "IdCompania",
+    "from_cardinality": "Muchos",
+    "to_table": "Compañia",
+    "to_column": "IdCompania",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "IdFamilia",
+    "from_cardinality": "Muchos",
+    "to_table": "Familia",
+    "to_column": "IdFamilia",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "IdLinea",
+    "from_cardinality": "Muchos",
+    "to_table": "Linea Comercial",
+    "to_column": "IdLinea",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "IdCompania-IdProductoCompania",
+    "from_cardinality": "Muchos",
+    "to_table": "Producto Compañía",
+    "to_column": "IdCompania-IdProductoCompania",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "IdProducto",
+    "from_cardinality": "Muchos",
+    "to_table": "SubFamilia",
+    "to_column": "IdProducto",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "IdTipoProducto",
+    "from_cardinality": "Muchos",
+    "to_table": "Tipo de Producto",
+    "to_column": "IdTipoProducto",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "IdCanal",
+    "from_cardinality": "Muchos",
+    "to_table": "Canal",
+    "to_column": "IdCanal",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "IdProductoMPh",
+    "from_cardinality": "Muchos",
+    "to_table": "Producto MPh",
+    "to_column": "IdProductoMPh",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "IdPais-IdZonaGestion",
+    "from_cardinality": "Muchos",
+    "to_table": "País / Zona-Gestión",
+    "to_column": "IdPais-IdZonaGestion",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "IdAreaTerapeutica",
+    "from_cardinality": "Muchos",
+    "to_table": "Área Terapéutica",
+    "to_column": "IdAreaTerapeutica",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "IdProducto",
+    "from_cardinality": "Muchos",
+    "to_table": "Marca",
+    "to_column": "IdProducto",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "IdFormaFarmaceutica",
+    "from_cardinality": "Muchos",
+    "to_table": "Forma Farmacéutica",
+    "to_column": "IdFormaFarmaceutica",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "Fecha",
+    "from_cardinality": "Muchos",
+    "to_table": "Período",
+    "to_column": "Fecha",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "TargetPRoduct",
+    "from_cardinality": "Muchos",
+    "to_table": "Target Product",
+    "to_column": "Target Product",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "CovidProduct",
+    "from_cardinality": "Muchos",
+    "to_table": "Covid19 Products",
+    "to_column": "CovidProduct",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "ConcatPaisMarca",
+    "from_cardinality": "Muchos",
+    "to_table": "ConcatenadoPaisMarca",
+    "to_column": "ConcatPaisMarca",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "IdCompania-IdProductoCompania",
+    "from_cardinality": "Muchos",
+    "to_table": "EstimadoPptoBudget",
+    "to_column": "IdCompania-IdProductoCompania",
+    "to_cardinality": "Muchos"
+  },
+  {
+    "from_table": "Costo / Presupuesto",
+    "from_column": "Fecha",
+    "from_cardinality": "Muchos",
+    "to_table": "Período a Analizar",
+    "to_column": "Fecha",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Zona-Gestión",
+    "from_column": "IdZonaGestion",
+    "from_cardinality": "1",
+    "to_table": "Prescripciones",
+    "to_column": "IdZonaGestion",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Periodos MAT",
+    "from_column": "Fecha",
+    "from_cardinality": "Muchos",
+    "to_table": "LocalDateTable_00a80129-4699-43a2-be80-90c1cb853a37",
+    "to_column": "Date",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Periodos MAT",
+    "from_column": "Fecha ultima",
+    "from_cardinality": "Muchos",
+    "to_table": "LocalDateTable_e0941cd8-0008-4e7d-b0c5-aa694ea05a9b",
+    "to_column": "Date",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "Periodos MAT",
+    "from_column": "Fecha corta",
+    "from_cardinality": "Muchos",
+    "to_table": "Período",
+    "to_column": "Fecha corta",
+    "to_cardinality": "1"
+  },
+  {
+    "from_table": "DimMarcaBudg",
+    "from_column": "MarcaBud",
+    "from_cardinality": "Muchos",
+    "to_table": "Marca",
+    "to_column": "Marca",
+    "to_cardinality": "Muchos"
+  },
+  {
+    "from_table": "Marca Paragua",
+    "from_column": "Código",
+    "from_cardinality": "1",
+    "to_table": "Marca",
+    "to_column": "IdMarca",
+    "to_cardinality": "1"
+  }
+]

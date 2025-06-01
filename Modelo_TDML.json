@@ -1,0 +1,555 @@
+[
+  {
+    "tabla": "A\u00f1o Ficticio",
+    "columnas": [
+      {
+        "nombre": "A\u00f1o",
+        "tipo": "int64"
+      }
+    ]
+  },
+  {
+    "tabla": "\u00c1rea Terap\u00e9utica",
+    "columnas": [
+      {
+        "nombre": "IdAreaTerapeutica",
+        "tipo": "string"
+      },
+      {
+        "nombre": "\u00c1rea Terap\u00e9utica",
+        "tipo": "string"
+      },
+      {
+        "nombre": "ImgAreaTerapeutica",
+        "tipo": "string"
+      },
+      {
+        "nombre": "Nombre Leading",
+        "tipo": "string"
+      }
+    ]
+  },
+  {
+    "tabla": "Costo / Presupuesto",
+    "columnas": [
+      {
+        "nombre": "IdPeriodo",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdCompania-IdProductoCompania",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdProductoCompania",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdCompania",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdCanal",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdProducto",
+        "tipo": "int64"
+      },
+      {
+        "nombre": "IdLinea",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdFamilia",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdAreaTerapeutica",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdIndicacion",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdPais",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdPais-IdZonaGestion",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdProductoMPh",
+        "tipo": "int64"
+      },
+      {
+        "nombre": "IdZonaGestion",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdTipoNegocio",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdTipoProducto",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdFabricante",
+        "tipo": "int64"
+      },
+      {
+        "nombre": "IdFormaFarmaceutica",
+        "tipo": "string"
+      },
+      {
+        "nombre": "ClasificacionOtcOtx",
+        "tipo": "string"
+      },
+      {
+        "nombre": "CostoConsolidado",
+        "tipo": "double"
+      },
+      {
+        "nombre": "CostoConsolidadoUnitario",
+        "tipo": "double"
+      },
+      {
+        "nombre": "FechaCostoConsolidado",
+        "tipo": "int64"
+      },
+      {
+        "nombre": "Fecha ",
+        "tipo": "double"
+      },
+      {
+        "nombre": "UNEstimada",
+        "tipo": "double"
+      },
+      {
+        "nombre": "UNSTDPresupuestada",
+        "tipo": "double"
+      },
+      {
+        "nombre": "UNSTDEstimada",
+        "tipo": "double"
+      },
+      {
+        "nombre": "MLPresupuestado",
+        "tipo": "double"
+      },
+      {
+        "nombre": "MLEstimado",
+        "tipo": "double"
+      },
+      {
+        "nombre": "USDPresupuestado",
+        "tipo": "double"
+      },
+      {
+        "nombre": "USDEstimado",
+        "tipo": "double"
+      },
+      {
+        "nombre": "UNEstimadaMLB",
+        "tipo": "double"
+      },
+      {
+        "nombre": "UNSTDEstimadaMLB",
+        "tipo": "double"
+      },
+      {
+        "nombre": "MLEstimadoMLB",
+        "tipo": "double"
+      },
+      {
+        "nombre": "USDEstimadoMLB",
+        "tipo": "double"
+      },
+      {
+        "nombre": "QPresupuestado",
+        "tipo": "double"
+      },
+      {
+        "nombre": "QEstimado",
+        "tipo": "double"
+      },
+      {
+        "nombre": "TargetPRoduct",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdMarca ",
+        "tipo": "string"
+      },
+      {
+        "nombre": "MLPresupuestadoAjustado",
+        "tipo": "double"
+      },
+      {
+        "nombre": "Trim",
+        "tipo": "string"
+      },
+      {
+        "nombre": "UNEstimadaBC",
+        "tipo": "double"
+      },
+      {
+        "nombre": "UNSTDEstimadaBC",
+        "tipo": "double"
+      },
+      {
+        "nombre": "MLEstimadoBC",
+        "tipo": "double"
+      },
+      {
+        "nombre": "USDEstimadoBC",
+        "tipo": "double"
+      },
+      {
+        "nombre": "ConcatPaisMarca ",
+        "tipo": "string"
+      }
+    ]
+  },
+  {
+    "tabla": "Forma Farmac\u00e9utica",
+    "columnas": [
+      {
+        "nombre": "IdFormaFarmaceutica",
+        "tipo": "string"
+      },
+      {
+        "nombre": "Forma Farmac\u00e9utica",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdTipoForma",
+        "tipo": "string"
+      },
+      {
+        "nombre": "CantStandard",
+        "tipo": "int64"
+      }
+    ]
+  },
+  {
+    "tabla": "Key Product",
+    "columnas": [
+      {
+        "nombre": "KeyProduct",
+        "tipo": "string"
+      }
+    ]
+  },
+  {
+    "tabla": "Linea Comercial",
+    "columnas": [
+      {
+        "nombre": "IdLinea",
+        "tipo": "string"
+      },
+      {
+        "nombre": "L\u00ednea Comercial",
+        "tipo": "string"
+      },
+      {
+        "nombre": "Laboratorio",
+        "tipo": "string"
+      }
+    ]
+  },
+  {
+    "tabla": "Pa\u00eds / Zona-Gesti\u00f3n",
+    "columnas": [
+      {
+        "nombre": "IdPais-IdZonaGestion",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdPais",
+        "tipo": "string"
+      },
+      {
+        "nombre": "DescripcionPais",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdZonaGestion",
+        "tipo": "string"
+      },
+      {
+        "nombre": "DescripcionZG",
+        "tipo": "string"
+      },
+      {
+        "nombre": "Zona ",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdTipoCrecimiento",
+        "tipo": "string"
+      },
+      {
+        "nombre": "TipoZonaGestion",
+        "tipo": "string"
+      },
+      {
+        "nombre": "Zona Geogr\u00e1fica (groups)' ",
+        "tipo": "string"
+      },
+      {
+        "nombre": "Origen",
+        "tipo": "string"
+      },
+      {
+        "nombre": "DescripcionPaisIMS ",
+        "tipo": "string"
+      }
+    ]
+  },
+  {
+    "tabla": "Per\u00edodo a Analizar",
+    "columnas": []
+  },
+  {
+    "tabla": "Periodos MAT",
+    "columnas": [
+      {
+        "nombre": "Periodo",
+        "tipo": "string"
+      },
+      {
+        "nombre": "Fecha",
+        "tipo": "dateTime"
+      },
+      {
+        "nombre": "Fecha ultima",
+        "tipo": "dateTime"
+      },
+      {
+        "nombre": "Fecha corta' ",
+        "tipo": "int64"
+      },
+      {
+        "nombre": "Real/Proy",
+        "tipo": "string"
+      },
+      {
+        "nombre": "Column6",
+        "tipo": "string"
+      }
+    ]
+  },
+  {
+    "tabla": "Producto MPh",
+    "columnas": [
+      {
+        "nombre": "IdProductoMPh",
+        "tipo": "int64"
+      },
+      {
+        "nombre": "Producto MPh",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdProductoFabricante",
+        "tipo": "string"
+      }
+    ]
+  },
+  {
+    "tabla": "Producto Compa\u00f1\u00eda",
+    "columnas": [
+      {
+        "nombre": "IdProductoCompania",
+        "tipo": "string"
+      },
+      {
+        "nombre": "Presentaci\u00f3n",
+        "tipo": "string"
+      },
+      {
+        "nombre": "FechaLanzamiento",
+        "tipo": "dateTime"
+      },
+      {
+        "nombre": "A\u00f1o ",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdCompania-IdProductoCompania",
+        "tipo": "string"
+      }
+    ]
+  },
+  {
+    "tabla": "Target Product",
+    "columnas": [
+      {
+        "nombre": "Target Product",
+        "tipo": "string"
+      }
+    ]
+  },
+  {
+    "tabla": "Tipo de Producto",
+    "columnas": [
+      {
+        "nombre": "IdTipoProducto",
+        "tipo": "string"
+      },
+      {
+        "nombre": "Descripcion",
+        "tipo": "string"
+      }
+    ]
+  },
+  {
+    "tabla": "Ventas Mensuales",
+    "columnas": [
+      {
+        "nombre": "IdPeriodo",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdProductoCompania",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdCompania",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdCanal",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdProducto",
+        "tipo": "int64"
+      },
+      {
+        "nombre": "IdLinea",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdFamilia",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdAreaTerapeutica",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdIndicacion",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdPais",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdProductoMPh",
+        "tipo": "int64"
+      },
+      {
+        "nombre": "IdZonaGestion",
+        "tipo": "string"
+      },
+      {
+        "nombre": "UN",
+        "tipo": "double"
+      },
+      {
+        "nombre": "UNSTD",
+        "tipo": "double"
+      },
+      {
+        "nombre": "ML",
+        "tipo": "double"
+      },
+      {
+        "nombre": "USD",
+        "tipo": "double"
+      },
+      {
+        "nombre": "Fecha ",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdTipoProducto",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdFabricante",
+        "tipo": "int64"
+      },
+      {
+        "nombre": "IdFormaFarmaceutica",
+        "tipo": "string"
+      },
+      {
+        "nombre": "ClasificacionOtcOtx",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdCompania-IdProductoCompania",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdPais-IdZonaGestion",
+        "tipo": "string"
+      },
+      {
+        "nombre": "IdCliente",
+        "tipo": "string"
+      },
+      {
+        "nombre": "Old IDCompa\u00f1ia' ",
+        "tipo": "double"
+      },
+      {
+        "nombre": "AreaT English' ",
+        "tipo": "string"
+      },
+      {
+        "nombre": "Leading Brands' ",
+        "tipo": "string"
+      },
+      {
+        "nombre": "CantidadElog",
+        "tipo": "int64"
+      },
+      {
+        "nombre": "CostoConsolidadoUnitario",
+        "tipo": "double"
+      },
+      {
+        "nombre": "UnidadOtros",
+        "tipo": "double"
+      },
+      {
+        "nombre": "ConcatPaisMarca ",
+        "tipo": "string"
+      },
+      {
+        "nombre": "PharmaceuticalDivision",
+        "tipo": "string"
+      },
+      {
+        "nombre": "Marca Paragua",
+        "tipo": "string"
+      },
+      {
+        "nombre": "CategoriaFamilia",
+        "tipo": "string"
+      },
+      {
+        "nombre": "Idzonageografica",
+        "tipo": "string"
+      }
+    ]
+  }
+]

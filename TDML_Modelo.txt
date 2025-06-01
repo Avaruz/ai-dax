@@ -1,0 +1,4125 @@
+createOrReplace
+
+	table 'Año Ficticio'
+		lineageTag: cf21a765-de44-4e79-acee-4ff5481643c8
+
+		column Año
+			dataType: int64
+			formatString: 0
+			lineageTag: f833fd27-56ce-4075-adb1-eb749ff8786a
+			summarizeBy: sum
+			sourceColumn: Año
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition 'Año Ficticio-ad5f16e8-6b6b-451d-8bed-8078545ea11f' = m
+			mode: import
+			source = 
+					let
+						Source = Table.FromRows(
+							Json.Document(
+								Binary.Decompress(Binary.FromText("i45WMjIwtFCK1QEzLKEMIwOl2FgA", BinaryEncoding.Base64), Compression.Deflate)
+							),
+							let
+								_t = ((type nullable text) meta [Serialized.Text = true])
+							in
+								type table [Año = _t]
+						),
+						#"Changed Type" = Table.TransformColumnTypes(Source, {{"Año", Int64.Type}})
+					in
+						#"Changed Type"
+
+		annotation PBI_ResultType = Table
+
+	table 'Área Terapéutica'
+		lineageTag: 1a3211ee-9969-403c-9cb4-d110d8d235db
+
+		column IdAreaTerapeutica
+			dataType: string
+			lineageTag: f00df9d9-2d08-4709-930f-c0afc825b54b
+			summarizeBy: none
+			sourceColumn: IdAreaTerapeutica
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Área Terapéutica'
+			dataType: string
+			lineageTag: d8da02b6-8aa7-48ee-8d54-67620d911e02
+			summarizeBy: none
+			sourceColumn: Área Terapéutica
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column ImgAreaTerapeutica
+			dataType: string
+			lineageTag: e4df1a5f-425f-4194-a460-10e88326e230
+			dataCategory: ImageUrl
+			summarizeBy: none
+			sourceColumn: ImgAreaTerapeutica
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Nombre Leading'
+			dataType: string
+			lineageTag: 64745cca-115f-4cbe-8f7f-3f3e1f49f1ad
+			summarizeBy: none
+			sourceColumn: Nombre Leading
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Área Terapéutica BI' = 
+
+				/* Se crea esta columna para agrupar algunas AT */
+
+				SWITCH(
+				    FIRSTNONBLANK('Área Terapéutica'[IdAreaTerapeutica],0),
+				    "CARDIO",
+				    "Cardio / Metabolismo",
+				    "METABOL",
+				    "Cardio / Metabolismo",
+				    FIRSTNONBLANK('Área Terapéutica'[Área Terapéutica],0)
+				)
+			lineageTag: c732cb22-f8c2-44a6-bbe6-c680dd12f027
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Área Terapéutica","TableItemName":"Área Terapéutica BI (KeyProduct)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"Área Terapéutica","TableItemName":"Área Terapéutica BI (English)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+		column 'Área Terapéutica BI (KeyProduct)' = 
+				SWITCH(
+				  TRUE,
+				  ISBLANK('Área Terapéutica'[Área Terapéutica BI]),
+				  "(Blank)",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Dolor / Inflamación",
+				    "Neurociencias"},
+				  "Neuro / Dolor",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Alta Especialización",
+				    "Vitaminas, minerales y oligoelementos"},
+				  "Vitam / Alta Esp.",
+				  'Área Terapéutica'[Área Terapéutica BI]
+				)
+			lineageTag: f3e210b9-0f5b-447e-b984-ae57e3b4a930
+			summarizeBy: none
+
+			extendedProperty GroupingMetadata = 
+					{
+					  "version": 0,
+					  "groupedColumns": [
+					    {
+					      "Column": {
+					        "Expression": {
+					          "SourceRef": {
+					            "Entity": "Área Terapéutica"
+					          }
+					        },
+					        "Property": "Área Terapéutica BI"
+					      }
+					    }
+					  ]
+					}
+
+			changedProperty = IsHidden
+
+			annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"á","Entity":"Área Terapéutica"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"Neuro / Dolor","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Dolor / Inflamación'"}}],[{"Literal":{"Value":"'Neurociencias'"}}]]}}},{"DisplayName":"Vitam / Alta Esp.","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Alta Especialización'"}}],[{"Literal":{"Value":"'Vitaminas, minerales y oligoelementos'"}}]]}}}]}
+
+			annotation SummarizationSetBy = Automatic
+
+		column TieneVenta = CALCULATE( COUNTROWS('Ventas Mensuales'), FILTER( 'Ventas Mensuales', 'Ventas Mensuales'[IdAreaTerapeutica] = EARLIER('Área Terapéutica'[IdAreaTerapeutica] ) ))
+			formatString: 0
+			lineageTag: 18227d7c-1167-44f1-a73d-477da1ccd8e9
+			summarizeBy: sum
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Área Terapéutica BI (English)' = 
+				SWITCH(
+				  TRUE,
+				  ISBLANK('Área Terapéutica'[Área Terapéutica BI]),
+				  "(En blanco)",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Antiinfecciosos"},
+				  "Antiinf",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Cardio / Metabolismo"},
+				  "Cardio",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Neurociencias"},
+				  "CNS",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Dermatología"},
+				  "Derma",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Medical Devices"},
+				  "Devices",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Gastroenterología"},
+				  "Gastro",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Ginecología"},
+				  "Gyne",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Alta Especialización"},
+				  "Hi-Tech",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Odontología"},
+				  "Odont",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Oftalmología"},
+				  "Ophtha",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Fórmulas Infantiles",
+				    "z No asignada"},
+				  "Others",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Dolor / Inflamación"},
+				  "Pain",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Fitomedicina"},
+				  "Phyto",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Respiratorio"},
+				  "Resp",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Urología"},
+				  "Uro",
+				  'Área Terapéutica'[Área Terapéutica BI] IN {"Vitaminas, minerales y oligoelementos"},
+				  "Vit",
+				  'Área Terapéutica'[Área Terapéutica BI]
+				)
+			lineageTag: ae99340b-cb4f-484b-83b8-e7c735786c92
+			summarizeBy: none
+
+			extendedProperty GroupingMetadata = 
+					{
+					  "version": 0,
+					  "groupedColumns": [
+					    {
+					      "Column": {
+					        "Expression": {
+					          "SourceRef": {
+					            "Entity": "Área Terapéutica"
+					          }
+					        },
+					        "Property": "Área Terapéutica BI"
+					      }
+					    }
+					  ]
+					}
+
+			changedProperty = IsHidden
+
+			annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"á","Entity":"Área Terapéutica"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"GroupItems":[{"DisplayName":"(En blanco)","BlankDefaultPlaceholder":true},{"DisplayName":"Antiinf","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Antiinfecciosos'"}}]]}}},{"DisplayName":"Cardio","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Cardio / Metabolismo'"}}]]}}},{"DisplayName":"CNS","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Neurociencias'"}}]]}}},{"DisplayName":"Derma","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Dermatología'"}}]]}}},{"DisplayName":"Devices","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Medical Devices'"}}]]}}},{"DisplayName":"Gastro","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Gastroenterología'"}}]]}}},{"DisplayName":"Gyne","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Ginecología'"}}]]}}},{"DisplayName":"Hi-Tech","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Alta Especialización'"}}]]}}},{"DisplayName":"Odont","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Odontología'"}}]]}}},{"DisplayName":"Ophtha","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Oftalmología'"}}]]}}},{"DisplayName":"Others","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Fórmulas Infantiles'"}}],[{"Literal":{"Value":"'z No asignada'"}}]]}}},{"DisplayName":"Pain","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Dolor / Inflamación'"}}]]}}},{"DisplayName":"Phyto","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Fitomedicina'"}}]]}}},{"DisplayName":"Resp","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Respiratorio'"}}]]}}},{"DisplayName":"Uro","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Urología'"}}]]}}},{"DisplayName":"Vit","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"á"}},"Property":"Área Terapéutica BI"}}],"Values":[[{"Literal":{"Value":"'Vitaminas, minerales y oligoelementos'"}}]]}}}]}
+
+			annotation SummarizationSetBy = Automatic
+
+		partition 'Área Terapéutica-4afbdd4a-775b-43fc-861f-82e9426dd437' = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "SELECT AT.IdAreaTerapeutica AS IdAreaTerapeutica, 'DescAreaTerapeutica' =#(lf)#(tab)CASE#(lf)#(tab)#(tab)WHEN AT.IdAreaTerapeutica = 'N/A' THEN 'z No asignada'#(lf)#(tab)#(tab)ELSE AT.Descripcion#(lf)#(tab)END#(lf)FROM AT2020_DWH.dbo.DimAreaTerapeutica AS AT where at.IdAreaTerapeutica in (select distinct IdAreaTerapeutica from FctVentaMensual)",
+								HierarchicalNavigation = true
+							]
+						),
+						#"Added Conditional Column" = Table.AddColumn(
+							Source,
+							"ImgAreaTerapeutica",
+							each
+								if [IdAreaTerapeutica] = "HI-TECH" then
+									"https://1ikggq.bl3301.livefilestore.com/y3m64eMDkQ2n2efsseJlFdDmuCs7TwQoq2hn_UDPhRZCPfaUkcfb8itbTOotpYgJm_H1Z_ilw64HhfQ2YIDLvs0vVJHUoA3g3zjohfZimvJjKoMGbyCyo3hc1T-4Iuze3lj0g99ZnKhNJOWk32aEYhc3ZVQgm-pB5FasAFfePceZ9c?width=112&height=68&cropmode=none"
+								else if [IdAreaTerapeutica] = "ANTIINFEC" then
+									"https://1ik8ag.bl3301.livefilestore.com/y3ml2QQPKwYnO7XqbW3cD6IGNxoohcAp7JGoYyfTv8M4tYz32b0Cne1skUiA0GopiWAIcPfbIS-A6SVgl5OdUw14TYOsXQpXgHgiumPvkiF-zabQftp5dLZ3Rh8bDH4Fmh5rruSap4BupCLVIPhVzRoRN9zG0IuTCpU7C9-gKM-VQ4?width=111&height=72&cropmode=none"
+								else if [IdAreaTerapeutica] = "CARDIO" then
+									"https://1ij4iw.bl3301.livefilestore.com/y3moDMjD5ep51wdAk00FPXD1ONP9iH3HUT77EYtRg6FLKd4gV8TtmO3BMBvKAA36N_lhRREOvPuwAug6pmT6ctHd5FkUppSELlOVEYdHPApkgs8jtj6Ob-gHB4g5scIqDqcHrMvBwczN1ixhVeh8gVWJFWk2VBymIUMRU7xOTYtnVs?width=114&height=70&cropmode=none"
+								else if [IdAreaTerapeutica] = "DERMAT" then
+									"https://1iitaa.bl3301.livefilestore.com/y3mOFy-5YwPvaEcOPi1NtQFYWWtO69PEfjuhFUHrvray2MlQyVOmVIoeMUB05Z4bvHZsDrXF85c83V3FQ9zZaZU4nQGy0VYVcb6Td7lV8Q5rx-W6sq-_v_n1Nz4mmWgJ7Mjvy3enVV-ATruwwfUTOFYhL8EVWFrHzxWme2MOwAKxyU?width=163&height=78&cropmode=none"
+								else if [IdAreaTerapeutica] = "DOLOR" then
+									"https://1ijxdw.bl3301.livefilestore.com/y3meJiwe6ujWK6QQeytiMu_Vzs4wU2GQ0ZS0nKkT47X9s6Lhu_wKPPmVcWkQIl-6nd39uGKYxML4AZVa0Ufns2G30uMc_stTjAvMjGA5uy1Fmt7iHcPqMdrFcCm0ma7hM-4hFXdIakxK4l17isfWR7HtMtrnnduE2SyO_0cVepzTCg?width=118&height=76&cropmode=none"
+								else if [IdAreaTerapeutica] = "FITOMED" then
+									"https://czesrw.bl3301.livefilestore.com/y3mbUAGsM5aYO5hjLMoxYxTVOlP0jKTG9DXji8da11UnaGV9lqauX4HbmgQqaNZ6QatSiY00punn7Q4lcV_VKQ88uYkOPQgLPV1oHTvZDQvKFMse5rOAYNbK6wpA6S9Sa-Eluy_U1jqT9siBU4Bh7GjzrmCAhadljSUAyOChi86pps?width=94&height=76&cropmode=none"
+								else if [IdAreaTerapeutica] = "GASTRO" then
+									"https://czf30g.bl3301.livefilestore.com/y3mpVWR-wt366wuSCiAmcJKFC6cH8OCW2-ueZgxmZr7w5Y0VBA42saYjDnfdzw3kTIPLplM69U9aOcA5DYW9Vf7QbH1j5i4R8vaqGolKFmbWeIqTSl7-YWTSyBTxlu-uGGMOozF78CZxKFScsEeTE6vZA6d-p0gpfKWnwIyPPbJuOo?width=113&height=72&cropmode=none"
+								else if [IdAreaTerapeutica] = "GINEC" then
+									"https://czdcxg.bl3301.livefilestore.com/y3mdJSk1L4ikimENQMk5Ix6xkLnabk4qzHZtGaOXSrfhT0fsCwgZKqHd-N2vgcEA6KkSGCcH3mFfEsCw8aCf727PyCNS8pOyr9-fTLfwXnVNPam87UDgRfylqXxGQiyNf388oq3y3HRKbBytdtK59FIEkTMG5keBpviVvfNQJYcgwU?width=111&height=76&cropmode=none"
+								else if [IdAreaTerapeutica] = "MEDICDEVIC" then
+									"https://1iihjg.bl3301.livefilestore.com/y3maScg9y-1EyHJiQ0aUA9kCuE_yHubnaTte96OijHRY8oF78ljNojKzKzcfZ56RN708w5pAO8ZqAKRidHFnihuSBQVlaYyoBo85LpqMQdmqbZuJ1O3kJ4_W9BGSe2O8prS6E-H4tiK-iZQHAiZXrBncGajaBXB-VcOiOiWGFFlaGE?width=114&height=70&cropmode=none"
+								else if [IdAreaTerapeutica] = "METABOL" then
+									"https://czfb6q.bl3301.livefilestore.com/y3mxFOaT6ssWN2uGzXtOW0wcnbe9z4B9b7beJ7cVLckry56njxF3swshpv2BDjlbuyGXOBdBmZSt6LolRdXP0AqnXd-iGVQJrEpjfbLGLGVyJhMe-fLZAm-PjLxYbP4qp9rc-YFMOz_JBFay5ux4VhtSlaoqmHVd2S2M0Lihfdl8Fs?width=111&height=71&cropmode=none"
+								else if [IdAreaTerapeutica] = "NEUROCIEN" then
+									"https://czcflg.bl3301.livefilestore.com/y3mIMKYbQ60_q1fuBeZEBFTMA-hKZmShgGT9L0_YyGR1w95-L0JDAmLuHpWqCobKCFAA6NIHfNr5-bB7WYLGPDfz2N0iAqa_a_tSGmcoYxy5joe4hKVY3F3ic2szzRGLS4qNvCUNUW-sqibw7s_9huKvjTNbuBrQvmc40DcNHVk33M?width=114&height=69&cropmode=none"
+								else if [IdAreaTerapeutica] = "ODONT" then
+									"https://czfpgq.bl3301.livefilestore.com/y3mQlqQXf-TurSc82ra-DrbmkeJOID9fFLx_rudrUitz79H0PPale1j3ekrXWe0dTGoeZiRiK5L77V9V5bDi_SInFIcuSoP7VReszx-lXGNKYcLmtKi9eX-W_iMpATg4DTn8TDxrj1RncStU-_VLuUQMWew3nmWQ-UGyhMWD2bNEis?width=154&height=76&cropmode=none"
+								else if [IdAreaTerapeutica] = "OFTALM" then
+									"https://czdjpq.bl3301.livefilestore.com/y3m5mWGj4--bQRuTO0fpNz2CUI11oAK3reaEgITxSyQnHxDXW9aOJQk07NgyBKfv6yOX_wEF84GdxZplpGQkNQ_gzHFVDL3l2nBW9cKon2ewDdTeFNIIJPVOjnk8ew_NQThglQmBW4WskF-zItfEV5QNtbm9bLcBxps-rVPUeftV90?width=110&height=68&cropmode=none"
+								else if [IdAreaTerapeutica] = "RESPIRAT" then
+									"https://czfima.bl3301.livefilestore.com/y3mAz5PmKFxX_6JQBztWcgv_g3sNkAdpX8CSEWKZz-doe9DT7Xg9T_DPY6wGGBNL9WS0bW39cFzmad7t3MGJOCBr2ooim_7wqYriZDxnHryxVNIQAjVvCpd6nxycA1v5Q0kjDlaTtlvOwFlljn2x_ZJ2x2AAuNRoayV84Ntuco72m0?width=113&height=72&cropmode=none"
+								else if [IdAreaTerapeutica] = "UROLOGIA" then
+									"https://czctva.bl3301.livefilestore.com/y3mBbdVObNHzjYbEClYGFDFXV94gdUpTVLC9ETOgY1sXolkKDVJ9mSzYyPc0UJdrlHC4vqVFygL9S8QVFJ1iDYJXKbMlcJQn_ak7A-XBgQWthCV-hfP5squwE-trcdgHxP4o4QVWca2OXebyfWqxtxQK6hqrlrgVsbdxdNITjWkRxk?width=110&height=62&cropmode=none"
+								else if [IdAreaTerapeutica] = "VIT-MIN-OL" then
+									"https://cze6og.bl3301.livefilestore.com/y3mNKOxfwL5TwglPXmzzlvt6Y_C1K2ZR03eAb60euwUYpsof_pgf3UxFs9CYNAxWVsrJGid0YQ8Ne1tsF7F8pWFzkBZGsK0foFMsiKxnIrgXsB0feqMRr3PgYp4V87YDhtDJCeN5PITd9aQx8oSB-9yBN0JbYhzbOZf9It6iWonj60?width=116&height=73&cropmode=none"
+								else
+									null
+						),
+						#"Renamed Columns" = Table.RenameColumns(#"Added Conditional Column", {{"DescAreaTerapeutica", "Área Terapéutica"}}),
+						#"Added Conditional Column1" = Table.AddColumn(
+							#"Renamed Columns",
+							"Nombre Leading",
+							each
+								if [IdAreaTerapeutica] = "GASTRO" then
+									"Gastro"
+								else if [IdAreaTerapeutica] = "CARDIO" then
+									"Cardio/Metab"
+								else if [IdAreaTerapeutica] = "METABOL" then
+									"Cardio/Metab"
+								else if [IdAreaTerapeutica] = "DERMAT" then
+									"Derma"
+								else if [IdAreaTerapeutica] = "DOLOR" then
+									"Dolor"
+								else if [IdAreaTerapeutica] = "NEUROCIEN" then
+									"Neuro"
+								else if [IdAreaTerapeutica] = "ANTIINFEC" then
+									"Anti Inf."
+								else if [IdAreaTerapeutica] = "FITOMED" then
+									"Fito"
+								else if [IdAreaTerapeutica] = "GINEC" then
+									"Gine"
+								else if [IdAreaTerapeutica] = "HI-TECH" then
+									"Hi Tech"
+								else if [IdAreaTerapeutica] = "MEDICDEVIC" then
+									"Devices"
+								else if [IdAreaTerapeutica] = "ODONT" then
+									"Odont"
+								else if [IdAreaTerapeutica] = "OFTALM" then
+									"Ofta"
+								else if [IdAreaTerapeutica] = "RESPIRAT" then
+									"Respira"
+								else if [IdAreaTerapeutica] = "UROLOGIA" then
+									"Uro"
+								else if [IdAreaTerapeutica] = "VIT-MIN-OL" then
+									"Vitam"
+								else
+									"Otros"
+						)
+					in
+						#"Added Conditional Column1"
+
+		annotation PBI_ResultType = Table
+
+	table Canal
+		lineageTag: 4e2b7e89-aa71-4696-98a6-bb28b9f42725
+
+		measure 'Canales Alta Especialización' = 
+
+				CALCULATE (
+				    VALUES ( 'Canal'[IdCanal] ),
+				    FILTER ( 'Canal', 'Canal'[IdCanal] = "EXT" || 'Canal'[IdCanal] = "LOC" )
+				)
+			lineageTag: c984098f-06f4-430a-83de-edd029c82777
+
+			changedProperty = IsHidden
+
+		column IdCanal
+			dataType: string
+			lineageTag: 99a4e5b4-642a-475d-b245-0f6cd45bea5c
+			summarizeBy: none
+			sourceColumn: IdCanal
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column DescCanal
+			dataType: string
+			lineageTag: 4932d4c6-ad90-425a-9219-c6e53b2810e5
+			summarizeBy: none
+			sourceColumn: DescCanal
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition Canal-440dea76-d372-48b3-aa75-61cc11e7c69d = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "/* Canal */#(lf)SELECT C.IdCanal AS IdCanal, C.Descripcion AS DescCanal#(lf)FROM AT2020_DWH.dbo.DimCanal AS C#(lf)WHERE C.IdCanal NOT IN ('DON', 'DES', 'VAR')#(lf)UNION#(lf)SELECT 'LIC-ECU' AS IdCanal, 'ECUADOR CON LICITACIONES' AS DescCanal",
+								HierarchicalNavigation = true
+							]
+						),
+						#"Renamed Columns" = Table.RenameColumns(Source, {{"DescCanal", "DescCanal"}})
+					in
+						#"Renamed Columns"
+
+		annotation PBI_ResultType = Table
+
+		annotation PBI_NavigationStepName = Navegación
+
+	table Cliente
+		lineageTag: 126654a6-2167-48bb-8a87-866432210a01
+
+		column IdCategoria
+			dataType: string
+			lineageTag: ba4ae1ce-6696-4e75-aa37-98139857913c
+			summarizeBy: none
+			sourceColumn: IdCategoria
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Categoría
+			dataType: string
+			lineageTag: 285d0313-054d-4593-9b42-25b9d693d898
+			summarizeBy: none
+			sourceColumn: Categoría
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition Cliente-e4b20013-a2d7-4dcb-b851-35a71528dba5 = m
+			mode: import
+			source = 
+					let
+						Origen = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "/* Cliente */#(lf)SELECT #(lf)C.IdCategoria AS IdCategoria,#(lf)C.Descripcion AS Categoría#(lf)FROM AT2020_DWH..DimCategoria AS C"
+							]
+						)
+					in
+						Origen
+
+		annotation PBI_ResultType = Table
+
+	table Compañia
+		lineageTag: c623f4e9-a152-4629-890e-51fec0376abb
+
+		column IdCompania
+			dataType: string
+			lineageTag: 5879b6dd-6a63-4361-9dc8-502930f3d05f
+			summarizeBy: none
+			sourceColumn: IdCompania
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Compañía
+			dataType: string
+			lineageTag: 759a96c2-f648-4abb-bcc1-0ed820ff5d91
+			summarizeBy: none
+			sourceColumn: Compañía
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition Compañia-06b686d7-3bf4-46a2-b2d3-08b4e47ee22f = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "SELECT C.IdCompania AS IdCompania, C.Descripcion AS DescCompania#(lf)FROM AT2020_DWH.dbo.DimCompania C",
+								HierarchicalNavigation = true
+							]
+						),
+						#"Renamed Columns" = Table.RenameColumns(Source, {{"DescCompania", "Compañía"}})
+					in
+						#"Renamed Columns"
+
+		annotation PBI_ResultType = Table
+
+	table 'Costo / Presupuesto'
+		lineageTag: 4f742d29-d729-4eef-ae6f-2c5613fada53
+
+		column IdPeriodo
+			dataType: string
+			lineageTag: c6ff25d8-fe5b-4603-bf69-7177edef25bb
+			summarizeBy: none
+			sourceColumn: IdPeriodo
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdCompania-IdProductoCompania
+			dataType: string
+			lineageTag: 8549fd5d-c073-4977-868e-8b9e31112960
+			summarizeBy: none
+			sourceColumn: IdCompania-IdProductoCompania
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdProductoCompania
+			dataType: string
+			lineageTag: 0b7998c3-9076-4ddd-aeb7-34a28e69cb8b
+			summarizeBy: none
+			sourceColumn: IdProductoCompania
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdCompania
+			dataType: string
+			lineageTag: 4c152c35-fdf8-4b63-8441-41d97746e571
+			summarizeBy: none
+			sourceColumn: IdCompania
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdCanal
+			dataType: string
+			lineageTag: 55dc31b3-2bba-4bf6-bc45-4ca7abb6b25e
+			summarizeBy: none
+			sourceColumn: IdCanal
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdProducto
+			dataType: int64
+			formatString: 0
+			lineageTag: 1869041f-9672-48bd-937d-cd7782099517
+			summarizeBy: none
+			sourceColumn: IdProducto
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdLinea
+			dataType: string
+			lineageTag: 08569920-6de4-41ef-b41b-6214ceebd3b6
+			summarizeBy: none
+			sourceColumn: IdLinea
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdFamilia
+			dataType: string
+			lineageTag: df12084e-376d-40ed-b195-b7f540e6a8bf
+			summarizeBy: none
+			sourceColumn: IdFamilia
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdAreaTerapeutica
+			dataType: string
+			lineageTag: 3d5e43d5-2aa3-4760-82ae-f8825128215a
+			summarizeBy: none
+			sourceColumn: IdAreaTerapeutica
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdIndicacion
+			dataType: string
+			lineageTag: 37cce2d8-1f9f-4137-abe4-87ddc4247098
+			summarizeBy: none
+			sourceColumn: IdIndicacion
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdPais
+			dataType: string
+			lineageTag: 88e6dab9-907b-47e6-8155-389c8585b42e
+			summarizeBy: none
+			sourceColumn: IdPais
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdPais-IdZonaGestion
+			dataType: string
+			lineageTag: a69626b7-e89a-411d-ac97-9d53eb6e3b5a
+			summarizeBy: none
+			sourceColumn: IdPais-IdZonaGestion
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdProductoMPh
+			dataType: int64
+			formatString: 0
+			lineageTag: 8178e8e8-8f92-4b7c-b72a-af060c9e195c
+			summarizeBy: none
+			sourceColumn: IdProductoMPh
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdZonaGestion
+			dataType: string
+			lineageTag: dce349d1-2924-477a-9002-b4b7f735e21a
+			summarizeBy: none
+			sourceColumn: IdZonaGestion
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdTipoNegocio
+			dataType: string
+			lineageTag: 28902506-a700-41f4-b6cf-a0acb1fe97b3
+			summarizeBy: none
+			sourceColumn: IdTipoNegocio
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdTipoProducto
+			dataType: string
+			lineageTag: 66099819-486d-4b39-83fd-db437a470be6
+			summarizeBy: none
+			sourceColumn: IdTipoProducto
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdFabricante
+			dataType: int64
+			formatString: 0
+			lineageTag: 7785730a-7416-470f-9c12-b2d3978827b5
+			summarizeBy: none
+			sourceColumn: IdFabricante
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdFormaFarmaceutica
+			dataType: string
+			lineageTag: b3c8ac02-1448-49c2-ada4-0ff59afb737b
+			summarizeBy: none
+			sourceColumn: IdFormaFarmaceutica
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column ClasificacionOtcOtx
+			dataType: string
+			lineageTag: 6443111a-0519-4ac9-866a-b5c7cc16122f
+			summarizeBy: none
+			sourceColumn: ClasificacionOtcOtx
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column CostoConsolidado
+			dataType: double
+			lineageTag: b911b8aa-3f37-4b9e-81d4-e85b1895684e
+			summarizeBy: sum
+			sourceColumn: CostoConsolidado
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column CostoConsolidadoUnitario
+			dataType: double
+			lineageTag: 984628fc-7172-4841-b39a-07fd91dc5925
+			summarizeBy: sum
+			sourceColumn: CostoConsolidadoUnitario
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column FechaCostoConsolidado
+			dataType: int64
+			formatString: 0
+			lineageTag: a8fd0c50-42e4-4a1c-a274-373e2b4fbd0a
+			summarizeBy: sum
+			sourceColumn: FechaCostoConsolidado
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Fecha = 
+
+				DATE(
+				    LEFT('Costo / Presupuesto'[IdPeriodo],4),
+				    RIGHT('Costo / Presupuesto'[IdPeriodo],2),
+				    01
+				)
+			formatString: General Date
+			lineageTag: cdfbbe15-7516-4582-8bf6-d821ac63c6bc
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column CondUmbrellaCHI = IF(AND('Costo / Presupuesto'[TargetPRoduct] = "Umbrella Intelligent", 'Costo / Presupuesto'[IdPais] = "CHI"), 1, 0)
+			formatString: 0
+			lineageTag: 69152b4e-c290-411d-8fe5-adab9451f9d1
+			summarizeBy: sum
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Es LOUTEN EMUL' = IF(AND(NOT(OR(RELATED('Forma Farmacéutica'[Forma Farmacéutica]) = "Emulsión Oftálmica",RELATED('Forma Farmacéutica'[Forma Farmacéutica]) = "Emulsión líquida")), 'Costo / Presupuesto'[TargetProduct] = "Louten Emulsion"), 0, 1)
+			formatString: 0
+			lineageTag: 7aeca30b-25a1-4c01-9629-42066713417e
+			summarizeBy: sum
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column UNPresupuestada
+			dataType: double
+			lineageTag: 9ae2f3f5-dd4b-4b25-91b5-915c339f29e1
+			summarizeBy: sum
+			sourceColumn: UNPresupuestada
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column UNEstimada
+			dataType: double
+			lineageTag: 5e72799e-5841-4104-b14c-d5faa75554e1
+			summarizeBy: sum
+			sourceColumn: UNEstimada
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column UNSTDPresupuestada
+			dataType: double
+			lineageTag: e4dc9eca-9223-4870-83af-340f0de84f79
+			summarizeBy: sum
+			sourceColumn: UNSTDPresupuestada
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column UNSTDEstimada
+			dataType: double
+			lineageTag: 4ae1e2f4-2a76-47d3-a035-a3aefbe40bbc
+			summarizeBy: sum
+			sourceColumn: UNSTDEstimada
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column MLPresupuestado
+			dataType: double
+			lineageTag: 016ae993-cf08-4357-85b4-c32e36d9beb1
+			summarizeBy: sum
+			sourceColumn: MLPresupuestado
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column MLEstimado
+			dataType: double
+			formatString: #,0
+			lineageTag: 0cba12ae-8a72-4243-9400-ad4b2f6c9b68
+			summarizeBy: sum
+			sourceColumn: MLEstimado
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		column USDPresupuestado
+			dataType: double
+			lineageTag: d9cbf34f-1568-4c86-a3d7-93c133fd1a19
+			summarizeBy: sum
+			sourceColumn: USDPresupuestado
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column USDEstimado
+			dataType: double
+			lineageTag: 34bdaea7-8bd1-413a-9741-59cbb994947c
+			summarizeBy: sum
+			sourceColumn: USDEstimado
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column UNEstimadaMLB
+			dataType: double
+			lineageTag: b6f350a3-dd17-419e-9629-2d3c44734a3b
+			summarizeBy: sum
+			sourceColumn: UNEstimadaMLB
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column UNSTDEstimadaMLB
+			dataType: double
+			lineageTag: 97a663d1-d2a6-4f11-b19a-7a7b8656c72f
+			summarizeBy: sum
+			sourceColumn: UNSTDEstimadaMLB
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column MLEstimadoMLB
+			dataType: double
+			lineageTag: 13f233fc-4ce4-47c1-a76a-eaaece0e25cc
+			summarizeBy: sum
+			sourceColumn: MLEstimadoMLB
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column USDEstimadoMLB
+			dataType: double
+			lineageTag: a3f40ce3-b4f0-4041-ae7c-d7666535853b
+			summarizeBy: sum
+			sourceColumn: USDEstimadoMLB
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column QPresupuestado
+			dataType: double
+			lineageTag: 4272469b-37de-41fd-a166-9aa9a12c7f6f
+			summarizeBy: sum
+			sourceColumn: QPresupuestado
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column QEstimado
+			dataType: double
+			lineageTag: 2e796686-db1f-465a-853b-2fb3ee9836a7
+			summarizeBy: sum
+			sourceColumn: QEstimado
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column TargetPRoduct
+			dataType: string
+			lineageTag: eaab17df-a4e4-4514-b8aa-d08fb42a3d3d
+			summarizeBy: none
+			sourceColumn: TargetPRoduct
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdMarca = Related('Marca'[IdMarca])
+			lineageTag: 17ea37de-e007-41e4-80d3-b1920f1ac2dd
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdTipoForma = Related('Forma Farmacéutica'[IdTipoForma])
+			lineageTag: f826f606-470e-4822-a120-922754bba332
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdZonaGestion-IdMarca-IdTipoForma = CONCATENATE('Costo / Presupuesto'[IdZonaGestion],CONCATENATE('Costo / Presupuesto'[IdMarca],'Costo / Presupuesto'[IdTipoForma]))
+			lineageTag: 318b9515-a5d9-4dc3-820f-f86c4a06ebca
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column CovidProduct
+			dataType: string
+			lineageTag: 3c6e1f74-5579-4aa6-977e-87513db40f48
+			summarizeBy: none
+			sourceColumn: CovidProduct
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column MLPresupuestadoAjustado
+			dataType: double
+			lineageTag: 492ac9f9-aa73-4db7-862c-2b465c122c5c
+			summarizeBy: sum
+			sourceColumn: MLPresupuestadoAjustado
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column Trim
+			dataType: string
+			lineageTag: 41dcc080-b814-421e-8d83-2a571ebb56eb
+			summarizeBy: none
+			sourceColumn: Trim
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column UNEstimadaBC
+			dataType: double
+			lineageTag: d8c1a292-94f6-4e04-86d7-f72ff5472937
+			summarizeBy: sum
+			sourceColumn: UNEstimadaBC
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column UNSTDEstimadaBC
+			dataType: double
+			lineageTag: 5e3b5ff6-63ef-4b1d-b859-15c81bd9f237
+			summarizeBy: sum
+			sourceColumn: UNSTDEstimadaBC
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column MLEstimadoBC
+			dataType: double
+			lineageTag: 576ca886-768d-4b10-bd48-0b34be5d040f
+			summarizeBy: sum
+			sourceColumn: MLEstimadoBC
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column USDEstimadoBC
+			dataType: double
+			lineageTag: 4f78a7c3-f771-4262-90bf-69f4f00b8b18
+			summarizeBy: sum
+			sourceColumn: USDEstimadoBC
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column ConcatPaisMarca = 'Costo / Presupuesto'[IdPais] & "-" & RELATED(Marca[Marca])
+			lineageTag: cb7f62bb-eb04-482a-9a0d-de11581328e3
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column MarcaBud
+			dataType: string
+			lineageTag: 22b945d1-ec03-4890-b3eb-c990445978e9
+			summarizeBy: none
+			sourceColumn: MarcaBud
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition 'Costo / Presupuesto-87d578e1-55a2-4b6a-9976-461d82acd425' = m
+			mode: import
+			source = 
+					let
+						Origen = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = " SELECT v.[IdPeriodo]#(lf)      ,v.[IdCompania-IdProductoCompania]#(lf)      ,v.[IdProductoCompania]#(lf)      ,v.[IdCompania]#(lf)      ,v.[IdCanal]#(lf)      ,v.[IdProducto]#(lf)      ,v.[IdLinea]#(lf)      ,v.[IdFamilia]#(lf)      ,v.[IdAreaTerapeutica]#(lf)      ,v.[IdIndicacion]#(lf)      ,v.[IdPais]#(lf)      ,v.[IdPais-IdZonaGestion]#(lf)      ,v.[IdProductoMPh]#(lf)      ,v.[IdZonaGestion]#(lf)      ,v.[IdTipoNegocio]#(lf)      ,v.[IdTipoProducto]#(lf)      ,v.[IdFabricante]#(lf)      ,v.[IdFormaFarmaceutica]#(lf)      ,v.[ClasificacionOtcOtx]#(lf)      ,ROUND(v.[UNPresupuestada], 3) as UNPresupuestada#(lf)      ,ROUND(v.[UNEstimada], 3) as UNEstimada#(lf)      ,ROUND(v.[UNSTDPresupuestada], 3) as UNSTDPresupuestada#(lf)      ,ROUND(v.[UNSTDEstimada], 3) as UNSTDEstimada#(lf)      ,ROUND(v.[MLPresupuestado], 3) as MLPresupuestado#(lf)      ,ROUND(v.[MLEstimado], 3) as MLEstimado#(lf)      ,ROUND(v.[USDPresupuestado], 3) as USDPresupuestado#(lf)      ,ROUND(v.[USDEstimado], 3) as USDEstimado#(lf)      ,ROUND(v.[CostoConsolidado], 3) as CostoConsolidado#(lf)      ,ROUND(v.[CostoConsolidadoUnitario], 3) as CostoConsolidadoUnitario#(lf)      ,v.[FechaCostoConsolidado]#(lf)      ,v.[TargetPRoduct]#(lf),v.[CovidProduct]#(lf)      ,isnull(e.UNEstimada,0) as UNEstimadaMLB#(lf)#(tab)  ,isnull(e.UNSTDEstimada,0) as UNSTDEstimadaMLB#(lf)#(tab)  ,isnull(e.MLEstimado,0) as MLEstimadoMLB#(lf)#(tab)  ,isnull(e.USDEstimado,0) as USDEstimadoMLB#(lf)          ,ROUND(v.[QPresupuestado], 3) as QPresupuestado#(lf)          ,ROUND(v.[QEstimado], 3) as QEstimado#(lf)#(tab)  ,isnull(b.UnEstimadaBudCorp,0) as UNEstimadaBC#(lf)#(tab)  ,isnull(b.UNSTDEstimadaBudCorp,0) as UNSTDEstimadaBC#(lf)#(tab)  ,isnull(b.MLEstimadaBudCorp,0) as MLEstimadoBC#(lf)#(tab)  ,isnull(b.USDEstimadaBudCorp,0) as USDEstimadoBC#(lf)#(tab), case when v.IdPeriodo = '202006' then ROUND(v.MLPresupuestado * 0.8,3) else case when v.IdPeriodo >202006 then ROUND(v.MLPresupuestado * 0.9,3) else ROUND(v.MLPresupuestado,3) end end as MLPresupuestadoAjustado#(lf)        ,p.MarcaBud #(lf)--#(tab) ,p.MarcaRaizBud#(lf)--#(tab) ,p.ATBudg as ATBud#(lf)--,p.RnewalStatus#(lf)--, CostoPpto = v.UNPresupuestada* p.CostoUnitBudg  #(lf)FROM [AT2020_DWH].[dbo].[vFctVentaMensualBI_Costo_Presupuesto] v #(lf)  left join [AT2020_DWH].[dbo].vCostoPresupuestoEstimadoMLB e on e.IdPeriodo = v.IdPeriodo and e.[IdCompania-IdProductoCompania] = v.[IdCompania-IdProductoCompania] and e.IdCanal = v.IdCanal #(lf)  left join [AT2020_DWH].[dbo].CostoPresupuestoBudCorp b on b.IdPeriodo = v.IdPeriodo and b.[IdCompania-IdProductoCompania] = v.[IdCompania-IdProductoCompania] and b.IdCanal = v.IdCanal#(lf)  left join [AT2020_DWH].[dbo].[EstimadoPptoBudget] p on p.[IdCompania-IdProductoCompania] = v.[IdCompania-IdProductoCompania] --and LEFT(v.idPeriodo,4) = p.Version  #(lf)  where v.IdPeriodo >=201401  and v.FILTRO = 'SI'#(lf)AND v.[IdPais]='BOL'"
+							]
+						),
+						#"Inserted Trimmed Text" = Table.AddColumn(Origen, "Trim", each Text.Trim([IdPais]), type text)
+					in
+						#"Inserted Trimmed Text"
+
+		annotation PBI_ResultType = Exception
+
+		annotation PBI_QueryRelationships = {"columnCount":42,"keyColumnNames":[],"queryRelationships":[{"keyColumnCount":1,"keyColumn":39,"otherKeyColumnIdentity":"Section1/TC/TC_Sheet.{Column1,0}","KeyColumnCount":1}],"columnIdentities":["Section1/Costo \\/ Presupuesto/Origen.{IdPeriodo,0}","Section1/Costo \\/ Presupuesto/Origen.{IdCompania-IdProductoCompania,1}","Section1/Costo \\/ Presupuesto/Origen.{IdProductoCompania,2}","Section1/Costo \\/ Presupuesto/Origen.{IdCompania,3}","Section1/Costo \\/ Presupuesto/Origen.{IdCanal,4}","Section1/Costo \\/ Presupuesto/Origen.{IdProducto,5}","Section1/Costo \\/ Presupuesto/Origen.{IdLinea,6}","Section1/Costo \\/ Presupuesto/Origen.{IdFamilia,7}","Section1/Costo \\/ Presupuesto/Origen.{IdAreaTerapeutica,8}","Section1/Costo \\/ Presupuesto/Origen.{IdIndicacion,9}","Section1/Costo \\/ Presupuesto/Origen.{IdPais,10}","Section1/Costo \\/ Presupuesto/Origen.{IdPais-IdZonaGestion,11}","Section1/Costo \\/ Presupuesto/Origen.{IdProductoMPh,12}","Section1/Costo \\/ Presupuesto/Origen.{IdZonaGestion,13}","Section1/Costo \\/ Presupuesto/Origen.{IdTipoNegocio,14}","Section1/Costo \\/ Presupuesto/Origen.{IdTipoProducto,15}","Section1/Costo \\/ Presupuesto/Origen.{IdFabricante,16}","Section1/Costo \\/ Presupuesto/Origen.{IdFormaFarmaceutica,17}","Section1/Costo \\/ Presupuesto/Origen.{ClasificacionOtcOtx,18}","Section1/Costo \\/ Presupuesto/Origen.{UNPresupuestada,19}","Section1/Costo \\/ Presupuesto/Origen.{UNEstimada,20}","Section1/Costo \\/ Presupuesto/Origen.{UNSTDPresupuestada,21}","Section1/Costo \\/ Presupuesto/Origen.{UNSTDEstimada,22}","Section1/Costo \\/ Presupuesto/Origen.{MLPresupuestado,23}","Section1/Costo \\/ Presupuesto/Origen.{MLEstimado,24}","Section1/Costo \\/ Presupuesto/Origen.{USDPresupuestado,25}","Section1/Costo \\/ Presupuesto/Origen.{USDEstimado,26}","Section1/Costo \\/ Presupuesto/Origen.{CostoConsolidado,27}","Section1/Costo \\/ Presupuesto/Origen.{CostoConsolidadoUnitario,28}","Section1/Costo \\/ Presupuesto/Origen.{FechaCostoConsolidado,29}","Section1/Costo \\/ Presupuesto/Origen.{TargetPRoduct,30}","Section1/Costo \\/ Presupuesto/Origen.{CovidProduct,31}","Section1/Costo \\/ Presupuesto/Origen.{UNEstimadaMLB,32}","Section1/Costo \\/ Presupuesto/Origen.{UNSTDEstimadaMLB,33}","Section1/Costo \\/ Presupuesto/Origen.{MLEstimadoMLB,34}","Section1/Costo \\/ Presupuesto/Origen.{USDEstimadoMLB,35}","Section1/Costo \\/ Presupuesto/Origen.{QPresupuestado,36}","Section1/Costo \\/ Presupuesto/Origen.{QEstimado,37}","Section1/Costo \\/ Presupuesto/Origen.{MLPresupuestadoAjustado,38}","Section1/Costo \\/ Presupuesto/Inserted Trimmed Text.{Trim,39}","Section1/TC/TC_Sheet.{Column2,1}","Section1/Costo \\/ Presupuesto/Added Custom.{USDPresupuestadoAjustado,41}"],"ColumnCount":42,"KeyColumnNames":[],"ColumnIdentities":["Section1/Costo \\/ Presupuesto/Origen.{IdPeriodo,0}","Section1/Costo \\/ Presupuesto/Origen.{IdCompania-IdProductoCompania,1}","Section1/Costo \\/ Presupuesto/Origen.{IdProductoCompania,2}","Section1/Costo \\/ Presupuesto/Origen.{IdCompania,3}","Section1/Costo \\/ Presupuesto/Origen.{IdCanal,4}","Section1/Costo \\/ Presupuesto/Origen.{IdProducto,5}","Section1/Costo \\/ Presupuesto/Origen.{IdLinea,6}","Section1/Costo \\/ Presupuesto/Origen.{IdFamilia,7}","Section1/Costo \\/ Presupuesto/Origen.{IdAreaTerapeutica,8}","Section1/Costo \\/ Presupuesto/Origen.{IdIndicacion,9}","Section1/Costo \\/ Presupuesto/Origen.{IdPais,10}","Section1/Costo \\/ Presupuesto/Origen.{IdPais-IdZonaGestion,11}","Section1/Costo \\/ Presupuesto/Origen.{IdProductoMPh,12}","Section1/Costo \\/ Presupuesto/Origen.{IdZonaGestion,13}","Section1/Costo \\/ Presupuesto/Origen.{IdTipoNegocio,14}","Section1/Costo \\/ Presupuesto/Origen.{IdTipoProducto,15}","Section1/Costo \\/ Presupuesto/Origen.{IdFabricante,16}","Section1/Costo \\/ Presupuesto/Origen.{IdFormaFarmaceutica,17}","Section1/Costo \\/ Presupuesto/Origen.{ClasificacionOtcOtx,18}","Section1/Costo \\/ Presupuesto/Origen.{UNPresupuestada,19}","Section1/Costo \\/ Presupuesto/Origen.{UNEstimada,20}","Section1/Costo \\/ Presupuesto/Origen.{UNSTDPresupuestada,21}","Section1/Costo \\/ Presupuesto/Origen.{UNSTDEstimada,22}","Section1/Costo \\/ Presupuesto/Origen.{MLPresupuestado,23}","Section1/Costo \\/ Presupuesto/Origen.{MLEstimado,24}","Section1/Costo \\/ Presupuesto/Origen.{USDPresupuestado,25}","Section1/Costo \\/ Presupuesto/Origen.{USDEstimado,26}","Section1/Costo \\/ Presupuesto/Origen.{CostoConsolidado,27}","Section1/Costo \\/ Presupuesto/Origen.{CostoConsolidadoUnitario,28}","Section1/Costo \\/ Presupuesto/Origen.{FechaCostoConsolidado,29}","Section1/Costo \\/ Presupuesto/Origen.{TargetPRoduct,30}","Section1/Costo \\/ Presupuesto/Origen.{CovidProduct,31}","Section1/Costo \\/ Presupuesto/Origen.{UNEstimadaMLB,32}","Section1/Costo \\/ Presupuesto/Origen.{UNSTDEstimadaMLB,33}","Section1/Costo \\/ Presupuesto/Origen.{MLEstimadoMLB,34}","Section1/Costo \\/ Presupuesto/Origen.{USDEstimadoMLB,35}","Section1/Costo \\/ Presupuesto/Origen.{QPresupuestado,36}","Section1/Costo \\/ Presupuesto/Origen.{QEstimado,37}","Section1/Costo \\/ Presupuesto/Origen.{MLPresupuestadoAjustado,38}","Section1/Costo \\/ Presupuesto/Inserted Trimmed Text.{Trim,39}","Section1/TC/TC_Sheet.{Column2,1}","Section1/Costo \\/ Presupuesto/Added Custom.{USDPresupuestadoAjustado,41}"],"RelationshipInfo":[{"keyColumnCount":1,"keyColumn":39,"otherKeyColumnIdentity":"Section1/TC/TC_Sheet.{Column1,0}","KeyColumnCount":1}]}
+
+		annotation PBI_NavigationStepName = Navegación
+
+	table DimMarcaBudg
+		lineageTag: 02c143e9-b003-4ed1-b7a2-dcdc25625413
+
+		column MarcaBud
+			dataType: string
+			lineageTag: 437e99e0-0657-4a64-bd56-6c467490164f
+			summarizeBy: none
+			sourceColumn: MarcaBud
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column ATBudg
+			dataType: string
+			lineageTag: 8aacc0b4-7797-4c60-967a-d4497cc23fcf
+			summarizeBy: none
+			sourceColumn: ATBudg
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition DimMarcaBudg-09332a3d-a5d8-4d50-9849-dbb2d631c28c = m
+			mode: import
+			source = 
+					let
+						Origen = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "SELECT distinct #(lf)       [MarcaBud]#(lf)#(tab)--,[MarcaRaizBud]#(lf)      ,[ATBudg]   #(lf)  FROM [AT2020_DWH].[dbo].[EstimadoPptoBudget]"
+							]
+						)
+					in
+						Origen
+
+		annotation PBI_ResultType = Table
+
+	table EstimadoPptoBudget
+		lineageTag: 4a4500d9-36e2-4171-bcf2-075e3962b8c3
+
+		measure 'MB E23' = [Estimado 2023] - [Costo Estimado 2023]
+			formatString: #,0
+			lineageTag: 58981f3a-b3cc-481f-b028-1d8a4377c241
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure 'Costo Estimado 2023' = ```
+				sum(EstimadoPptoBudget[CostoEstimado])/1000
+				```
+			formatString: #,0
+			lineageTag: 8fc00107-a0e8-4039-8072-cb1099ce5fc2
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure 'Costo Ppto2024' = sum(EstimadoPptoBudget[CostoPresupuesto])/1000
+			formatString: #,0
+			lineageTag: 4b057092-bde0-4b02-ad7a-a04b9d3ee960
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure 'MB B24' = [Estimado-Presupuesto Proximo año New] - [Costo Ppto2024]
+			formatString: #,0
+			lineageTag: 16ade4d6-03df-4223-9c60-134733dd32ef
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure '%MB E23' = DIVIDE([MB E23],[Estimado 2023] )
+			formatString: 0.0\ %;-0.0\ %;0.0\ %
+			lineageTag: 8957319c-1a62-45dc-8e17-97c699d6a21d
+
+			changedProperty = IsHidden
+
+		measure %MB24 = DIVIDE([MB B24], [Estimado-Presupuesto Proximo año New])
+			formatString: 0.0\ %;-0.0\ %;0.0\ %
+			lineageTag: bbd7ea47-201d-493b-866b-fb441aacc3db
+
+			changedProperty = IsHidden
+
+		measure 'Var MB (MB24-MB23)' = [MB B24] - [MB E23]
+			formatString: #,0
+			lineageTag: 9182858f-7e0d-497d-bb0f-769cf9c98538
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		measure 'Crecimiento MB' = DIVIDE([Var MB (MB24-MB23)], [MB E23])
+			formatString: 0.0%;-0.0%;0.0%
+			lineageTag: c6133fd8-2379-4404-9d48-38983b0a3428
+
+			changedProperty = IsHidden
+
+		measure 'Semaforo crecimiento MB' = 
+
+				IF (
+				    ISBLANK ( [Crecimiento MB] ),
+				    BLANK (),
+				    IF ( [Crecimiento MB]  < 0, 0, 1 )
+				)
+			formatString: 0
+			lineageTag: f2c00b3d-5f1e-4fff-9af0-211a8abcd4c2
+
+			changedProperty = IsHidden
+
+		column IdCompania-IdProductoCompania
+			dataType: string
+			lineageTag: 3f124bae-2a48-4105-87db-13a3e425e298
+			summarizeBy: none
+			sourceColumn: IdCompania-IdProductoCompania
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column MarcaBud
+			dataType: string
+			lineageTag: 04529ccc-2567-46bf-a896-a987c282b699
+			summarizeBy: none
+			sourceColumn: MarcaBud
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column ATBudg
+			dataType: string
+			lineageTag: 9c54e8d3-260b-4270-a169-0513c51f295d
+			summarizeBy: none
+			sourceColumn: ATBudg
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Categoria
+			dataType: string
+			lineageTag: a3de0dfa-7046-4fb4-b05c-cd2a7605ebf2
+			summarizeBy: none
+			sourceColumn: Categoria
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column CUnitEstimado
+			dataType: double
+			lineageTag: 4a484e4b-a397-452f-8b8b-886acfd483ff
+			summarizeBy: sum
+			sourceColumn: CUnitEstimado
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column CUnitPresupuestado
+			dataType: double
+			lineageTag: 2e1c4319-c114-40f2-af7e-b9a1bc29616a
+			summarizeBy: sum
+			sourceColumn: CUnitPresupuestado
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column Cantidad
+			dataType: int64
+			formatString: 0
+			lineageTag: ee4a931d-79de-403e-b141-ee9e307dbaff
+			summarizeBy: sum
+			sourceColumn: Cantidad
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column BusUnitBud
+			dataType: string
+			lineageTag: 13d90644-ef78-482d-89ee-702379a420ea
+			summarizeBy: none
+			sourceColumn: BusUnitBud
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column AnioEstimado
+			dataType: string
+			lineageTag: e176ac7d-014a-4af4-9124-f47a7651b797
+			summarizeBy: none
+			sourceColumn: AnioEstimado
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column CostoEstimado
+			dataType: double
+			formatString: #,0
+			lineageTag: a016253e-137f-45fd-9827-bf052735ef92
+			summarizeBy: sum
+			sourceColumn: CostoEstimado
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		column AnioPresupuesto
+			dataType: string
+			lineageTag: 953a4de3-1e85-4199-a772-33bdfce2e798
+			summarizeBy: none
+			sourceColumn: AnioPresupuesto
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column CostoPresupuesto
+			dataType: double
+			formatString: #,0
+			lineageTag: 725a5929-89dd-45c2-8e5d-23bfbba78931
+			summarizeBy: sum
+			sourceColumn: CostoPresupuesto
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		column Origen
+			dataType: string
+			lineageTag: 6e945ec1-9fb9-42c0-824d-6076348a4b3d
+			summarizeBy: none
+			sourceColumn: Origen
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition EstimadoPptoBudget = m
+			mode: import
+			source = 
+					let
+						Origen = Sql.Database(
+							Atenea,
+							"NewGestorEntidades",
+							[
+								Query = "SELECT [IdCompania-IdProductoCompania]#(lf)      ,[MarcaBud]#(lf)      ,[ATBudg]#(lf)      ,[Categoria]#(lf)      ,[CUnitEstimado]#(lf)      ,[CUnitPresupuestado]#(lf)      ,[Cantidad]#(lf)      ,[BusUnitBud]#(lf)      ,[AnioEstimado]#(lf)      ,[CostoEstimado]#(lf)      ,[AnioPresupuesto]#(lf)      ,[CostoPresupuesto]#(lf)      ,[Origen]#(lf)#(lf)  FROM [NewGestorEntidades].[dbo].[EstimadoPptoBudget]"
+							]
+						)
+					in
+						Origen
+
+		annotation PBI_ResultType = Table
+
+	table Fabricante
+		lineageTag: 686b0a02-1f59-4b7e-9e64-b76c1a124860
+
+		column IdFabricante
+			dataType: int64
+			formatString: 0
+			lineageTag: 6d05ed5a-5fd2-4ddf-8101-3df6bf434483
+			summarizeBy: none
+			sourceColumn: IdFabricante
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Descripcion
+			dataType: string
+			lineageTag: 84f810ef-6323-4273-a9ee-501e5e744a59
+			summarizeBy: none
+			sourceColumn: Descripcion
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition Fabricante-87d05a66-bc9b-4806-aeb7-afda2ed8fee9 = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "/* Fabricante */#(lf)SELECT F.IdFabricante AS IdFabricante,#(lf)F.Descripcion AS Descripcion#(lf)FROM AT2020_DWH..DimFabricante AS F"
+							]
+						)
+					in
+						Source
+
+		annotation PBI_ResultType = Table
+
+	table Familia
+		lineageTag: 8932b571-d17d-4c87-97f2-78bea376378e
+
+		column IdFamilia
+			dataType: string
+			lineageTag: b7349661-0732-4821-a663-e7b44daf2efb
+			summarizeBy: none
+			sourceColumn: IdFamilia
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Familia
+			dataType: string
+			lineageTag: 7093d2cc-8ba7-488c-97c6-9f107a679641
+			summarizeBy: none
+			sourceColumn: Familia
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Nombre Leading Products'
+			dataType: string
+			lineageTag: 3a6d778b-056c-442a-a8da-ffceebcc60af
+			summarizeBy: none
+			sourceColumn: Nombre Leading Products
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition Familia-330787e0-07e9-42dd-b344-e900d8433ac6 = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "SELECT F.IdFamilia AS IdFamilia, 'DescFamilia' = #(lf)#(tab)CASE#(lf)#(tab)#(tab)WHEN F.IdFamilia = 'N/A' THEN 'z No asignada'#(lf)#(tab)#(tab)ELSE F.Descripcion#(lf)#(tab)END#(lf)FROM AT2020_DWH.dbo.DimFamilia AS F",
+								HierarchicalNavigation = true
+							]
+						),
+						#"Renamed Columns" = Table.RenameColumns(Source, {{"DescFamilia", "Familia"}}),
+						#"Added Conditional Column" = Table.AddColumn(
+							#"Renamed Columns",
+							"Nombre Leading Products",
+							each
+								if [IdFamilia] = "CLONIXINAT          " then
+									"Dorixina/Nefersil"
+								else if [IdFamilia] = "AMOXICILIN          " then
+									"Amoxidal/Clavulin"
+								else if [IdFamilia] = "DEXLANSOPR          " then
+									"Lanzopral (PPI)"
+								else if [IdFamilia] = "ESOMEPRAZO          " then
+									"Lanzopral (PPI)"
+								else if [IdFamilia] = "LANZOPRAZO          " then
+									"Lanzopral (PPI)"
+								else if [IdFamilia] = "EXTRAC HIE          " then
+									"Abrilar"
+								else if [IdFamilia] = "PROPINOXAT          " then
+									"Sertal Family"
+								else
+									"Otros"
+						)
+					in
+						#"Added Conditional Column"
+
+		annotation PBI_ResultType = Table
+
+	table 'Forma Farmacéutica'
+		lineageTag: e0ed9f5e-17a0-437f-a721-ac00ce88d6c4
+
+		column IdFormaFarmaceutica
+			dataType: string
+			lineageTag: 40a72b5f-178a-40f6-8943-164961ce22c5
+			summarizeBy: none
+			sourceColumn: IdFormaFarmaceutica
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Forma Farmacéutica'
+			dataType: string
+			lineageTag: c5b99e32-6523-4805-aea0-0b89a43cf8d8
+			summarizeBy: none
+			sourceColumn: Forma Farmacéutica
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdTipoForma
+			dataType: string
+			lineageTag: abbb152a-b6c8-414d-830a-211cdbece2a7
+			summarizeBy: none
+			sourceColumn: IdTipoForma
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column CantStandard
+			dataType: int64
+			formatString: 0
+			lineageTag: 4628ba6f-906e-4e69-8d2c-d48772bdb0b1
+			summarizeBy: sum
+			sourceColumn: CantStandard
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition 'Forma Farmacéutica-24fc3848-cb2e-472d-bc20-c1c14591ccc5' = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "/* Forma Farmacéutica */#(lf)SELECT#(lf)F.IdFormaFarmaceutica AS IdFormaFarmaceutica,#(lf)F.Descripcion AS 'Forma Farmacéutica',#(lf)F.IdTipoForma AS IdTipoForma,#(lf)F.CantStandard AS CantStandard#(lf)FROM AT2020_DWH..DimFormaFarmaceutica AS F"
+							]
+						)
+					in
+						Source
+
+		annotation PBI_ResultType = Table
+
+	table 'Key Product'
+		lineageTag: ce7f49b3-1845-4fc8-95e9-7b230e5a20d1
+
+		column KeyProduct
+			dataType: string
+			lineageTag: 24301546-358a-447a-b5e3-9b4b67cef5f4
+			summarizeBy: none
+			sourceColumn: KeyProduct
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition 'Key Product-715c7177-c991-45a2-9385-3fd50ec8c40f' = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "/* Key Product */#(lf)SELECT DISTINCT#(lf)P.KeyProduct AS KeyProduct#(lf)FROM AT2020_DWH.dbo.DimProducto P#(lf)WHERE P.KeyProduct IS NOT NULL"
+							]
+						)
+					in
+						Source
+
+		annotation PBI_ResultType = Table
+
+	table 'Linea Comercial'
+		lineageTag: d8908242-82d7-4930-a2cd-be1f4f8b985a
+
+		column IdLinea
+			dataType: string
+			lineageTag: 8aeb5cbf-3119-44be-a753-43f40138d6a5
+			summarizeBy: none
+			sourceColumn: IdLinea
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Línea Comercial'
+			dataType: string
+			lineageTag: 17d50205-6825-491e-adae-8b559845d1de
+			summarizeBy: none
+			sourceColumn: Línea Comercial
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Laboratorio
+			dataType: string
+			lineageTag: 20fba89a-5932-486e-a207-38135dbb75a6
+			summarizeBy: none
+			sourceColumn: Laboratorio
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition 'Linea Comercial-8dd1f467-67f4-4c2f-9329-a8f5ac91b94e' = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "/* Linea Comercial */#(lf)SELECT LC.IdLinea AS IdLinea, 'DescLineaComercial' =#(lf)#(tab)CASE#(lf)#(tab)#(tab)WHEN LC.IdLinea = '-1' THEN 'z No Asignada'#(lf)#(tab)#(tab)ELSE LC.Descripcion#(lf)#(tab)END,#(lf)LC.Laboratorio AS Laboratorio#(lf)FROM AT2020_DWH.dbo.DimLineaComercial AS LC",
+								HierarchicalNavigation = true
+							]
+						),
+						#"Renamed Columns" = Table.RenameColumns(Source, {{"DescLineaComercial", "Línea Comercial"}}),
+						#"Replaced Value" = Table.ReplaceValue(#"Renamed Columns", "Bag¾", "Bagó", Replacer.ReplaceText, {"Laboratorio"})
+					in
+						#"Replaced Value"
+
+		annotation PBI_ResultType = Table
+
+	table Marca
+		lineageTag: e387a523-3eaf-4064-8d2f-ad434a6a41c9
+
+		column IdProducto
+			dataType: int64
+			formatString: 0
+			lineageTag: b5e59d64-a30c-48dc-9cdb-20a8b9f0c3a5
+			summarizeBy: none
+			sourceColumn: IdProducto
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Marca
+			dataType: string
+			lineageTag: ddb574e3-a7af-41c2-a61f-cfb2220dbcaa
+			summarizeBy: none
+			sourceColumn: Marca
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"Marca","TableItemName":"Marca (grupos)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+		column KeyProduct
+			dataType: string
+			lineageTag: 7a5cfd51-a5a4-42f7-92d8-fac1c136903f
+			summarizeBy: none
+			sourceColumn: KeyProduct
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Leading Brands'
+			dataType: string
+			lineageTag: 921d06d5-e456-4a25-bc75-bd9e0769c33e
+			summarizeBy: none
+			sourceColumn: Leading Brands
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdMarca
+			dataType: string
+			lineageTag: a527a0b7-ef7e-4df1-9408-758e931267b3
+			summarizeBy: none
+			sourceColumn: IdMarca
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Marca (grupos)' = 
+				SWITCH(
+				  TRUE,
+				  ISBLANK('Marca'[Marca]),
+				  "(En blanco)",
+				  'Marca'[Marca] IN {"BELOTERO",
+				    "DEVICE",
+				    "EQUIPO QUIRURGICO",
+				    "MONITOR",
+				    "PINZA QUIRURGICA",
+				    "POEN QUIRURGICO",
+				    "RADIESSE"},
+				  "DEVICES",
+				  'Marca'[Marca]
+				)
+			lineageTag: f59e7fb5-e36f-4b51-9710-6bbad5f88d75
+			summarizeBy: none
+
+			extendedProperty GroupingMetadata = 
+					{
+					  "version": 0,
+					  "groupedColumns": [
+					    {
+					      "Column": {
+					        "Expression": {
+					          "SourceRef": {
+					            "Entity": "Marca"
+					          }
+					        },
+					        "Property": "Marca"
+					      }
+					    }
+					  ]
+					}
+
+			changedProperty = IsHidden
+
+			annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"m","Entity":"Marca"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"m"}},"Property":"Marca"}}],"GroupItems":[{"DisplayName":"(En blanco)","BlankDefaultPlaceholder":true},{"DisplayName":"DEVICES","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"m"}},"Property":"Marca"}}],"Values":[[{"Literal":{"Value":"'BELOTERO'"}}],[{"Literal":{"Value":"'DEVICE'"}}],[{"Literal":{"Value":"'EQUIPO QUIRURGICO'"}}],[{"Literal":{"Value":"'MONITOR'"}}],[{"Literal":{"Value":"'PINZA QUIRURGICA'"}}],[{"Literal":{"Value":"'POEN QUIRURGICO'"}}],[{"Literal":{"Value":"'RADIESSE'"}}]]}}}]}
+
+			annotation SummarizationSetBy = Automatic
+
+		partition Marca-1e08a7fc-9591-4aa8-b0f1-6e317dac2a5c = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "/* Marca */#(lf)SELECT P.IdProducto AS IdProducto, #(lf)P.idMarca AS IdMarca, 'DescMarca' =#(lf)#(tab)CASE#(lf)#(tab)#(tab)WHEN P.IdProducto = '-1' THEN 'z No asignada'#(lf)#(tab)#(tab)ELSE P.DescripcionMarca#(lf)#(tab)END,#(lf)P.KeyProduct AS KeyProduct#(lf)FROM AT2020_DWH.dbo.DimProducto P",
+								HierarchicalNavigation = true
+							]
+						),
+						#"Renamed Columns" = Table.RenameColumns(Source, {{"DescMarca", "Marca"}}),
+						#"Added Conditional Column" = Table.AddColumn(
+							#"Renamed Columns",
+							"Leading Brands",
+							each
+								if [Marca] = "AUCIC" then
+									"AUCIC / AUCIC PLUS"
+								else if [Marca] = "AUCIC PLUS" then
+									"AUCIC / AUCIC PLUS"
+								else if [Marca] = "AUCIC CAPS" then
+									"AUCIC / AUCIC PLUS"
+								else if [Marca] = "NEOCHOLAL" then
+									"PROHEPAT / NEOCHOLAL"
+								else if [Marca] = "PROHEPAT" then
+									"PROHEPAT / NEOCHOLAL"
+								else if [Marca] = "PROHEPAT SILIMARINA" then
+									"PROHEPAT / NEOCHOLAL"
+								else
+									[Marca]
+						)
+					in
+						#"Added Conditional Column"
+
+		annotation PBI_ResultType = Table
+
+	table País
+		lineageTag: fe500c2d-93a4-4f47-952d-cb9d9b138c56
+
+		column IdPais
+			dataType: string
+			lineageTag: 2fc0eb3e-1127-438d-aa62-d2f3c81e6297
+			summarizeBy: none
+			sourceColumn: IdPais
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column DescPais
+			dataType: string
+			lineageTag: 5707c475-6993-4e56-b1f0-8dbc99c31ebc
+			summarizeBy: none
+			sourceColumn: DescPais
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition País-a9117a80-bd37-4d14-a7f5-8cafb0c33b8e = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "/* Pais */#(lf)SELECT P.IdPais AS IdPais, P.Descripcion AS DescPais#(lf)FROM AT2020_DWH.dbo.DimPais AS P"
+							]
+						)
+					in
+						Source
+
+		annotation PBI_ResultType = Table
+
+	table 'País / Zona-Gestión'
+		lineageTag: 0ec2ccf6-28bb-480a-87d1-07b20b2f1984
+
+		column IdPais-IdZonaGestion
+			dataType: string
+			lineageTag: 7f43c022-2919-4d14-b5bb-f9e03aa15c1a
+			summarizeBy: none
+			sourceColumn: IdPais-IdZonaGestion
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdPais
+			dataType: string
+			lineageTag: dd45dc1c-9299-4e48-aecc-9921b9666c6b
+			summarizeBy: none
+			sourceColumn: IdPais
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column DescripcionPais
+			dataType: string
+			lineageTag: d84231d5-451c-4818-b73c-1079ece6d6f5
+			summarizeBy: none
+			sourceColumn: DescripcionPais
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdZonaGestion
+			dataType: string
+			lineageTag: dc274fe7-1dd5-4a18-a2e5-2fcd8c69fbdb
+			summarizeBy: none
+			sourceColumn: IdZonaGestion
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column DescripcionZG
+			dataType: string
+			lineageTag: 0b090b89-4dd4-461c-b5bb-1be4cd98381d
+			summarizeBy: none
+			sourceColumn: DescripcionZG
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"País / Zona-Gestión","TableItemName":"DescripcionZG (Organic)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"País / Zona-Gestión","TableItemName":"DescripcionZG (Exportaciones)","ObjectType":4},"LinkType":"UsedInGroup"},{"LinkTarget":{"TableName":"País / Zona-Gestión","TableItemName":"DescripcionZG (Public Sales Ecuador)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+		column Zona = LEFT(FIRSTNONBLANK('País / Zona-Gestión'[IdZonaGestion],1),3)
+			lineageTag: a87c3b54-ab7b-4ae5-ba70-b8bad14e62a5
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Zona Geográfica' = 
+
+				SWITCH(
+				    CONCATENATE('País / Zona-Gestión'[IdPais],LEFT('País / Zona-Gestión'[IdZonaGestion],3)),
+				    "CRCCEA",
+				    "Centro América",
+				    "SALCEA",
+				    "Centro América",
+				    "GUACEA",
+				    "Centro América",
+				    "HONCEA",
+				    "Centro América",
+				    "NICCEA",
+				    "Centro América",
+				    "PANCEA",
+				    "Centro América",
+				    "CEACEA",
+				    BLANK(),
+				    "ARGARG",
+				    "Argentina",
+				    "URUARG",
+				    "Argentina",
+				    "BOLBOL",
+				    "Bolivia",
+				    "BRABRA",
+				    "Brasil",
+				    "CHICHI",
+				    "Chile",
+				    "COLCOL",
+				    "Colombia",
+				    "DOMDOM",
+				    "República Dominicana",
+				    "ECUECU",
+				    "Ecuador",
+				    "MEXMEX",
+				    "México",
+				    "PARPAR",
+				    "Paraguay",
+				    "PERPER",
+				    "Perú",
+				    "URUURU",
+				    "Uruguay",
+				    "VENVEN",
+				    "Venezuela",
+				    "CHIBOL",
+				    "Bolivia",
+				    "ARGEXP",
+				    "Argentina",
+				    "CHIECU",
+				    "Ecuador",
+				    "CHIEXP",
+				    "Chile",
+				    "CHIPAR",
+				    "Paraguay",
+				    "CHIDOM",
+				    "República Dominicana",
+				    "CHIMEX",
+				    "México",
+				    "CHIPER",
+				    "Perú",
+				    "CHIARG",
+				    "Argentina",
+				    "CHICOL",
+				    "Colombia",
+				    "URUARG",
+				    "Argentina",
+				    "URUEXP",
+				    "Uruguay",
+				    'País / Zona-Gestión'[DescripcionPais]
+				)
+			lineageTag: c589857e-7ea6-4204-b2b3-1a31edf2e3ef
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"País / Zona-Gestión","TableItemName":"Zona Geográfica (groups)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+		column IdTipoNegocio
+			dataType: string
+			lineageTag: 190c5725-7852-4c91-a2e3-ee8cca15642c
+			summarizeBy: none
+			sourceColumn: IdTipoNegocio
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdTipoCrecimiento
+			dataType: string
+			lineageTag: b16b0433-cc64-41d1-b3b4-fe896cc56864
+			summarizeBy: none
+			sourceColumn: IdTipoCrecimiento
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column TipoZonaGestion
+			dataType: string
+			lineageTag: b81a6c81-fd9e-4a44-a841-305a481b382d
+			summarizeBy: none
+			sourceColumn: TipoZonaGestion
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Zona Geográfica (groups)' = 
+				SWITCH(
+				  TRUE,
+				  ISBLANK('País / Zona-Gestión'[Zona Geográfica]),
+				  "(Blank)",
+				  'País / Zona-Gestión'[Zona Geográfica] IN {"Bolivia",
+				    "Centro América",
+				    "Chile",
+				    "Colombia",
+				    "Republica Dominicana",
+				    "Ecuador",
+				    "Paraguay",
+				    "Perú",
+				    "República Dominicana",
+				    "Uruguay"},
+				  "Primary Market",
+				  "Resto"
+				)
+			lineageTag: 94e5f8f0-0005-41bf-9a35-9a4099cbbd1f
+			summarizeBy: none
+
+			extendedProperty GroupingMetadata = 
+					{
+					  "version": 0,
+					  "groupedColumns": [
+					    {
+					      "Column": {
+					        "Expression": {
+					          "SourceRef": {
+					            "Entity": "País / Zona-Gestión"
+					          }
+					        },
+					        "Property": "Zona Geográfica"
+					      }
+					    }
+					  ]
+					}
+
+			changedProperty = IsHidden
+
+			annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"p","Entity":"País / Zona-Gestión"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Zona Geográfica"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"Primary Market","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"Zona Geográfica"}}],"Values":[[{"Literal":{"Value":"'Bolivia'"}}],[{"Literal":{"Value":"'Centro América'"}}],[{"Literal":{"Value":"'Chile'"}}],[{"Literal":{"Value":"'Colombia'"}}],[{"Literal":{"Value":"'Republica Dominicana'"}}],[{"Literal":{"Value":"'Ecuador'"}}],[{"Literal":{"Value":"'Paraguay'"}}],[{"Literal":{"Value":"'Perú'"}}],[{"Literal":{"Value":"'República Dominicana'"}}],[{"Literal":{"Value":"'Uruguay'"}}]]}}},{"DisplayName":"Resto"}]}
+
+			annotation SummarizationSetBy = Automatic
+
+		column Img
+			dataType: string
+			lineageTag: 9337ccac-ae77-4431-848d-f1a1b2f77fa2
+			dataCategory: ImageUrl
+			summarizeBy: none
+			sourceColumn: Img
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Origen
+			dataType: string
+			lineageTag: 85c0a9e1-e6e1-4e37-8ba4-48acc15b5581
+			summarizeBy: none
+			sourceColumn: Origen
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column DescripcionPaisIMS = 
+
+				SWITCH(
+				    LEFT('País / Zona-Gestión'[IdZonaGestion],3),
+				    "ARG",
+				    "Argentina",
+				    "BOL",
+				    "Bolivia",
+				    "BRA",
+				    "Brasil",
+				    "CHI",
+				    "Chile",
+				    "COL",
+				    "Colombia",
+				    "CRC",
+				    "Costa Rica",
+				    "DOM",
+				    "República Dominicana",
+				    "ECU",
+				    "Ecuador",
+				    "GUA",
+				    "Guatemala",
+				    "HON",
+				    "Honduras",
+				    "MEX",
+				    "México",
+				    "NIC",
+				    "Nicaragua",
+				    "PAN",
+				    "Panamá",
+				    "PAR",
+				    "Paraguay",
+				    "SAL",
+				    "El Salvador",
+				    "URU",
+				    "Uruguay",
+				    "VEN",
+				    "Venezuela",
+				    'País / Zona-Gestión'[DescripcionPais]
+				)
+			lineageTag: 44012f43-377a-4c7f-9133-ba0cd0136553
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Zona Reporte Mensual' = 
+
+				IF(
+				    SEARCH("LET", 'País / Zona-Gestión'[IdZonaGestion],, BLANK()) <> BLANK(),
+				    "DIS",
+				    IF(
+				        SEARCH("Exportaciones", 'País / Zona-Gestión'[DescripcionZG],, BLANK()) <> BLANK(),
+				        "EXP",
+				        'País / Zona-Gestión'[Zona]
+				    )
+				)
+			lineageTag: d83be768-d9e7-4f28-8cb9-5712b8d355fa
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'DescripcionZG (Organic)' = 
+				SWITCH(
+				  TRUE,
+				  ISBLANK('País / Zona-Gestión'[DescripcionZG]),
+				  "(Blank)",
+				  'País / Zona-Gestión'[DescripcionZG] IN {"Amega",
+				    "Argentina-Gema",
+				    "Argentina-Megalabs",
+				    "Argentina-Poen",
+				    "Argentina-Raymos",
+				    "Bolivia",
+				    "Brasil",
+				    "CEAM-Megalabs",
+				    "CEAM-Roemmers",
+				    "CEAM-Rowe",
+				    "Chile",
+				    "Colombia",
+				    "Dominicana-Megalabs",
+				    "Dominicana-Roemmers",
+				    "Ecuador-Roemmers",
+				    "Dominicana-Rowe",
+				    "Ecuador-Acromax",
+				    "Uruguay-Roemmers",
+				    "Ecuador-Megalabs",
+				    "México",
+				    "Paraguay",
+				    "Perú",
+				    "Uruguay-Megalabs",
+				    "Uruguay-Spefar",
+				    "Venezuela"},
+				  "Organic",
+				  'País / Zona-Gestión'[DescripcionZG]
+				)
+			lineageTag: 4a6d31aa-3d6b-4fd3-af4a-1f539f0e35c5
+			summarizeBy: none
+
+			extendedProperty GroupingMetadata = {"version":0,"groupedColumns":[{"Column":{"Expression":{"SourceRef":{"Entity":"País / Zona-Gestión"}},"Property":"DescripcionZG"}}]}
+
+			changedProperty = IsHidden
+
+			annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"p","Entity":"País / Zona-Gestión"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"DescripcionZG"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"Organic","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"DescripcionZG"}}],"Values":[[{"Literal":{"Value":"'Amega'"}}],[{"Literal":{"Value":"'Argentina-Gema'"}}],[{"Literal":{"Value":"'Argentina-Megalabs'"}}],[{"Literal":{"Value":"'Argentina-Poen'"}}],[{"Literal":{"Value":"'Argentina-Raymos'"}}],[{"Literal":{"Value":"'Bolivia'"}}],[{"Literal":{"Value":"'Brasil'"}}],[{"Literal":{"Value":"'CEAM-Megalabs'"}}],[{"Literal":{"Value":"'CEAM-Roemmers'"}}],[{"Literal":{"Value":"'CEAM-Rowe'"}}],[{"Literal":{"Value":"'Chile'"}}],[{"Literal":{"Value":"'Colombia'"}}],[{"Literal":{"Value":"'Dominicana-Megalabs'"}}],[{"Literal":{"Value":"'Dominicana-Roemmers'"}}],[{"Literal":{"Value":"'Ecuador-Roemmers'"}}],[{"Literal":{"Value":"'Dominicana-Rowe'"}}],[{"Literal":{"Value":"'Ecuador-Acromax'"}}],[{"Literal":{"Value":"'Uruguay-Roemmers'"}}],[{"Literal":{"Value":"'Ecuador-Megalabs'"}}],[{"Literal":{"Value":"'México'"}}],[{"Literal":{"Value":"'Paraguay'"}}],[{"Literal":{"Value":"'Perú'"}}],[{"Literal":{"Value":"'Uruguay-Megalabs'"}}],[{"Literal":{"Value":"'Uruguay-Spefar'"}}],[{"Literal":{"Value":"'Venezuela'"}}]]}}}]}
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"País / Zona-Gestión","TableItemName":"DescripcionZG (Mega Own Lines)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+		column 'DescripcionZG (Mega Own Lines)' = 
+				SWITCH(
+				  TRUE,
+				  ISBLANK('País / Zona-Gestión'[DescripcionZG (Organic)]),
+				  "(Blank)",
+				  'País / Zona-Gestión'[DescripcionZG (Organic)] IN {"Exportaciones-Amega",
+				    "Exportaciones-Garden",
+				    "Exportaciones-Hyamann",
+				    "Exportaciones-Iclos",
+				    "Exportaciones-Poen"},
+				  "Exportaciones",
+				  'País / Zona-Gestión'[DescripcionZG (Organic)] IN {"Argentina (Garden)",
+				    "Bolivia (Garden)",
+				    "CEAM (Garden)",
+				    "Chile (Garden)",
+				    "Colombia (Garden)",
+				    "Dominicana (Garden)",
+				    "Ecuador (Garden)",
+				    "México (Garden)",
+				    "Organic",
+				    "Paraguay (Garden)",
+				    "Perú (Garden)",
+				    "Uruguay-Celsius",
+				    "Uruguay-Haymann"},
+				  "Mega Own Lines",
+				  'País / Zona-Gestión'[DescripcionZG (Organic)]
+				)
+			lineageTag: e1dad469-bf82-4f3c-bbb6-d95081fe03c3
+			summarizeBy: none
+
+			extendedProperty GroupingMetadata = {"version":0,"groupedColumns":[{"Column":{"Expression":{"SourceRef":{"Entity":"País / Zona-Gestión"}},"Property":"DescripcionZG (Organic)"}}]}
+
+			changedProperty = IsHidden
+
+			annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"p","Entity":"País / Zona-Gestión"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"DescripcionZG (Organic)"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"Exportaciones","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"DescripcionZG (Organic)"}}],"Values":[[{"Literal":{"Value":"'Exportaciones-Amega'"}}],[{"Literal":{"Value":"'Exportaciones-Garden'"}}],[{"Literal":{"Value":"'Exportaciones-Hyamann'"}}],[{"Literal":{"Value":"'Exportaciones-Iclos'"}}],[{"Literal":{"Value":"'Exportaciones-Poen'"}}]]}}},{"DisplayName":"Mega Own Lines","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"DescripcionZG (Organic)"}}],"Values":[[{"Literal":{"Value":"'Argentina (Garden)'"}}],[{"Literal":{"Value":"'Bolivia (Garden)'"}}],[{"Literal":{"Value":"'CEAM (Garden)'"}}],[{"Literal":{"Value":"'Chile (Garden)'"}}],[{"Literal":{"Value":"'Colombia (Garden)'"}}],[{"Literal":{"Value":"'Dominicana (Garden)'"}}],[{"Literal":{"Value":"'Ecuador (Garden)'"}}],[{"Literal":{"Value":"'México (Garden)'"}}],[{"Literal":{"Value":"'Organic'"}}],[{"Literal":{"Value":"'Paraguay (Garden)'"}}],[{"Literal":{"Value":"'Perú (Garden)'"}}],[{"Literal":{"Value":"'Uruguay-Celsius'"}}],[{"Literal":{"Value":"'Uruguay-Haymann'"}}]]}}}]}
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"País / Zona-Gestión","TableItemName":"DescripcionZG (Mega Pharma)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+		column 'DescripcionZG (Exportaciones)' = 
+				SWITCH(
+				  TRUE,
+				  ISBLANK('País / Zona-Gestión'[DescripcionZG]),
+				  "(Blank)",
+				  'País / Zona-Gestión'[DescripcionZG] IN {"Exportaciones-Amega",
+				    "Exportaciones-Clausen",
+				    "Exportaciones-Poen"},
+				  "Expo Ame/Clau/Poen",
+				  'País / Zona-Gestión'[DescripcionZG] IN {"Exportaciones-Garden"},
+				  "Expo Garden",
+				  'País / Zona-Gestión'[DescripcionZG]
+				)
+			lineageTag: d1adc1ae-822f-4ea1-b30c-6aaa5df1104e
+			summarizeBy: none
+
+			extendedProperty GroupingMetadata = 
+					{
+					  "version": 0,
+					  "groupedColumns": [
+					    {
+					      "Column": {
+					        "Expression": {
+					          "SourceRef": {
+					            "Entity": "País / Zona-Gestión"
+					          }
+					        },
+					        "Property": "DescripcionZG"
+					      }
+					    }
+					  ]
+					}
+
+			changedProperty = IsHidden
+
+			annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"p","Entity":"País / Zona-Gestión"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"DescripcionZG"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"Expo Ame/Clau/Poen","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"DescripcionZG"}}],"Values":[[{"Literal":{"Value":"'Exportaciones-Amega'"}}],[{"Literal":{"Value":"'Exportaciones-Clausen'"}}],[{"Literal":{"Value":"'Exportaciones-Poen'"}}]]}}},{"DisplayName":"Expo Garden","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"DescripcionZG"}}],"Values":[[{"Literal":{"Value":"'Exportaciones-Garden'"}}]]}}}]}
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'DescripcionZG (Mega Pharma)' = 
+				SWITCH(
+				  TRUE,
+				  ISBLANK('País / Zona-Gestión'[DescripcionZG (Mega Own Lines)]),
+				  "(Blank)",
+				  'País / Zona-Gestión'[DescripcionZG (Mega Own Lines)] IN {"CEAM-Leterago",
+				    "Dominicana-Leterago",
+				    "Ecuador-Leterago",
+				    "Exportaciones-Amega",
+				    "Exportaciones-Clausen",
+				    "Exportaciones-Garden",
+				    "Exportaciones-Poen",
+				    "Mega Own Lines"},
+				  "Mega Pharma",
+				  'País / Zona-Gestión'[DescripcionZG (Mega Own Lines)]
+				)
+			lineageTag: b6085323-8e29-4016-a15a-0727ccca830f
+			summarizeBy: none
+
+			extendedProperty GroupingMetadata = 
+					{
+					  "version": 0,
+					  "groupedColumns": [
+					    {
+					      "Column": {
+					        "Expression": {
+					          "SourceRef": {
+					            "Entity": "País / Zona-Gestión"
+					          }
+					        },
+					        "Property": "DescripcionZG (Mega Own Lines)"
+					      }
+					    }
+					  ]
+					}
+
+			changedProperty = IsHidden
+
+			annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"p","Entity":"País / Zona-Gestión"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"DescripcionZG (Mega Own Lines)"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"Mega Pharma","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"DescripcionZG (Mega Own Lines)"}}],"Values":[[{"Literal":{"Value":"'CEAM-Leterago'"}}],[{"Literal":{"Value":"'Dominicana-Leterago'"}}],[{"Literal":{"Value":"'Ecuador-Leterago'"}}],[{"Literal":{"Value":"'Exportaciones-Amega'"}}],[{"Literal":{"Value":"'Exportaciones-Clausen'"}}],[{"Literal":{"Value":"'Exportaciones-Garden'"}}],[{"Literal":{"Value":"'Exportaciones-Poen'"}}],[{"Literal":{"Value":"'Mega Own Lines'"}}]]}}}]}
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'DescripcionZG (Public Sales Ecuador)' = 
+				SWITCH(
+				  TRUE,
+				  ISBLANK('País / Zona-Gestión'[DescripcionZG]),
+				  "(Blank)",
+				  'País / Zona-Gestión'[DescripcionZG] IN {"Ecuador-Roemmers",
+				    "Ecuador-Acromax",
+				    "Ecuador-Megalabs"},
+				  "Public Sales Ecuador",
+				  'País / Zona-Gestión'[DescripcionZG]
+				)
+			lineageTag: 0f4a4ca2-ad4e-4047-8c49-471116d59100
+			summarizeBy: none
+
+			extendedProperty GroupingMetadata = 
+					{
+					  "version": 0,
+					  "groupedColumns": [
+					    {
+					      "Column": {
+					        "Expression": {
+					          "SourceRef": {
+					            "Entity": "País / Zona-Gestión"
+					          }
+					        },
+					        "Property": "DescripcionZG"
+					      }
+					    }
+					  ]
+					}
+
+			changedProperty = IsHidden
+
+			annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"p","Entity":"País / Zona-Gestión"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"DescripcionZG"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"Public Sales Ecuador","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"p"}},"Property":"DescripcionZG"}}],"Values":[[{"Literal":{"Value":"'Ecuador-Roemmers'"}}],[{"Literal":{"Value":"'Ecuador-Acromax'"}}],[{"Literal":{"Value":"'Ecuador-Megalabs'"}}]]}}}]}
+
+			annotation SummarizationSetBy = Automatic
+
+		column Región = 
+
+				SWITCH(
+				    'País / Zona-Gestión'[DescripcionPais],
+				    "Argentina",
+				    "Mercosur",
+				    "Bolivia",
+				    "Pacto Andino",
+				    "Brasil",
+				    "Mercosur",
+				    "Chile",
+				    "Mercosur",
+				    "Colombia",
+				    "Pacto Andino",
+				    "Costa Rica",
+				    "CEAM & Caribe",
+				    "Republica Dominicana",
+				     "CEAM & Caribe",
+				    "Ecuador",
+				    "Pacto Andino",
+				    "Guatemala",
+				    "CEAM & Caribe",
+				    "Honduras",
+				    "CEAM & Caribe",
+				    "México",
+				     "México",
+				    "Nicaragua",
+				     "CEAM & Caribe",
+				    "Panamá",
+				     "CEAM & Caribe",
+				    "Paraguay",
+				     "Mercosur",
+				    "El Salvador",
+				    "CEAM & Caribe",
+				    "Uruguay",
+				     "Mercosur",
+				        "Perú",
+				     "Pacto Andino",
+				    "Venezuela",
+				     "Pacto Andino",
+				     "CEAM",
+				      "CEAM & Caribe",
+				    'País / Zona-Gestión'[DescripcionPais]
+				)
+			lineageTag: 908b957d-3fcd-40a6-9f51-01d98422b8c9
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'True Región' = ```
+				If('País / Zona-Gestión'[IdTipoCrecimiento] = "EXP", "Exportaciones", 'País / Zona-Gestión'[Región])
+				```
+			lineageTag: ae3afb2a-c4a0-49ef-ba45-f9f0b65cf529
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Grupo Gestiones'
+			dataType: string
+			lineageTag: dfa861ca-b603-4f4d-b3f9-be92680bdbef
+			summarizeBy: none
+			sourceColumn: Grupo Gestiones
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition 'País / Zona-Gestión-443b37d1-dd2a-459b-b52f-d6e8cc971cab' = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "SELECT [IdPais]#(lf)      ,[IdZonaGestion]#(lf)#(tab)  ,CONCAT([IdPais],[IdZonaGestion]) AS [IdPais-IdZonaGestion]#(lf)      ,[DescripcionPais]#(lf)      ,[DescripcionZG]#(lf)      ,[Origen]#(lf)  FROM [AT2020_DWH].[dbo].[DimPaisZonaGestion]"
+							]
+						),
+						#"Merged Queries" = Table.NestedJoin(
+							Source, {"IdZonaGestion"}, #"Zona-Gestión", {"IdZonaGestion"}, "Zona-Gestión", JoinKind.LeftOuter
+						),
+						#"Expanded Zona-Gestión" = Table.ExpandTableColumn(
+							#"Merged Queries",
+							"Zona-Gestión",
+							{"IdTipoNegocio", "IdTipoCrecimiento", "TipoZonaGestion"},
+							{"IdTipoNegocio", "IdTipoCrecimiento", "TipoZonaGestion"}
+						),
+						#"Added Conditional Column" = Table.AddColumn(
+							#"Expanded Zona-Gestión",
+							"Img",
+							each
+								if Text.Contains([IdPais], "ARG") then
+									"https://qn2d7q.bl.files.1drv.com/y4m3dzo7VqR0gQuMFv9yAS9VG3WFEU-5cc4Qs9p4c4u5IlRKdQ_5xxGqexLPPEzWOogFAShME4T4vj6Tx0l-2vEDeVwiHa21bilyb4tXkrXOB-E1ICcdoofIgU2SBFu3YQlNaCS6Mv-7a4d_g8sgCQhQm1h1nge58_kmx-Mw3xVG95WzyMgVtMFHYcRiVHMtvKNXP4ZmNt44BrzLhMswGmcyQ?width=512&height=512&cropmode=none"
+								else if Text.Contains([IdPais], "BOL") then
+									"https://qn0qdg.bl.files.1drv.com/y4mVy6xmGbUMw_e59GKX_ZVV6POYeFvoiCbdP7AmlLTfW--JaHvUXxv-YPEu9C-3O8OC4EuhIVCW1p9C28Ux2NbZqHGVM8wUeN3GEyUWzT3jLRvgzDo_Xl8xn6h568VhiR8Q6YJjgFN6jlGEJsnje2zpTyW9w2st_PPhrlwI7kuFOunDBtk9m6I4yp9ese9sr2NLX3NEB9xnshGlJGqfFA-5A?width=512&height=512&cropmode=none"
+								else if Text.Contains([IdPais], "BRA") then
+									"https://qn3a6g.bl.files.1drv.com/y4mVFtVdPDjfNw8PCVLDhFgji1T2K34MohSVY4hscPYBw_cGHms2M992RNHMUKg7r1nMsxMr658T3EW-ROTqGGrJEY_awNW_GL3MM4fmx7kwGOaCCRPFYfWwPhk8RlVm-t7LXtXaEUdrgF35rxd3lRXSvoTwYlZmyUmvtPJPrbW_cl8vPprI3-hUpbwEEasBQ5RLKbBhP-YI2bCSW_7fCyqjA?width=512&height=512&cropmode=none"
+								else if Text.Contains([IdPais], "CHI") then
+									"https://qn3oea.bl.files.1drv.com/y4m2poSzXF-dQxLWbXXLkU8ZSZn_X9rPW0UncIR_Iqm6pr81790BBkh7mDnmKq0Fbgvo97byIR5X_DathJIuectu0PjRZu3ppKiLsat19oXsyW8D6NL3rOteLT4KsGD7pafgt_L2KFTrfar8KGT840QrvJI86HR8Hk3CcAHdm0_3a4GYrsC5wZMXH9NwTBYYbEZAJHau8OyHCWXuEdwM6H3pg?width=512&height=512&cropmode=none"
+								else if Text.Contains([IdPais], "COL") then
+									"https://o65dag.bl.files.1drv.com/y4mCdFNWp8f0_KFf2qVnlmTOIJnrqPPeva5-AQs5GL65WP0l0l6_LXwzqASk5k1dzaXhmI68XiSHuSCWxGP2MmhBwGJK19_EsQmEo8GBEJbFKqtJDXX2xIThdTEsgVH-1iG5JfruIm0Um984_MVtui4Tv9tr2ib78RUMnLHSof_IQX_NIt4GEytoQUohzGZbBn3sxVjYQMs-e_8nAOs_JmXcA?width=512&height=512&cropmode=none"
+								else if Text.Contains([IdPais], "CRC") then
+									"https://o67edg.bl.files.1drv.com/y4miEY3Y9vBRiMIWOl9Wk0nExRtkYtQ3B9-jsZkJYFZK90yP_FyADtHKQDUj-ZuGR9S37tAME25hAR49wysUJwM9ePSVHtKxjKwr8DbNq9MmY17ijrYeKqO1BmpSwu89fE9ZQQqT4NCPtH6CjZA0UlC2Xwaen3kKHx-FdJV-Z9BRQ20Vr-zj_d9tTx_UMtXGIrZ4cqZnp92sHXdkEeFXI1MDQ?width=512&height=512&cropmode=none"
+								else if Text.Contains([IdPais], "DOM") then
+									"https://o66ojq.bl.files.1drv.com/y4mg9FTMr709C6aoxyf_FHUBj2S1-f6pbETa06gkhIYUy_t-3JGueOKAMbDdtnXnUzEtIJCOognt8JEjREZs1FabTi2fkahOSnw_sFM49K2HnyKBHqa2dX0o6xNTbfOEKYurxDBVkxRsaZ86DpIaw0zfLAF-ve5ecOCWxO47JTnUEKMK76cpDKn224jY0X-PeyECukPwGc5mczu6NldZRu1Cg?width=70&height=70&cropmode=none"
+								else if Text.Contains([IdPais], "ECU") then
+									"https://o66v1a.bl.files.1drv.com/y4m2FMfb36pH5k-fuKnLFV1GM-zMSuTMShjeE9yhKqSorL7NnqXGnTCnzCe0JgFIDWGuGVuJVWPE7sNdW4AgVEpg0wuzkSrGaP7hxF8iwbuk4eiiL4kPrCWN37yAshbD9Jb_QpQK8ox_9EJ_aMNtXPrIKUFd_BiovcN4wP7MUNOob_Jv9ysA7_ryZ1jhGlRgTHgZY1yc6zml46-qBOW0QljiA?width=512&height=512&cropmode=none"
+								else if Text.Contains([IdPais], "GUA") then
+									"https://o67q6a.bl.files.1drv.com/y4mfbdlWeNQ3IPsafsLIFloCsBWfqdf5KOUHI0hehTSXM-5tLlidN_cBclCLvdcdEHjzMHWZEuY7grOgTTuAsFMAbYHMFadbS6DUmBCxUV56hWqbWtoOM-CuIEguiTikKla2sQTOS5tkxanyvaixDPtOIkv310HDXufsWG96ljgbCoyGhJifDULbp3ozNIY4Zqq2lw3vfJY4URktzGId2vtKQ?width=512&height=512&cropmode=none"
+								else if Text.Contains([IdPais], "HON") then
+									"https://1ilrpa.bl.files.1drv.com/y4mrU9yLp3iskcqgdgiHa3nMM5gqh320jBsFRg_3_K3lC6Z6rRdUCoEP1ECl78XbefY2I8KMEac81k_X22rCP348ES4Cf5SGshvUeul58maH9SVszbKqXNv_-dq2uImvz3ohyjCTrr7QNIbvOZujGk1jqJDPXi05g4b_YZv6ZxgJD4ZFqN9D_84uWXoj9Aa2_rzVbDpeJVERYmpr06nVKYi6A?width=512&height=512&cropmode=none"
+								else if Text.Contains([IdPais], "MEX") then
+									"https://o64ngq.bl.files.1drv.com/y4mKofWQ81mv6RCu_pHcAi85TeE9j1kJ4QesSlNBzBkKmoEbc0cbkL9ogXz4cdnuERsJycrHCbnN-u6kaAbZaZUCBQWKJmWseqEHk7msmWYrG1Oi3MBXXhK5o0K-8AzE2izs8RujvPyFWVpoTc1G1S5jeEhApcOfSpH0nRZlp6cM_QHHewqL23Y5ctAlpudH8NJ7_7ItuGwKZpSbeCavyZZAg?width=512&height=512&cropmode=none"
+								else if Text.Contains([IdPais], "NIC") then
+									"https://1ijqma.bl.files.1drv.com/y4m6M2ya9rxvinRvNTElHH1cLCJKhLdQkmcSmcToaXEUkLqOZ-h8AR1-G6BeQm4G2NrX-tC06xpbmOPKi-9lWQQ_s80jZKAk5RMLH1nd5t9nt8Fxk9SwTwzZFiWUR2D3G6-i9ChtJn8vpesh0h8YxeFBeWMl5MuZkXfCRj_1pC9qg_g6QxpT_YKEo-Yaqzc4I8RjU0V6PETM-wskU5-U3ag3w?width=512&height=512&cropmode=none"
+								else if Text.Contains([IdPais], "PAN") then
+									"https://1ik1uw.bl.files.1drv.com/y4mxJFYO-_IBQ7l27HfYf38NFMdhoYWmnRomcFTstK0J5GjMEQh6wTFlvUk4Hgs-7roHBmbfGzURHjDNaygmLSd6pLyoBBpVuK3iuHrX32ssbrIwSqN_zjJb3RCpWIjsh12tdGNLJu-5OHmc-xKLBwwbvTWgq7QTxORa4LfGgtjoDiqR9cEKlSw1KCPvS8gSq-dPe18M6BK3zgb0NFBAKbj8Q?width=512&height=512&cropmode=none"
+								else if Text.Contains([IdPais], "PAR") then
+									"https://o65ypa.bl.files.1drv.com/y4m_W3uWlrHXZeZdmhF-QokaTno0-LfoGt0jUVnWRPaHeLmMizlkLy3Ml-_V7gv23vO_uBWCTXLzj180q-wCZEg5cGGmSO4N9eAlwOkSDXVHU8AYQezmi72rl0jzeyJJwDd4p0hb65upWmmD_mq-yMOu22YAiEF8rlCj7V6W4cVN2qXwWNwV4ixUXE4RqE8FgFQDkygMuCmAvDRGRkm2Rr3PQ?width=512&height=512&cropmode=none"
+								else if Text.Contains([IdPais], "PER") then
+									"https://o64uya.bl.files.1drv.com/y4mCsYiC4X7HDrIuk1TX9DRLQ48AbrL3TNJp74-h5VFpbcJbNepfInoACa1n2QMHVf6h4Pf0B0OMQlMoaJKi1n2BhvnhMFrmKnQLTSPeFP9sHOVNKPJgwTKo83SlCETwRC4dLoGQIRBc0Vr57-axvK2o5DzjO_646FsbI3XsWtH8YNq0YBd69rmv3adchG83KtRiDKsVZZirQ-UiCsBhtedtw?width=512&height=512&cropmode=none"
+								else if Text.Contains([IdPais], "SAL") then
+									"https://o65rxq.bl.files.1drv.com/y4m2l2FVHRS1_p6_92TTlFpo3dFXrWAJH2c5R1tDmFCbXfXIPenJAxO3QbkKL3WbevddO0wpQIiVGH1uCfIXotzbzJIO1r7vPNvVDW9fTcRSc0YlrfyBK0vZp3qt8uozqvdukuDQGuqUYdn5NSCPVFf8eq1PK3NoR6fIk4g58nfycf8t3ABCtKSPmVH7reFMs0mV0aYV5vSu_v7_plb_gBqFw?width=70&height=70&cropmode=none"
+								else if Text.Contains([IdPais], "URU") then
+									"https://o6556w.bl.files.1drv.com/y4m4PjaVyc9VEG7TXs3hr5ltxvATV_v-Y3Td3kWFKEuPSCjRBOCuTW_Nk6Zb7qpHfRgqC3CsYveE4pGYfK-jFTMKy1h8YP9NXRO9GwBR75m53jni_I9wFOpoHRct82LJgcAvAE9itl9RNka84Ug0CImAz9bm7KSO9x_2kuUxErVveFXxD1LXWoJwwR_UAXPdOGwNpUBFz_VqKdL0baa-RlOwA?width=512&height=512&cropmode=none"
+								else if Text.Contains([IdPais], "VEN") then
+									"https://qn1nba.bl.files.1drv.com/y4moAfRJouU5fL6EY83GDcWngGEHoU0lE_UKmdzIawoP0voTTBEvs7paUDc6zdvBVJIG_IGcGaoy8T9qd4ToC7EpBYKfCX4LOpLBhWJ9aQNCV04Ox5pQ4WrAsNJ_beeGSTkcgposDZddiXBxzyiolhYUtGz6oL6kitTW0dx5v_k1LCURZTXh6NP-OkMP6Ki4l0Eu-hd95dmlXvuL9YQXWbrjw?width=512&height=512&cropmode=none"
+								else
+									null
+						),
+						#"Added Custom" = Table.AddColumn(
+							#"Added Conditional Column",
+							"Custom",
+							each
+								if [DescripcionZG] = "Estados Unidos" or [IdPais] = "USA" then
+									"Estados Unidos"
+								else if [IdTipoCrecimiento] = "DEV" then
+									"Devices"
+								else if [IdTipoCrecimiento] = "DIS" then
+									"Distribuciones"
+								else if [IdTipoCrecimiento] = "OTR" then
+									"Otro"
+								else if [IdTipoCrecimiento] = "N/A" then
+									"N/A"
+								else if [IdTipoCrecimiento] = "EXP" and [IdPais] <> "USA" then
+									"Exportaciones"
+								else if
+									[IdTipoCrecimiento] <> "DEV"
+									or [IdTipoCrecimiento] <> "EXP"
+									or [IdTipoCrecimiento] <> "DIS"
+									or [DescripcionZG] <> "Estados Unidos"
+								then
+									"Pharma Latam"
+								else
+									[DescripcionZG]
+						),
+						#"Renamed Columns" = Table.RenameColumns(#"Added Custom", {{"Custom", "Grupo Gestiones"}})
+					in
+						#"Renamed Columns"
+
+		annotation PBI_QueryRelationships = {"columnCount":10,"keyColumnNames":[],"queryRelationships":[{"keyColumnCount":1,"keyColumn":1,"otherKeyColumnIdentity":"Section1/Zona-Gestión/Source.{IdZonaGestion,0}","KeyColumnCount":1}],"columnIdentities":["Section1/País \\/ Zona-Gestión/Source.{IdPais,0}","Section1/País \\/ Zona-Gestión/Source.{IdZonaGestion,1}","Section1/País \\/ Zona-Gestión/Source.{IdPais-IdZonaGestion,2}","Section1/País \\/ Zona-Gestión/Source.{DescripcionPais,3}","Section1/País \\/ Zona-Gestión/Source.{DescripcionZG,4}","Section1/País \\/ Zona-Gestión/Source.{Origen,5}","Section1/Zona-Gestión/Source.{IdTipoNegocio,2}","Section1/Zona-Gestión/Source.{IdTipoCrecimiento,3}","Section1/Zona-Gestión/Source.{TipoZonaGestion,4}","Section1/País \\/ Zona-Gestión/Added Conditional Column.{Img,9}"],"ColumnCount":10,"KeyColumnNames":[],"ColumnIdentities":["Section1/País \\/ Zona-Gestión/Source.{IdPais,0}","Section1/País \\/ Zona-Gestión/Source.{IdZonaGestion,1}","Section1/País \\/ Zona-Gestión/Source.{IdPais-IdZonaGestion,2}","Section1/País \\/ Zona-Gestión/Source.{DescripcionPais,3}","Section1/País \\/ Zona-Gestión/Source.{DescripcionZG,4}","Section1/País \\/ Zona-Gestión/Source.{Origen,5}","Section1/Zona-Gestión/Source.{IdTipoNegocio,2}","Section1/Zona-Gestión/Source.{IdTipoCrecimiento,3}","Section1/Zona-Gestión/Source.{TipoZonaGestion,4}","Section1/País \\/ Zona-Gestión/Added Conditional Column.{Img,9}"],"RelationshipInfo":[{"keyColumnCount":1,"keyColumn":1,"otherKeyColumnIdentity":"Section1/Zona-Gestión/Source.{IdZonaGestion,0}","KeyColumnCount":1}]}
+
+		annotation PBI_ResultType = Table
+
+	table Período
+		lineageTag: 15357e50-fe55-4755-934d-ac389bc78a56
+
+		measure 'Mes actual' = EDATE ( TODAY (), -1 )
+			formatString: mmmm "de" yyyy
+			lineageTag: ad2a03c3-16c8-49a1-bbd9-bcd928a01bb3
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+		measure 'Validación año actual' = 
+
+				/* Medida que sirve para evaluar el año de Período vs el último año de Período a Analizar.
+				Se utiliza para filtrar la medida de Estimado, por ejemplo. */
+				IF (
+				    YEAR ( VALUES ( 'Período'[Fecha] ) )
+				        = YEAR ( LASTDATE ( 'Período a Analizar'[Fecha] ) ),
+				    "1",
+				    "0"
+				)
+			lineageTag: 0615e0c5-0b6e-40c1-8846-dcc9fcdb2a72
+
+			changedProperty = IsHidden
+
+		measure 'Texto de primer mes de período seleccionado de tabla Período (Fecha corta)' = 
+
+				/* Esta medida muestra el periodo analizado en función de la columna Fecha corta */
+				IF (
+				    ISFILTERED ( 'Período'[Fecha corta] ),
+				    CALCULATE (
+				        FORMAT ( MIN ( 'Período'[Fecha] ), "MMM yyyy" ),
+				        FILTER ( ALLSELECTED ( 'Período' ), MIN ( 'Período'[Fecha] ) )
+				    ),
+				    FORMAT ( MIN ( 'Período'[Fecha] ), "MMM yyyy" )
+				)
+			lineageTag: b8c856f7-53d4-42d7-9abb-b8d4196ec2ef
+
+			changedProperty = IsHidden
+
+		measure 'Texto de último mes de período seleccionado de tabla Período (Fecha corta)' = 
+
+				/* Esta medida muestra el periodo analizado en función de la columna Fecha corta */
+				IF (
+				    ISFILTERED ( 'Período'[Fecha corta] ),
+				    CALCULATE (
+				        FORMAT ( MAX ( 'Período'[Fecha] ), "MMM yyyy" ),
+				        FILTER ( ALLSELECTED ( 'Período' ), MAX ( 'Período'[Fecha] ) )
+				    ),
+				    FORMAT ( MAX ( 'Período'[Fecha] ), "MMM yyyy" )
+				)
+			lineageTag: 2efe420b-de42-4504-b911-9eae6b310ba3
+
+			changedProperty = IsHidden
+
+		measure 'Texto período seleccionado de tabla Período (Fecha corta)' = 
+
+				/* Esta medida muestra el periodo analizado en función de la columna Fecha corta */
+				SWITCH (
+				    VALUES ( 'Selector Período'[Período] ),
+				    "YTD",
+				        CONCATENATE (
+				            "YTD ",
+				            'Período'[Texto de último mes de período seleccionado de tabla Período (Fecha corta)]
+				        ),
+				    "MTH",
+				        IF (
+				            ISFILTERED ( 'Período'[Fecha corta] )
+				                && COUNTROWS ( ALLSELECTED ( 'Período'[Fecha corta] ) ) <> 1,
+				            CONCATENATE (
+				                "MTH ",
+				                CONCATENATE (
+				                    'Período'[Texto de primer mes de período seleccionado de tabla Período (Fecha corta)],
+				                    CONCATENATE (
+				                        " - ",
+				                        'Período'[Texto de último mes de período seleccionado de tabla Período (Fecha corta)]
+				                    )
+				                )
+				            ),
+				            CONCATENATE (
+				                "MTH ",
+				                'Período'[Texto de último mes de período seleccionado de tabla Período (Fecha corta)]
+				            )
+				        ),
+				    "MAT",
+				        CONCATENATE (
+				            "MAT ",
+				            'Período'[Texto de último mes de período seleccionado de tabla Período (Fecha corta)]
+				        )
+				)
+			lineageTag: b9fb7de4-450d-41da-98c8-981cb979fa75
+
+			changedProperty = IsHidden
+
+		column Anio
+			dataType: int64
+			formatString: 0
+			lineageTag: ddae182c-14df-48f9-a651-97bd9bb9a06f
+			summarizeBy: sum
+			sourceColumn: Anio
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Mes
+			dataType: int64
+			formatString: 0
+			lineageTag: e4e5da45-8f2f-4ace-98f6-cbe6c5bcc7cc
+			summarizeBy: sum
+			sourceColumn: Mes
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Fecha = 
+
+				DATE(
+				    'Período'[Anio],
+				    'Período'[Mes],
+				    01
+				)
+			formatString: mmmm "de" yyyy
+			lineageTag: d2fdeee5-4959-4138-870e-564fcc225c22
+			summarizeBy: none
+
+			variation Variation
+				isDefault
+				relationship: 7a5c6833-8d5b-4e42-b40a-1f52171f7a05
+				defaultHierarchy: LocalDateTable_05e7b9c0-c017-41b3-a039-63074065d04b.'Date Hierarchy'
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+		column 'Fecha corta' = FORMAT(FIRSTNONBLANK('Período'[Fecha],0), "MMM yyyy")
+			lineageTag: 6b099bf5-2732-4209-90fa-01627872cb20
+			summarizeBy: none
+			sortByColumn: Fecha
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Quarter
+			dataType: string
+			lineageTag: 0c3ad950-5621-444d-8486-36f9ebec45db
+			summarizeBy: none
+			sourceColumn: Quarter
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Mes nombre' = SWITCH('Período'[Mes],1,"Enero",2,"Febrero",3,"Marzo",4,"Abril",5,"Mayo",6,"Junio",7,"Julio",8,"Agosto",9,"Septiembre",10,"Octubre",11,"Noviembre",12,"Diciembre")
+			lineageTag: d3edc29d-d4a5-45c6-a99e-701b5c9fb2b6
+			summarizeBy: none
+			sortByColumn: Mes
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Mes corto' = LEFT('Período'[Fecha corta],3)
+			lineageTag: 3ece7de9-986d-4bfd-9841-a327e10f4d31
+			summarizeBy: none
+			sortByColumn: Mes
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition Período-cf6f5f72-cf8e-47d0-8d57-5b840d42f0e9 = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "/* Período */#(lf)SELECT DISTINCT#(lf)P.anio AS Anio, #(lf)P.mes AS Mes,#(lf)'Quarter' = #(lf)#(tab)CASE#(lf)#(tab)#(tab)WHEN P.mes IN ('1', '2', '3') THEN CONCAT(P.anio,'-Q1')#(lf)#(tab)#(tab)WHEN P.mes IN ('4', '5', '6') THEN CONCAT(P.anio,'-Q2')#(lf)#(tab)#(tab)WHEN P.mes IN ('7', '8', '9') THEN CONCAT(P.anio,'-Q3')#(lf)#(tab)#(tab)WHEN P.mes IN ('10', '11', '12') THEN CONCAT(P.anio,'-Q4')#(lf)#(tab)END#(lf)FROM AT2020_DWH.dbo.DimPeriodo AS P#(lf)INNER JOIN AT2020_DWH..FctVentaMensual AS V#(lf)ON P.IdPeriodo = V.IdPeriodo#(lf)WHERE P.anio >= 2014#(lf)AND V.UnidadEstimada <> 0#(lf)OR V.UnidadPresupuestada <> 0#(lf)OR V.UnidadVendida <> 0#(lf)OR V.UnidadSTDEstimada <> 0#(lf)OR V.UnidadSTDPresupuestada <> 0#(lf)OR V.UnidadSTDVendida <> 0#(lf)OR V.ValorNetoMLocal <> 0#(lf)OR V.ValorNetoMLocalEstimado <> 0#(lf)OR V.ValorNetoMLocalPresupuestado <> 0#(lf)OR V.ValorNetoUSD <> 0#(lf)OR V.ValorNetoUSDEstimado <> 0#(lf)OR V.ValorNetoUSDPresupuestado <> 0",
+								HierarchicalNavigation = true
+							]
+						),
+						#"Filtered Rows" = Table.SelectRows(Source, each [Anio] >= 2014)
+					in
+						#"Filtered Rows"
+
+		annotation PBI_ResultType = Table
+
+	table 'Período a Analizar'
+		lineageTag: e47048d6-dfd6-4ae6-a6ad-07d6f45a07e8
+
+		measure 'Texto de último mes de período seleccionado' = 
+
+				SWITCH (
+				    MONTH ( LASTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) ),
+				    1,
+				        CONCATENATE (
+				            "ene. ",
+				            YEAR ( LASTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    2,
+				        CONCATENATE (
+				            "feb. ",
+				            YEAR ( LASTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    3,
+				        CONCATENATE (
+				            "mar. ",
+				            YEAR ( LASTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    4,
+				        CONCATENATE (
+				            "abr. ",
+				            YEAR ( LASTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    5,
+				        CONCATENATE (
+				            "may. ",
+				            YEAR ( LASTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    6,
+				        CONCATENATE (
+				            "jun. ",
+				            YEAR ( LASTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    7,
+				        CONCATENATE (
+				            "jul. ",
+				            YEAR ( LASTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    8,
+				        CONCATENATE (
+				            "ago. ",
+				            YEAR ( LASTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    9,
+				        CONCATENATE (
+				            "set. ",
+				            YEAR ( LASTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    10,
+				        CONCATENATE (
+				            "oct. ",
+				            YEAR ( LASTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    11,
+				        CONCATENATE (
+				            "nov. ",
+				            YEAR ( LASTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    12,
+				        CONCATENATE (
+				            "dic. ",
+				            YEAR ( LASTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        )
+				)
+			lineageTag: 2033d91a-712d-4112-860a-47ae3f8ea91c
+
+		measure 'Texto de primer mes de período seleccionado' = 
+
+				SWITCH (
+				    MONTH ( FIRSTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) ),
+				    1,
+				        CONCATENATE (
+				            "ene. ",
+				            YEAR ( FIRSTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    2,
+				        CONCATENATE (
+				            "feb. ",
+				            YEAR ( FIRSTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    3,
+				        CONCATENATE (
+				            "mar. ",
+				            YEAR ( FIRSTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    4,
+				        CONCATENATE (
+				            "abr. ",
+				            YEAR ( FIRSTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    5,
+				        CONCATENATE (
+				            "may. ",
+				            YEAR ( FIRSTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    6,
+				        CONCATENATE (
+				            "jun. ",
+				            YEAR ( FIRSTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    7,
+				        CONCATENATE (
+				            "jul. ",
+				            YEAR ( FIRSTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    8,
+				        CONCATENATE (
+				            "ago. ",
+				            YEAR ( FIRSTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    9,
+				        CONCATENATE (
+				            "set. ",
+				            YEAR ( FIRSTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    10,
+				        CONCATENATE (
+				            "oct. ",
+				            YEAR ( FIRSTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    11,
+				        CONCATENATE (
+				            "nov. ",
+				            YEAR ( FIRSTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        ),
+				    12,
+				        CONCATENATE (
+				            "dic. ",
+				            YEAR ( FIRSTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) )
+				        )
+				)
+			lineageTag: 8f2655c2-5767-4141-8759-3416e7301bb3
+
+		measure 'Texto período seleccionado' = 
+
+				SWITCH (
+				    VALUES ( 'Selector Período'[Período] ),
+				    "YTD",
+				        CONCATENATE (
+				            "YTD ",
+				            'Período a Analizar'[Texto de último mes de período seleccionado]
+				        ),
+				    "MTH",
+				        IF (
+				            COUNTROWS ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) > 1,
+				            CONCATENATE (
+				                "MTH ",
+				                CONCATENATE (
+				                    'Período a Analizar'[Texto de primer mes de período seleccionado],
+				                    CONCATENATE (
+				                        " - ",
+				                        'Período a Analizar'[Texto de último mes de período seleccionado]
+				                    )
+				                )
+				            ),
+				            CONCATENATE (
+				                "MTH ",
+				                'Período a Analizar'[Texto de último mes de período seleccionado]
+				            )
+				        ),
+				    "MAT",
+				        CONCATENATE (
+				            "MAT ",
+				            'Período a Analizar'[Texto de último mes de período seleccionado]
+				        )
+				)
+			lineageTag: 56f1ff97-a7df-4f3d-bfd5-c176a07abb23
+
+		measure 'Texto de último mes de período seleccionado (sólo mes)' = 
+
+				SWITCH (
+				    MONTH ( LASTDATE ( ALLSELECTED ( 'Período a Analizar'[Fecha] ) ) ),
+				    1, "ene",
+				    2, "feb",
+				    3, "mar",
+				    4, "abr",
+				    5, "may",
+				    6, "jun",
+				    7, "jul",
+				    8, "ago",
+				    9, "set",
+				    10, "oct",
+				    11, "nov",
+				    12, "dic"
+				)
+			lineageTag: a78e8c34-d897-461e-b3c9-94fda1f27e3f
+
+		measure 'Texto de primer mes de período seleccionado (Fecha corta)' = 
+
+				/* Esta medida muestra el periodo analizado en función de la columna Fecha corta */
+				IF (
+				    ISFILTERED ( 'Período a Analizar'[Fecha corta] ),
+				    CALCULATE (
+				        FORMAT ( MIN ( 'Período a Analizar'[Fecha] ), "MMM yyyy" ),
+				        FILTER (
+				            ALLSELECTED ( 'Período a Analizar' ),
+				            MIN ( 'Período a Analizar'[Fecha] )
+				        )
+				    ),
+				    FORMAT ( MIN ( 'Período a Analizar'[Fecha] ), "MMM yyyy" )
+				)
+			lineageTag: 91419f6e-b07f-4f2c-835e-f2047b1b0542
+
+		measure 'Texto de último mes de período seleccionado (Fecha corta)' = 
+
+				/* Esta medida muestra el periodo analizado en función de la columna Fecha corta */
+				IF (
+				    ISFILTERED ( 'Período a Analizar'[Fecha corta] ),
+				    CALCULATE (
+				        FORMAT ( MAX ( 'Período a Analizar'[Fecha] ), "MMM yyyy" ),
+				        FILTER (
+				            ALLSELECTED ( 'Período a Analizar' ),
+				            MAX ( 'Período a Analizar'[Fecha] )
+				        )
+				    ),
+				    FORMAT ( MAX ( 'Período a Analizar'[Fecha] ), "MMM yyyy" )
+				)
+			lineageTag: a868c8c8-e4f5-47f9-877b-11ba3dc41454
+
+		measure 'Texto período seleccionado (Fecha corta)' = 
+
+				/* Esta medida muestra el periodo analizado en función de la columna Fecha corta */
+				IF (
+				    ISFILTERED ( 'Período a Analizar'[Quarter] ),
+				    FIRSTNONBLANK ( ALLSELECTED ( 'Período a Analizar'[Quarter] ), 0 ),
+				    SWITCH (
+				        VALUES ( 'Selector Período'[Período] ),
+				        "YTD",
+				            CONCATENATE (
+				                "YTD ",
+				                'Período a Analizar'[Texto de último mes de período seleccionado (Fecha corta)]
+				            ),
+				        "MTH",
+				            IF (
+				                ISFILTERED ( 'Período a Analizar'[Fecha corta] )
+				                    && COUNTROWS ( ALLSELECTED ( 'Período a Analizar'[Fecha corta] ) ) <> 1,
+				                CONCATENATE (
+				                    "MTH ",
+				                    CONCATENATE (
+				                        'Período a Analizar'[Texto de primer mes de período seleccionado (Fecha corta)],
+				                        CONCATENATE (
+				                            " - ",
+				                            'Período a Analizar'[Texto de último mes de período seleccionado (Fecha corta)]
+				                        )
+				                    )
+				                ),
+				                CONCATENATE (
+				                    "MTH ",
+				                    'Período a Analizar'[Texto de último mes de período seleccionado (Fecha corta)]
+				                )
+				            ),
+				        "MAT",
+				            CONCATENATE (
+				                "MAT ",
+				                'Período a Analizar'[Texto de último mes de período seleccionado (Fecha corta)]
+				            )
+				    )
+				)
+			lineageTag: e953e96a-213c-4652-b9f5-84ea34b0a0f6
+
+		measure 'Nuevo texto' = 
+
+				IF (
+				    ISFILTERED ( 'Período a Analizar'[Fecha corta] ),
+				    IF (
+				        SELECTEDVALUE ( 'Período a Analizar'[Fecha] ) >= MAX ( 'Período IMS'[Fecha] ),
+				        SWITCH (
+				            VALUES ( 'Selector Período (2)'[Período] ),
+				            "YTD",
+				                CONCATENATE (
+				                    "YTD ",
+				                    'Período IMS'[Texto de último mes de período seleccionado IMS (Fecha corta)]
+				                ),
+				            "MTH",
+				                IF (
+				                    ISFILTERED ( 'Período IMS'[Fecha corta] )
+				                        && COUNTROWS ( ALLSELECTED ( 'Período IMS'[Fecha corta] ) ) <> 1,
+				                    CONCATENATE (
+				                        "MTH ",
+				                        CONCATENATE (
+				                            'Período IMS'[Texto de primer mes de período seleccionado IMS (Fecha corta) Periodo a Analizar],
+				                            CONCATENATE (
+				                                " - ",
+				                                'Período IMS'[Texto de último mes de período seleccionado IMS (Fecha corta)]
+				                            )
+				                        )
+				                    ),
+				                    CONCATENATE (
+				                        "MTH ",
+				                        'Período IMS'[Texto de último mes de período seleccionado IMS (Fecha corta)]
+				                    )
+				                ),
+				            "MAT",
+				                CONCATENATE (
+				                    "MAT ",
+				                    'Período IMS'[Texto de último mes de período seleccionado IMS (Fecha corta)]
+				                )
+				        ),
+				        SWITCH (
+				            VALUES ( 'Selector Período (2)'[Período] ),
+				            "YTD",
+				                CONCATENATE (
+				                    "YTD ",
+				                    'Período IMS'[Texto de último mes de período seleccionado IMS (Fecha corta) Periodo a Analizar]
+				                ),
+				            "MTH",
+				                IF (
+				                    ISFILTERED ( 'Período IMS'[Fecha corta] )
+				                        && COUNTROWS ( ALLSELECTED ( 'Período IMS'[Fecha corta] ) ) <> 1,
+				                    CONCATENATE (
+				                        "MTH ",
+				                        CONCATENATE (
+				                            'Período IMS'[Texto de último mes de período seleccionado IMS (Fecha corta) Periodo a Analizar],
+				                            CONCATENATE (
+				                                " - ",
+				                                'Período IMS'[Texto de último mes de período seleccionado IMS (Fecha corta)]
+				                            )
+				                        )
+				                    ),
+				                    CONCATENATE (
+				                        "MTH ",
+				                        'Período IMS'[Texto de último mes de período seleccionado IMS (Fecha corta) Periodo a Analizar]
+				                    )
+				                ),
+				            "MAT",
+				                CONCATENATE (
+				                    "MAT ",
+				                    'Período IMS'[Texto de último mes de período seleccionado IMS (Fecha corta) Periodo a Analizar]
+				                )
+				        )
+				    ),
+				    SWITCH (
+				        VALUES ( 'Selector Período (2)'[Período] ),
+				        "YTD",
+				            CONCATENATE (
+				                "YTD ",
+				                'Período IMS'[Texto de último mes de período seleccionado IMS (Fecha corta)]
+				            ),
+				        "MTH",
+				            IF (
+				                ISFILTERED ( 'Período IMS'[Fecha corta] )
+				                    && COUNTROWS ( ALLSELECTED ( 'Período IMS'[Fecha corta] ) ) <> 1,
+				                CONCATENATE (
+				                    "MTH ",
+				                    CONCATENATE (
+				                        'Período IMS'[Texto de primer mes de período seleccionado IMS (Fecha corta) Periodo a Analizar],
+				                        CONCATENATE (
+				                            " - ",
+				                            'Período IMS'[Texto de último mes de período seleccionado IMS (Fecha corta)]
+				                        )
+				                    )
+				                ),
+				                CONCATENATE (
+				                    "MTH ",
+				                    'Período IMS'[Texto de último mes de período seleccionado IMS (Fecha corta)]
+				                )
+				            ),
+				        "MAT",
+				            CONCATENATE (
+				                "MAT ",
+				                'Período IMS'[Texto de último mes de período seleccionado IMS (Fecha corta)]
+				            )
+				    )
+				)
+			lineageTag: a9026298-47cb-420d-9343-681f7dfd7369
+
+		column Año = 
+
+				YEAR(
+					'Período a Analizar'[Fecha]
+				)
+			formatString: 0
+			lineageTag: e20f7bcd-c34f-4c44-a300-22b176926bb5
+			summarizeBy: sum
+
+			annotation SummarizationSetBy = Automatic
+
+		column Mes = 
+
+				MONTH(
+					'Período a Analizar'[Fecha]
+				)
+			formatString: 0
+			lineageTag: 38c37d0a-fd94-409e-8a1f-3b42bf44a004
+			summarizeBy: sum
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Año -1' = 'Período a Analizar'[Año] - 1
+			formatString: 0
+			lineageTag: 77c6ca0b-7e77-4c16-aabb-1c10daf420a0
+			summarizeBy: sum
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Año -2' = 'Período a Analizar'[Año] - 2
+			formatString: 0
+			lineageTag: d43170d9-b0ea-4e6d-a5d6-30a39fbe5957
+			summarizeBy: sum
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Año -3' = 'Período a Analizar'[Año] - 3
+			formatString: 0
+			lineageTag: 228d828f-b60f-4256-83f2-2bbc8cc4c8fb
+			summarizeBy: sum
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Año -4' = 'Período a Analizar'[Año] - 4
+			formatString: 0
+			lineageTag: b5aeb682-4916-4681-a42d-9194f7b6e97c
+			summarizeBy: sum
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Año -5' = 'Período a Analizar'[Año] - 5
+			formatString: 0
+			lineageTag: 3e3eeafd-c91f-42d6-8808-75f9103f700f
+			summarizeBy: sum
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Fecha corta' = FORMAT(FIRSTNONBLANK('Período a Analizar'[Fecha],0), "MMM yyyy")
+			lineageTag: 33bd28dc-0d73-4344-994d-82a2cfedb2c6
+			summarizeBy: none
+			sortByColumn: Fecha
+
+			annotation SummarizationSetBy = Automatic
+
+		column Quarter
+			lineageTag: 65cdfeb7-2c03-4341-a951-f017cf15d797
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: Período[Quarter]
+			columnOrigin: Período.Quarter
+
+			annotation SummarizationSetBy = Automatic
+
+		column Fecha
+			formatString: mmmm "de" yyyy
+			lineageTag: 214a4857-962e-4348-a93a-33d2c90dd52a
+			summarizeBy: none
+			isNameInferred
+			sourceColumn: Período[Fecha]
+			columnOrigin: Período.Fecha
+
+			variation Variación
+				isDefault
+				relationship: 176644a5-def3-4c99-a801-90cfe5d96d45
+				defaultHierarchy: LocalDateTable_57247009-cdf0-4032-85d2-ade741a55f1a.'Date Hierarchy'
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+		partition 'Período a Analizar-5841739c-8500-4c90-96e6-f20e584af164' = calculated
+			mode: import
+			source = 
+
+					CALCULATETABLE(
+					    SUMMARIZE(
+					        'Período',
+					        'Período'[Fecha],
+					        'Período'[Quarter]
+					    ),
+					    FILTER(
+					        'Período',
+					        'Período'[Fecha] <= EDATE(TODAY(),-1)
+					    )
+					)
+
+	table 'Periodos MAT'
+		lineageTag: 9b53f9c0-63b8-42c7-9cea-c79b4f1b9a7a
+
+		column Periodo
+			dataType: string
+			lineageTag: 1ec7613b-8881-4f54-accf-78baf42e9563
+			summarizeBy: none
+			sourceColumn: Periodo
+			sortByColumn: Index
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Fecha
+			dataType: dateTime
+			formatString: Long Date
+			lineageTag: 46c52192-f1c1-42cb-a091-bc33331eff76
+			summarizeBy: none
+			sourceColumn: Fecha
+
+			variation Variation
+				isDefault
+				relationship: 21ddb7b7-77b5-45f3-a767-9d10ea4fc135
+				defaultHierarchy: LocalDateTable_00a80129-4699-43a2-be80-90c1cb853a37.'Date Hierarchy'
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation UnderlyingDateTimeDataType = Date
+
+		column 'Fecha ultima'
+			dataType: dateTime
+			formatString: Long Date
+			lineageTag: 74757691-0f62-4229-8c77-ebdc7b78b66c
+			summarizeBy: none
+			sourceColumn: Fecha ultima
+
+			variation Variation
+				isDefault
+				relationship: 66b3b17a-5689-4427-9132-66bd70c9e79a
+				defaultHierarchy: LocalDateTable_e0941cd8-0008-4e7d-b0c5-aa694ea05a9b.'Date Hierarchy'
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation UnderlyingDateTimeDataType = Date
+
+		column 'Fecha corta' = FORMAT(FIRSTNONBLANK('Periodos MAT'[Fecha],0), "MMM yyyy")
+			lineageTag: 039de22d-368e-4af3-b0d3-590fcf36adba
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Index
+			dataType: int64
+			formatString: 0
+			lineageTag: 9c97f6aa-1c30-40cc-b0d7-69ba3891f87a
+			summarizeBy: sum
+			sourceColumn: Index
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Real/Proy
+			dataType: string
+			lineageTag: cc2e5f0a-4ece-4994-8713-98029ee84173
+			summarizeBy: none
+			sourceColumn: Real/Proy
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Column6
+			dataType: string
+			lineageTag: 092da7c3-b108-44ab-9a4d-30d6d36dd684
+			summarizeBy: none
+			sourceColumn: Column6
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition 'Periodos MAT-ff554666-9ec3-4b43-9fb6-b57a82942f0a' = m
+			mode: import
+			source = 
+					let
+						Source = Excel.Workbook(File.Contents("\\" & Atenea & "\Interfaces\Finanzas\Tabla de Periodos.xlsx"), null, true),
+						Hoja1_Sheet = Source{[Item = "Hoja1", Kind = "Sheet"]}[Data],
+						#"Promoted Headers" = Table.PromoteHeaders(Hoja1_Sheet, [PromoteAllScalars = true]),
+						#"Valor reemplazado" = Table.ReplaceValue(
+							#"Promoted Headers", "Noviebre", "Noviembre", Replacer.ReplaceText, {"Fecha"}
+						),
+						#"Changed Type" = Table.TransformColumnTypes(
+							#"Valor reemplazado",
+							{{"Periodo", type text}, {"Fecha", type date}, {"Fecha corta", type date}, {"Index", Int64.Type}}
+						),
+						#"Renamed Columns" = Table.RenameColumns(#"Changed Type", {{"Fecha corta", "Fecha ultima"}}),
+						#"Removed Blank Rows" = Table.SelectRows(
+							#"Renamed Columns", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))
+						)
+					in
+						#"Removed Blank Rows"
+
+		annotation PBI_ResultType = Table
+
+	table 'Producto MPh'
+		lineageTag: b60850d7-b3f2-4974-87c9-2d566495263b
+
+		column IdProductoMPh
+			dataType: int64
+			formatString: 0
+			lineageTag: 7686506a-f03f-4a71-a784-e452b0404a7c
+			summarizeBy: none
+			sourceColumn: IdProductoMPh
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Producto MPh'
+			dataType: string
+			lineageTag: 00ea12c0-bbc3-4fb9-8f10-26d937ad2b10
+			summarizeBy: none
+			sourceColumn: Producto MPh
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdProductoFabricante
+			dataType: string
+			lineageTag: e2af6a1c-6cd8-4fef-9b6b-6c162c2b9ca3
+			summarizeBy: none
+			sourceColumn: IdProductoFabricante
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition 'Producto MPh-0c4fbaf4-4291-4bbf-95e4-99cfc1ca0dd6' = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "SELECT P.IdProductoMPH AS IdProductoMPh, 'DescProductoMPh' =#(lf)#(tab)CASE#(lf)#(tab)#(tab)WHEN P.IdProductoMPH = '-1' THEN 'z No asignada'#(lf)#(tab)#(tab)ELSE P.Descripcion#(lf)#(tab)END#(lf),MP.IdProductoFabricante#(lf)FROM AT2020_DWH.dbo.DimProductoMPH P left join AT2020_ModeloNegocio.dbo.MaeProductoMPH MP on P.IdProductoMPH = MP.IdProductoMPH",
+								HierarchicalNavigation = true
+							]
+						),
+						#"Renamed Columns" = Table.RenameColumns(Source, {{"DescProductoMPh", "Producto MPh"}})
+					in
+						#"Renamed Columns"
+
+		annotation PBI_ResultType = Table
+
+	table 'Producto Compañía'
+		lineageTag: 33d197d8-ee48-475e-832e-271ac7e31fe0
+
+		column IdProductoCompania
+			dataType: string
+			lineageTag: b08729dc-a4ec-430d-b4a6-b99f83022333
+			summarizeBy: none
+			sourceColumn: IdProductoCompania
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Presentación
+			dataType: string
+			lineageTag: 55f45436-7bde-4315-b5f6-58893b4e5803
+			summarizeBy: none
+			sourceColumn: Presentación
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column FechaLanzamiento
+			dataType: dateTime
+			formatString: mmmm yyyy
+			lineageTag: 66626db9-3781-452f-a29a-959e9cc0953f
+			summarizeBy: none
+			sourceColumn: FechaLanzamiento
+
+			variation Variation
+				isDefault
+				relationship: 1cd63bfa-30dd-4f55-8e0e-60bc5c634691
+				defaultHierarchy: LocalDateTable_137e1dec-064b-4de5-94b7-3e81c919e5c1.'Date Hierarchy'
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+		column Año = YEAR('Producto Compañía'[FechaLanzamiento])
+			formatString: 0
+			lineageTag: ab863fd1-05dc-46c9-b3f1-6b0bffb90440
+			summarizeBy: sum
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdCompania
+			dataType: string
+			lineageTag: a168a9ec-51e1-44ba-ab39-45993f4fdf9d
+			summarizeBy: none
+			sourceColumn: IdCompania
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdCompania-IdProductoCompania
+			dataType: string
+			lineageTag: 8420691a-ad16-497c-a880-4bc2ac69b34f
+			summarizeBy: none
+			sourceColumn: IdCompania-IdProductoCompania
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Fecha = 
+
+				DATE(
+				    'Producto Compañía'[Año Lanz.],
+				    01,
+				    01
+				)
+			formatString: General Date
+			lineageTag: b08536ca-ae01-424a-97a9-a872b62eb6f1
+			summarizeBy: none
+
+			changedProperty = DataType
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column FechaLanzamientoQuarter = 
+
+				SWITCH(
+				    'Producto Compañía'[FechaLanzamiento].[MonthNo],
+				    1,
+				    CONCATENATE('Producto Compañía'[FechaLanzamiento].[Year],CONCATENATE("-","Q1")),
+				    2,
+				    CONCATENATE('Producto Compañía'[FechaLanzamiento].[Year],CONCATENATE("-","Q1")),
+				    3,
+				    CONCATENATE('Producto Compañía'[FechaLanzamiento].[Year],CONCATENATE("-","Q1")),
+				    4,
+				    CONCATENATE('Producto Compañía'[FechaLanzamiento].[Year],CONCATENATE("-","Q2")),
+				    5,
+				    CONCATENATE('Producto Compañía'[FechaLanzamiento].[Year],CONCATENATE("-","Q2")),
+				    6,
+				    CONCATENATE('Producto Compañía'[FechaLanzamiento].[Year],CONCATENATE("-","Q2")),
+				    7,
+				    CONCATENATE('Producto Compañía'[FechaLanzamiento].[Year],CONCATENATE("-","Q3")),
+				    8,
+				    CONCATENATE('Producto Compañía'[FechaLanzamiento].[Year],CONCATENATE("-","Q3")),
+				    9,
+				    CONCATENATE('Producto Compañía'[FechaLanzamiento].[Year],CONCATENATE("-","Q3")),
+				    10,
+				    CONCATENATE('Producto Compañía'[FechaLanzamiento].[Year],CONCATENATE("-","Q4")),
+				    11,
+				    CONCATENATE('Producto Compañía'[FechaLanzamiento].[Year],CONCATENATE("-","Q4")),
+				    12,
+				    CONCATENATE('Producto Compañía'[FechaLanzamiento].[Year],CONCATENATE("-","Q4"))
+				)
+			lineageTag: 768cf6ce-6bac-47ff-b968-048a5f3ea90b
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition 'Producto Compañía-75224c75-38a9-46ec-8ac5-4cb047f1d847' = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "/* Producto Compania */#(lf)SELECT #(lf)CONCAT(P.IdCompania, P.IdProductoCompania) AS 'IdCompania-IdProductoCompania',#(lf)P.IdProductoCompania AS IdProductoCompania, #(lf)P.IdCompania AS IdCompania,#(lf)P.Descripcion AS Presentación,#(lf)P.FechaLanzamiento AS FechaLanzamiento#(lf)FROM AT2020_DWH.dbo.DimProductoCompania P"
+							]
+						)
+					in
+						Source
+
+		annotation PBI_ResultType = Table
+
+	table SubFamilia
+		lineageTag: 04a106c7-0faa-4a03-8cff-39aaf2d2a20c
+
+		column IdProducto
+			dataType: int64
+			formatString: 0
+			lineageTag: 3753776f-9b80-4bb8-894d-2198649e7628
+			summarizeBy: none
+			sourceColumn: IdProducto
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Marca
+			dataType: string
+			lineageTag: e8f7ad73-6084-4e58-b712-43096ceebf54
+			summarizeBy: none
+			sourceColumn: Marca
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column SubFamilia
+			dataType: string
+			lineageTag: e232a898-7cb9-401f-b75c-c21eae471712
+			summarizeBy: none
+			sourceColumn: SubFamilia
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition SubFamilia-653b7cb3-29c0-4e8d-b1cd-08c7e90b5cfa = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "/* SubFamilia */#(lf)SELECT P.IdProducto AS IdProducto, 'DescMarca' =#(lf)#(tab)CASE#(lf)#(tab)#(tab)WHEN P.IdProducto = '-1' THEN 'z No asignada'#(lf)#(tab)#(tab)ELSE P.DescripcionMarca#(lf)#(tab)END, 'DescSubFamilia' =#(lf)#(tab)CASE#(lf)#(tab)#(tab)WHEN P.IdPA = 'N/A' THEN 'z No asignada'#(lf)#(tab)#(tab)ELSE P.DescripcionPA#(lf)#(tab)END#(lf)FROM AT2020_DWH.dbo.DimProducto P"
+							]
+						),
+						#"Renamed Columns" = Table.RenameColumns(Source, {{"DescMarca", "Marca"}, {"DescSubFamilia", "SubFamilia"}})
+					in
+						#"Renamed Columns"
+
+		annotation PBI_ResultType = Table
+
+	table 'Target Product'
+		lineageTag: 327ace50-0ce6-4f2c-80cf-86a33ee659a4
+
+		column 'Target Product'
+			dataType: string
+			lineageTag: 73d79188-6b87-4093-b365-93545a302af0
+			summarizeBy: none
+			sourceColumn: Target Product
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition 'Target Product-f0f9b1f7-7da9-4dcd-85af-3dfececef7d9' = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "/* Target Product */#(lf)SELECT DISTINCT#(lf)V.TargetProduct AS 'Target Product'#(lf)FROM AT2020_DWH..FctVentaMensual AS V"
+							]
+						)
+					in
+						Source
+
+		annotation PBI_ResultType = Table
+
+	table 'Tipo de Producto'
+		lineageTag: 4f188915-674c-4ddd-bfc2-d9c218b2745d
+
+		column IdTipoProducto
+			dataType: string
+			lineageTag: d27938c1-373f-437c-b2dd-e5b66e02a2aa
+			summarizeBy: none
+			sourceColumn: IdTipoProducto
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Descripcion
+			dataType: string
+			lineageTag: e2407f23-9051-4d32-9288-d611850eaa86
+			summarizeBy: none
+			sourceColumn: Descripcion
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition 'Tipo de Producto-6ab3bcd1-d18f-48e7-9029-ca0703b47a6c' = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "/* Tipo de Producto */#(lf)SELECT T.IdTipoProducto AS IdTipoProducto,#(lf)T.Descripcion AS Descripcion#(lf)FROM AT2020_DWH..DimTipoProducto AS T"
+							]
+						)
+					in
+						Source
+
+		annotation PBI_ResultType = Table
+
+	table 'Ventas Mensuales'
+		lineageTag: fd69de24-0dda-4e2c-84ef-0654cf5bb0c8
+
+		measure 'Share MUNS' = 
+
+				DIVIDE (
+				    CALCULATE ( [Ventas MUNS] ),
+				    CALCULATE (
+				        [Ventas MUNS],
+				        ALLSELECTED ( 'País / Zona-Gestión'[DescripcionZG] )
+				    ),
+				    0
+				)
+			formatString: #,0.00\ %;-#,0.00\ %;#,0.00\ %
+			lineageTag: b349eba4-7f7f-445c-bdce-22373c2d4b28
+
+			changedProperty = IsHidden
+
+		measure 'Score PR' = CALCULATE ( [Share MUNS] * [Cumplimiento MUN STD] * [Crec. UN STD] ) * 100
+			lineageTag: ba5b6df7-70e6-4c10-9f23-c1eedafce03c
+
+			changedProperty = IsHidden
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column IdPeriodo
+			dataType: string
+			lineageTag: d0c008b9-9920-4a38-a13b-7497bbfc412b
+			summarizeBy: none
+			sourceColumn: IdPeriodo
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdProductoCompania
+			dataType: string
+			lineageTag: 3cc424cf-73ea-45c5-8d65-575bc5eb3b03
+			summarizeBy: none
+			sourceColumn: IdProductoCompania
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdCompania
+			dataType: string
+			lineageTag: 0941dd14-0917-488f-b5d4-b3944a02ac65
+			summarizeBy: none
+			sourceColumn: IdCompania
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdCanal
+			dataType: string
+			lineageTag: df9e4a8c-594d-4901-b0ed-1d68385fb7cb
+			summarizeBy: none
+			sourceColumn: IdCanal
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdProducto
+			dataType: int64
+			formatString: 0
+			lineageTag: df18ebd2-06ca-4c0f-8acb-b536e2cac877
+			summarizeBy: none
+			sourceColumn: IdProducto
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdLinea
+			dataType: string
+			lineageTag: 5d6d2e36-d05f-456e-8098-4d8bc63cfe98
+			summarizeBy: none
+			sourceColumn: IdLinea
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdFamilia
+			dataType: string
+			lineageTag: 7f09278b-efc8-4498-b9ff-9d00efd388a1
+			summarizeBy: none
+			sourceColumn: IdFamilia
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdAreaTerapeutica
+			dataType: string
+			lineageTag: 20ef83d2-f7ef-4705-a575-a31fc7253f53
+			summarizeBy: none
+			sourceColumn: IdAreaTerapeutica
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdIndicacion
+			dataType: string
+			lineageTag: 78204c6e-28fd-4524-a2cf-8f66f1dbdf72
+			summarizeBy: none
+			sourceColumn: IdIndicacion
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdPais
+			dataType: string
+			lineageTag: 86fb4d5e-9526-40bf-acd9-82087eabf480
+			summarizeBy: none
+			sourceColumn: IdPais
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdProductoMPh
+			dataType: int64
+			formatString: 0
+			lineageTag: 3736a8d5-48c4-4651-ad57-582c7b8d5a14
+			summarizeBy: none
+			sourceColumn: IdProductoMPh
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdZonaGestion
+			dataType: string
+			lineageTag: 92d48022-3943-49c4-a2ec-c0f0037816c6
+			summarizeBy: none
+			sourceColumn: IdZonaGestion
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column UN
+			dataType: double
+			formatString: #,0
+			lineageTag: 1a210a44-9c59-4897-9614-70b4a1ee3378
+			summarizeBy: sum
+			sourceColumn: UN
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		column UNSTD
+			dataType: double
+			formatString: #,0
+			lineageTag: 8b7b49ec-1bf9-427a-b5f7-dabbf1af4105
+			summarizeBy: sum
+			sourceColumn: UNSTD
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		column ML
+			dataType: double
+			formatString: #,0
+			lineageTag: 361c0c16-6063-4cc8-92f6-4505b48d90fe
+			summarizeBy: sum
+			sourceColumn: ML
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		column USD
+			dataType: double
+			formatString: #,0
+			lineageTag: fdb6640f-4682-4531-a9c0-00a29504beca
+			summarizeBy: sum
+			sourceColumn: USD
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		column Fecha = 
+
+				DATE(
+				    LEFT(
+				        'Ventas Mensuales'[IdPeriodo],
+				        4
+				    ),
+				    RIGHT(
+				        'Ventas Mensuales'[IdPeriodo],
+				        2
+				    ),
+				    01
+				)
+			formatString: mmmm "de" yyyy
+			lineageTag: 2954a784-0f71-41cf-8668-64128aa14e14
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+		column IdTipoNegocio
+			dataType: string
+			lineageTag: 1f162965-d82a-4501-8161-7c009641e28d
+			summarizeBy: none
+			sourceColumn: IdTipoNegocio
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdTipoProducto
+			dataType: string
+			lineageTag: de0d680a-c129-4ea6-9960-c066859f0e89
+			summarizeBy: none
+			sourceColumn: IdTipoProducto
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdFabricante
+			dataType: int64
+			formatString: 0
+			lineageTag: 2cea359a-7a95-4ea8-92a5-f77361c852d1
+			summarizeBy: none
+			sourceColumn: IdFabricante
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdFormaFarmaceutica
+			dataType: string
+			lineageTag: d28ae8e2-128e-48d2-8997-5b6e27535f84
+			summarizeBy: none
+			sourceColumn: IdFormaFarmaceutica
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column ClasificacionOtcOtx
+			dataType: string
+			lineageTag: 503fdd22-d1c1-42bc-8a54-c929941e8ad7
+			summarizeBy: none
+			sourceColumn: ClasificacionOtcOtx
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdCompania-IdProductoCompania
+			dataType: string
+			lineageTag: 1f6624c7-7982-4d15-a176-5f129c436225
+			summarizeBy: none
+			sourceColumn: IdCompania-IdProductoCompania
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdPais-IdZonaGestion
+			dataType: string
+			lineageTag: e7fe3bd4-e598-40b3-a97a-d29adec29ce8
+			summarizeBy: none
+			sourceColumn: IdPais-IdZonaGestion
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdCliente
+			dataType: string
+			lineageTag: 4bb54f1f-bc5d-4eec-8525-67231719fdfe
+			summarizeBy: none
+			sourceColumn: IdCliente
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Old IDCompañia' = RELATED('Producto Compañía'[IdCompania])
+			lineageTag: c675fc41-d7c3-4abd-b876-b200861c035c
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Es LOUTEN EMUL' = IF(AND(NOT(OR(RELATED('Forma Farmacéutica'[Forma Farmacéutica]) = "Emulsión Oftálmica",RELATED('Forma Farmacéutica'[Forma Farmacéutica]) = "Emulsión líquida")), 'Ventas Mensuales'[TargetProduct] = "Louten Emulsion"), 0, 1)
+			formatString: 0
+			lineageTag: 4b8029a2-11a7-4cee-b63e-4f377b4ce682
+			summarizeBy: sum
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Fecha Lanz' = ```
+				RELATED('Producto Compañía'[FechaLanzamiento])
+				```
+			formatString: General Date
+			lineageTag: e0ef9ed1-7902-416f-a15a-a838ee1f9058
+			summarizeBy: none
+
+			variation Variation
+				isDefault
+				relationship: 328e7f7f-339e-4c36-b59e-27cd19ac1e61
+				defaultHierarchy: LocalDateTable_46b89e6d-3d45-45f5-81aa-ccc33bf3fd54.'Date Hierarchy'
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Q
+			dataType: double
+			lineageTag: b3784c2e-708d-4c4d-8b72-d71791b6d93c
+			summarizeBy: sum
+			sourceColumn: Q
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column 'AreaT English' = RELATED('Área Terapéutica'[Área Terapéutica BI (English)])
+			lineageTag: c2007479-3bdd-4805-8a91-6a2af17c2ab3
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Presentacion = RELATED('Producto Compañía'[Presentación])
+			lineageTag: 5466d5ff-68ad-4139-a675-e36b21bcb13b
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column TargetProduct
+			dataType: string
+			lineageTag: 4161811a-c0fd-4436-93d9-9d76bae3a1a6
+			summarizeBy: none
+			sourceColumn: TargetProduct
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Leading Brands' = Related(Marca[Leading Brands])
+			lineageTag: d1960ae5-963f-4ea9-8230-a3c77597a1c4
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Nombre Leading' = Related('Área Terapéutica'[Nombre Leading])
+			lineageTag: 54261c8f-b0e2-48a3-aa45-ca2e80e51bb3
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Familia = RELATED(Familia[Familia])
+			lineageTag: 870cf9da-df15-4e96-abc9-a00f05e9825c
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdMarca = RELATED(Marca[IdMarca])
+			lineageTag: ed9176d2-ad63-4284-b506-ae3fd35a4786
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdTipoForma = RELATED('Forma Farmacéutica'[IdTipoForma])
+			lineageTag: 5fd9b408-0675-4bfa-b9ab-c00907b81d1d
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdZonaGestion-IdMarca-IdTipoForma = CONCATENATE('Ventas Mensuales'[IdZonaGestion],CONCATENATE('Ventas Mensuales'[IdMarca],'Ventas Mensuales'[IdTipoForma]))
+			lineageTag: f4c22166-eb21-4de4-9b11-78d853c1ceda
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column CovidProduct
+			dataType: string
+			lineageTag: d4122cb2-f54c-43c5-97f9-8255b961b60e
+			summarizeBy: none
+			sourceColumn: CovidProduct
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column CantidadElog
+			dataType: int64
+			formatString: 0
+			lineageTag: d0de653c-1c70-46e8-94dd-a1045311bb94
+			summarizeBy: count
+			sourceColumn: CantidadElog
+
+			changedProperty = DataType
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = User
+
+			annotation PBI_FormatHint = {"isDecimal":true}
+
+		column CostoConsolidadoUnitario
+			dataType: double
+			lineageTag: 3d1f7047-1b7f-4fac-adff-32b7408f660d
+			summarizeBy: sum
+			sourceColumn: CostoConsolidadoUnitario
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column UnidadOtros
+			dataType: double
+			lineageTag: 66b9b19e-abb1-4bd6-a4a6-c8e48a18723e
+			summarizeBy: sum
+			sourceColumn: UnidadOtros
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column ConcatPaisMarca = 'Ventas Mensuales'[IdPais] & "-" & RELATED(Marca[Marca])
+			lineageTag: 2dada479-b72b-4445-b59e-d64887ade2ef
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdProductoFabricante
+			dataType: string
+			lineageTag: f663b808-ef02-4c6b-93f8-0ea7c70b14e9
+			summarizeBy: none
+			sourceColumn: IdProductoFabricante
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column PharmaceuticalDivision
+			dataType: string
+			lineageTag: e6a5baf9-834d-4aef-8d66-9166f0b23ffb
+			summarizeBy: none
+			sourceColumn: PharmaceuticalDivision
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Marca Paragua'
+			dataType: string
+			lineageTag: ef690344-1486-4b1c-845f-35a06b533618
+			summarizeBy: none
+			sourceColumn: Marca Paragua
+
+			annotation SummarizationSetBy = Automatic
+
+		column CategoriaFamilia
+			dataType: string
+			lineageTag: 1cd5bed6-bed5-4a14-8c39-8e3256d15598
+			summarizeBy: none
+			sourceColumn: CategoriaFamilia
+
+			annotation SummarizationSetBy = Automatic
+
+		column Idzonageografica
+			dataType: string
+			lineageTag: e89d250a-073d-41db-a059-39bfcc150f77
+			summarizeBy: none
+			sourceColumn: Idzonageografica
+
+			annotation SummarizationSetBy = Automatic
+
+		partition 'Ventas Mensuales-37b3fcc3-00fe-42cc-8257-b38f960febb6' = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "SELECT [IdPeriodo]#(lf)      ,v.[IdCompania-IdProductoCompania]#(lf)      ,[IdProductoCompania]#(lf)      ,[IdCompania]#(lf)      ,[IdCanal]#(lf)      ,[IdProducto]#(lf)      ,[IdLinea]#(lf)      ,[IdFamilia]#(lf)      ,[IdAreaTerapeutica]#(lf)      ,[IdIndicacion]#(lf)      ,[IdPais]#(lf)      ,[IdPais-IdZonaGestion]#(lf)      ,[IdProductoMPh]#(lf)      ,[IdZonaGestion]#(lf)      ,[IdTipoNegocio]#(lf)      ,[IdTipoProducto]#(lf)      ,[IdFabricante]#(lf)      ,[IdFormaFarmaceutica]#(lf)      ,[ClasificacionOtcOtx]#(lf)      ,[IdCliente]#(lf)      ,[CostoConsolidadoUnitario]#(lf)      ,[UnidadOtros]#(lf)      ,CategoriaFamilia#(lf)      ,[TargetProduct]#(lf)      ,[CovidProduct]#(lf)      ,ROUND([UN], 3) as UN#(lf)      ,ROUND([UNSTD], 3) as UNSTD#(lf)      ,ROUND([ML], 3) as ML#(lf)      ,ROUND([USD], 3) as USD#(lf)      ,ROUND([Q], 3) as Q#(lf)      ,[IdProductoFabricante]#(lf)      ,[PharmaceuticalDivision]#(lf),[Idzonageografica]#(lf)#(lf)--,[Territorio]#(lf)      --,p.MarcaBud#(lf)      --,p.MarcaRaizBud#(lf)      --,p.ATBudg as ATBud#(lf)      --,p.RnewalStatus#(lf),[Marca Paragua]#(lf)FROM [AT2020_DWH].[dbo].[vFctVentaMensualBI_Venta] v #(lf)  left join [AT2020_DWH].[dbo].[EstimadoPptoBudget] p on p.[IdCompania-IdProductoCompania] = v.[IdCompania-IdProductoCompania] --and LEFT(v.idPeriodo,4) = p.Version#(lf)  where IdPeriodo >=201401 and FILTRO = 'SI'#(lf)  and idpais='BOL'",
+								HierarchicalNavigation = true
+							]
+						),
+						#"Filas filtradas" = Table.SelectRows(Source, each true),
+						#"Filtered Rows1" = Table.SelectRows(#"Filas filtradas", each true),
+						#"Consultas combinadas" = Table.NestedJoin(
+							#"Filtered Rows1",
+							{"IdProductoMPh"},
+							ProductoMPH_Cantidad,
+							{"IdProductoMPH"},
+							"ProductoMPH_Cantidad",
+							JoinKind.LeftOuter
+						),
+						#"Se expandió ProductoMPH_Cantidad" = Table.ExpandTableColumn(
+							#"Consultas combinadas", "ProductoMPH_Cantidad", {"CantidadElog"}, {"ProductoMPH_Cantidad.CantidadElog"}
+						),
+						#"Columnas con nombre cambiado" = Table.RenameColumns(
+							#"Se expandió ProductoMPH_Cantidad", {{"ProductoMPH_Cantidad.CantidadElog", "CantidadElog"}}
+						)
+					in
+						#"Columnas con nombre cambiado"
+
+		annotation PBI_ResultType = Exception
+
+		annotation PBI_NavigationStepName = Navegación
+
+	table Zona-Gestión
+		lineageTag: 455ce1ac-f81a-4eb8-b04f-6aae0f490b36
+
+		column IdZonaGestion
+			dataType: string
+			lineageTag: 6bf0dc34-7ea3-468c-b5bc-cc8c2b14e940
+			summarizeBy: none
+			sourceColumn: IdZonaGestion
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Descripcion
+			dataType: string
+			lineageTag: 36dfc9e0-7662-45f4-b3d3-e4bfe0fbd3a3
+			summarizeBy: none
+			sourceColumn: Descripcion
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdTipoNegocio
+			dataType: string
+			lineageTag: 165a2c63-587c-4ba2-8ee8-e16383f6699c
+			summarizeBy: none
+			sourceColumn: IdTipoNegocio
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column IdTipoCrecimiento
+			dataType: string
+			lineageTag: e2afa7bb-fbd8-4f97-b554-736259ec0629
+			summarizeBy: none
+			sourceColumn: IdTipoCrecimiento
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column TipoZonaGestion
+			dataType: string
+			lineageTag: 5d4c264a-4102-4df7-9853-aeb7e3dee434
+			summarizeBy: none
+			sourceColumn: TipoZonaGestion
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		column Zona = LEFT(FIRSTNONBLANK('Zona-Gestión'[IdZonaGestion],1),3)
+			lineageTag: 7c25f860-47e7-42d4-a40c-3bd331ae7fbc
+			summarizeBy: none
+
+			changedProperty = IsHidden
+
+			annotation SummarizationSetBy = Automatic
+
+		partition Zona-Gestión-0de62248-c2a7-4275-9cba-78734701274d = m
+			mode: import
+			source = 
+					let
+						Source = Sql.Database(
+							Atenea,
+							"AT2020_DWH",
+							[
+								Query = "SELECT [IdZonaGestion]#(lf)      ,[Descripcion]#(lf)      ,[IdTipoNegocio]#(lf)      ,[IdTipoCrecimiento]#(lf)      ,[TipoZonaGestion]#(lf)  FROM [AT2020_DWH].[dbo].[DimZonaGestion]"
+							]
+						)
+					in
+						Source
+
+		annotation PBI_ResultType = Table
