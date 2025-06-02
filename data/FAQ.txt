@@ -1,0 +1,591 @@
+Pregunta 1: quiero saber que producto es el que ha estado decayendo en ventas el ultimo año
+ Respuesta: 
+ EVALUATE 
+VAR MaxOverallDate = CALCULATE(MAX('Ventas Mensuales'[Fecha]), ALL('Ventas Mensuales'))
+VAR Last12MonthsSalesPeriod = DATESINPERIOD('Ventas Mensuales'[Fecha], MaxOverallDate, -12, MONTH)
+// Corrected definition for the anchor date of the previous 12-month period
+VAR Previous12MonthsAnchorDate = EDATE(MaxOverallDate, -12)
+VAR SalesPrevious12MonthsPeriod = DATESINPERIOD('Ventas Mensuales'[Fecha], Previous12MonthsAnchorDate, -12, MONTH)
+VAR BaseTable =
+ADDCOLUMNS(
+SUMMARIZE(
+'Marca',
+'Marca'[Marca]
+),
+"SalesLast12Months",
+CALCULATE(
+SUM('Ventas Mensuales'[USD]),
+Last12MonthsSalesPeriod
+),
+"SalesPrevious12Months",
+CALCULATE(
+SUM('Ventas Mensuales'[USD]),
+SalesPrevious12MonthsPeriod
+)
+)
+VAR ProductsWithSalesChanges =
+ADDCOLUMNS(
+BaseTable,
+"SalesDecline",
+IF(
+NOT ISBLANK([SalesPrevious12Months]) && [SalesPrevious12Months] > 0,
+COALESCE([SalesLast12Months], 0) - [SalesPrevious12Months],
+BLANK()
+)
+)
+VAR FilteredDecayingProducts =
+FILTER(
+ProductsWithSalesChanges,
+NOT ISBLANK([SalesDecline]) && [SalesDecline] < 0
+)
+RETURN
+TOPN(
+1,
+FilteredDecayingProducts,
+[SalesDecline],
+ASC
+)
+
+Pregunta 2: Dame las ventas por familia y por país, compara YTD de este año vs el año pasado no uses las medidas del modelo, sin decimales y ordenado por este año
+ Respuesta: 
+ EVALUATE 
+VAR MaxOverallDate = CALCULATE(MAX('Ventas Mensuales'[Fecha]), ALL('Ventas Mensuales'))
+VAR Last12MonthsSalesPeriod = DATESINPERIOD('Ventas Mensuales'[Fecha], MaxOverallDate, -12, MONTH)
+// Corrected definition for the anchor date of the previous 12-month period
+VAR Previous12MonthsAnchorDate = EDATE(MaxOverallDate, -12)
+VAR SalesPrevious12MonthsPeriod = DATESINPERIOD('Ventas Mensuales'[Fecha], Previous12MonthsAnchorDate, -12, MONTH)
+VAR BaseTable =
+ADDCOLUMNS(
+SUMMARIZE(
+'Marca',
+'Marca'[Marca]
+),
+"SalesLast12Months",
+CALCULATE(
+SUM('Ventas Mensuales'[USD]),
+Last12MonthsSalesPeriod
+),
+"SalesPrevious12Months",
+CALCULATE(
+SUM('Ventas Mensuales'[USD]),
+SalesPrevious12MonthsPeriod
+)
+)
+VAR ProductsWithSalesChanges =
+ADDCOLUMNS(
+BaseTable,
+"SalesDecline",
+IF(
+NOT ISBLANK([SalesPrevious12Months]) && [SalesPrevious12Months] > 0,
+COALESCE([SalesLast12Months], 0) - [SalesPrevious12Months],
+BLANK()
+)
+)
+VAR FilteredDecayingProducts =
+FILTER(
+ProductsWithSalesChanges,
+NOT ISBLANK([SalesDecline]) && [SalesDecline] < 0
+)
+RETURN
+TOPN(
+1,
+FilteredDecayingProducts,
+[SalesDecline],
+ASC
+)
+
+Pregunta 3: Lista de productos y su cantidad total vendida.
+ Respuesta: 
+ EVALUATE 
+SUMMARIZECOLUMNS ( 'Producto Compañía'[Presentación], "Cantidad Total Vendida", SUM ( 'Ventas Mensuales'[UN] )
+)
+
+Pregunta 4: quiero saber que producto es el que ha estado decayendo en ventas el ultimo año
+ Respuesta: 
+ EVALUATE 
+VAR MaxOverallDate = CALCULATE(MAX('Ventas Mensuales'[Fecha]), ALL('Ventas Mensuales'))
+VAR CurrentYear = YEAR(MaxOverallDate)
+VAR Dates_YTD_CurrentYear = FILTER( ALL('Ventas Mensuales'[Fecha]), YEAR('Ventas Mensuales'[Fecha]) = CurrentYear && 'Ventas Mensuales'[Fecha] <= MaxOverallDate )
+VAR Dates_YTD_PreviousYear = FILTER( ALL('Ventas Mensuales'[Fecha]), YEAR('Ventas Mensuales'[Fecha]) = CurrentYear - 1 && 'Ventas Mensuales'[Fecha] <= EDATE(MaxOverallDate, -12) )
+VAR FamiliesSales = ADDCOLUMNS( SUMMARIZE( 'Familia', 'Familia'[Familia] ), "SalesYTD_CurrentYear", CALCULATE( SUM('Ventas Mensuales'[USD]), Dates_YTD_CurrentYear ), "SalesYTD_PreviousYear", CALCULATE( SUM('Ventas Mensuales'[USD]), Dates_YTD_PreviousYear ) )
+VAR FamiliesWithGrowthAmount = ADDCOLUMNS( FamiliesSales, "GrowthAmount", COALESCE([SalesYTD_CurrentYear], 0) - COALESCE([SalesYTD_PreviousYear], 0) )
+VAR FilteredGrowingFamilies = FILTER( FamiliesWithGrowthAmount, NOT ISBLANK([GrowthAmount]) && [GrowthAmount] > 0 )
+RETURN
+TOPN( 1, FilteredGrowingFamilies, [GrowthAmount], DESC
+)
+
+Pregunta 5: quiero saber que producto ha obtenido el mejor crecimiento este año versus el año pasado, para eso considera siempre que el producto debe tener ventas el año pasado para esta comparación.
+ Respuesta: 
+ EVALUATE 
+VAR MaxOverallDate = CALCULATE(MAX('Ventas Mensuales'[Fecha]), ALL('Ventas Mensuales'))
+VAR CurrentYear = YEAR(MaxOverallDate)
+VAR Dates_YTD_CurrentYear =
+FILTER(
+ALL('Ventas Mensuales'[Fecha]),
+YEAR('Ventas Mensuales'[Fecha]) = CurrentYear &&
+'Ventas Mensuales'[Fecha] <= MaxOverallDate
+)
+VAR Dates_YTD_PreviousYear =
+FILTER(
+ALL('Ventas Mensuales'[Fecha]),
+YEAR('Ventas Mensuales'[Fecha]) = CurrentYear - 1 &&
+'Ventas Mensuales'[Fecha] <= EDATE(MaxOverallDate, -12)
+)
+VAR ProductsSales =
+ADDCOLUMNS(
+SUMMARIZE(
+'Marca',
+'Marca'[Marca]
+),
+"SalesYTD_CY",
+CALCULATE(
+SUM('Ventas Mensuales'[USD]),
+Dates_YTD_CurrentYear
+),
+"SalesYTD_PY",
+CALCULATE(
+SUM('Ventas Mensuales'[USD]),
+Dates_YTD_PreviousYear
+)
+)
+VAR ProductsWithValidPreviousYearSales =
+FILTER(
+ProductsSales,
+NOT ISBLANK([SalesYTD_PY]) && [SalesYTD_PY] > 0
+)
+VAR ProductsWithGrowth =
+ADDCOLUMNS(
+ProductsWithValidPreviousYearSales,
+"PercentageGrowth",
+VAR SalesCY = COALESCE([SalesYTD_CY], 0)
+VAR SalesPY = [SalesYTD_PY]
+RETURN
+DIVIDE(SalesCY - SalesPY, SalesPY)
+)
+VAR FilteredPositiveGrowth =
+FILTER(
+ProductsWithGrowth,
+NOT ISBLANK([PercentageGrowth]) && [PercentageGrowth] > 0
+)
+RETURN
+TOPN(
+1,
+FilteredPositiveGrowth,
+[PercentageGrowth],
+DESC
+)
+
+Pregunta 6: ¿Cuál es el monto total de ventas?
+ Respuesta: 
+ EVALUATE  ROW(\"Monto Total de Ventas\", [Monto Total de Ventas])
+
+Pregunta 7: Lista de productos y su cantidad total vendida.
+ Respuesta: 
+ EVALUATE 
+SUMMARIZECOLUMNS ( 'Producto Compañía'[Presentación], "Cantidad Total Vendida", SUM ( 'Ventas Mensuales'[UN] )
+)
+
+Pregunta 8: dame las 10 primeras familias ordenadas por ventas en USD
+ Respuesta: 
+ EVALUATE 
+TOPN( 10, SUMMARIZECOLUMNS( 'Familia'[Familia], "Ventas USD", SUM('Ventas Mensuales'[USD]) ), [Ventas USD], DESC
+)
+
+Pregunta 9: dame el top 10 de por familia y país
+ Respuesta: 
+ EVALUATE  TOPN( 10, SUMMARIZECOLUMNS( 'Familia'[Familia], 'País'[DescPais], \"Ventas USD\", SUM('Ventas Mensuales'[USD]) ), [Ventas USD], DESC )
+Pregunta 10: dame un resumen de las ventas por marca y familia ordenadas de mayor a menor solo las mejores 50
+ Respuesta: 
+ EVALUATE 
+TOPN( 50, SUMMARIZECOLUMNS( 'Marca'[Marca], 'Familia'[Familia], "Ventas USD", SUM('Ventas Mensuales'[USD]) ), [Ventas USD], DESC
+)
+
+Pregunta 11: que producto vende más USD pero que no cumpla el presupuesto
+ Respuesta: 
+ EVALUATE 
+VAR SalesAndBudgetByProduct = SUMMARIZECOLUMNS( 'Marca'[Marca], // Nombre del Producto "VentasRealesUSD", CALCULATE(SUM('Ventas Mensuales'[USD])), "PresupuestoUSD", CALCULATE(SUM('Costo / Presupuesto'[USDPresupuestado])) )
+VAR ProductsNotMeetingBudget = FILTER( SalesAndBudgetByProduct, NOT ISBLANK([VentasRealesUSD]) && NOT ISBLANK([PresupuestoUSD]) && [VentasRealesUSD] < [PresupuestoUSD] )
+VAR TopSellerAmongUnderperformers = TOPN( 1, ProductsNotMeetingBudget, [VentasRealesUSD], DESC, // "vende más USD" [Marca], ASC // Tie-breaker )
+RETURN SELECTCOLUMNS( TopSellerAmongUnderperformers, "Producto", [Marca], "Ventas Reales USD", [VentasRealesUSD], "Presupuesto USD", [PresupuestoUSD] )
+Pregunta 12: Qué productos aportan mas al crecimiento (ventas periodo actual vs mismo periodo del año anterior) esto en terminos nominales.
+ Respuesta: 
+ EVALUATE 
+VAR MaxDataDateValue = MAX('Período a Analizar'[Fecha])
+VAR CurrentYear = YEAR(MaxDataDateValue)
+VAR StartOfCurrentYear_Date = DATE(CurrentYear, 1, 1)
+
+VAR CY_YTD_DateFilter =
+    FILTER(
+        ALLNOBLANKROW('Período a Analizar'[Fecha]), 
+        'Período a Analizar'[Fecha] >= StartOfCurrentYear_Date &&
+        'Período a Analizar'[Fecha] <= MaxDataDateValue
+    )
+
+VAR AnioAnterior = CurrentYear - 1
+VAR StartOfPreviousYear_Date = DATE(AnioAnterior, 1, 1)
+VAR EndOfPreviousYear_Comparable_Date = DATE(AnioAnterior, MONTH(MaxDataDateValue), DAY(MaxDataDateValue))
+
+VAR PY_YTD_DateFilter =
+    FILTER(
+        ALLNOBLANKROW('Período a Analizar'[Fecha]),
+        'Período a Analizar'[Fecha] >= StartOfPreviousYear_Date &&
+        'Período a Analizar'[Fecha] <= EndOfPreviousYear_Comparable_Date
+    )
+
+VAR SpecifiedChannels = {"LIC", "EXT", "INS", "LOC"}
+
+VAR ProductGrowthSummary =
+    SUMMARIZECOLUMNS(
+        'Marca'[Marca], 
+        "Ventas_CY_YTD_USD", CALCULATE(
+                                SUM('Ventas Mensuales'[USD]),
+                                CY_YTD_DateFilter,
+                                'Canal'[IdCanal] IN SpecifiedChannels
+                            ),
+        "Ventas_PY_YTD_USD", CALCULATE(
+                                SUM('Ventas Mensuales'[USD]),
+                                PY_YTD_DateFilter,
+                                'Canal'[IdCanal] IN SpecifiedChannels
+                            )
+    )
+VAR ProductNominalGrowth =
+    ADDCOLUMNS(
+        ProductGrowthSummary,
+        "Crecimiento_Nominal_USD", [Ventas_CY_YTD_USD] - [Ventas_PY_YTD_USD]
+    )
+VAR RelevantProducts =
+    FILTER(
+        ProductNominalGrowth,
+        NOT ISBLANK([Crecimiento_Nominal_USD])
+    )
+RETURN
+    SELECTCOLUMNS(
+        RelevantProducts,
+        "Producto", [Marca],
+        "Crecimiento Nominal Ventas YTD (USD) - Canales Seleccionados", [Crecimiento_Nominal_USD],
+        "Ventas Este Año YTD (USD) - Canales Seleccionados", [Ventas_CY_YTD_USD],
+        "Ventas Año Pasado YTD (USD) - Canales Seleccionados", [Ventas_PY_YTD_USD]
+    )
+ORDER BY
+    [Crecimiento Nominal Ventas YTD (USD) - Canales Seleccionados] DESC, 
+    [Producto] ASC"
+Pregunta 13: Qué productos aportan menos al crecimiento (ventas periodo actual vs mismo periodo del año anterior) esto en terminos nominales.
+ Respuesta: 
+ EVALUATE 
+VAR MaxDataDateValue = MAX('Período a Analizar'[Fecha])
+VAR CurrentYear = YEAR(MaxDataDateValue)
+VAR StartOfCurrentYear_Date = DATE(CurrentYear, 1, 1)
+
+VAR CY_YTD_DateFilter =
+    FILTER(
+        ALLNOBLANKROW('Período a Analizar'[Fecha]), 
+        'Período a Analizar'[Fecha] >= StartOfCurrentYear_Date &&
+        'Período a Analizar'[Fecha] <= MaxDataDateValue
+    )
+
+VAR AnioAnterior = CurrentYear - 1
+VAR StartOfPreviousYear_Date = DATE(AnioAnterior, 1, 1)
+VAR EndOfPreviousYear_Comparable_Date = DATE(AnioAnterior, MONTH(MaxDataDateValue), DAY(MaxDataDateValue))
+
+VAR PY_YTD_DateFilter =
+    FILTER(
+        ALLNOBLANKROW('Período a Analizar'[Fecha]),
+        'Período a Analizar'[Fecha] >= StartOfPreviousYear_Date &&
+        'Período a Analizar'[Fecha] <= EndOfPreviousYear_Comparable_Date
+    )
+
+VAR SpecifiedChannels = {"LIC", "EXT", "INS", "LOC"}
+
+VAR ProductGrowthSummary =
+    SUMMARIZECOLUMNS(
+        'Marca'[Marca], 
+        "Ventas_CY_YTD_USD", CALCULATE(
+                                SUM('Ventas Mensuales'[USD]),
+                                CY_YTD_DateFilter,
+                                'Canal'[IdCanal] IN SpecifiedChannels
+                            ),
+        "Ventas_PY_YTD_USD", CALCULATE(
+                                SUM('Ventas Mensuales'[USD]),
+                                PY_YTD_DateFilter,
+                                'Canal'[IdCanal] IN SpecifiedChannels
+                            )
+    )
+VAR ProductNominalGrowth =
+    ADDCOLUMNS(
+        ProductGrowthSummary,
+        "Crecimiento_Nominal_USD", [Ventas_CY_YTD_USD] - [Ventas_PY_YTD_USD]
+    )
+VAR RelevantProducts =
+    FILTER(
+        ProductNominalGrowth,
+        NOT ISBLANK([Crecimiento_Nominal_USD]) 
+    )
+RETURN
+    SELECTCOLUMNS(
+        RelevantProducts,
+        "Producto", [Marca],
+        "Crecimiento Nominal Ventas YTD (USD) - Canales Seleccionados", [Crecimiento_Nominal_USD],
+        "Ventas Este Año YTD (USD) - Canales Seleccionados", [Ventas_CY_YTD_USD],
+        "Ventas Año Pasado YTD (USD) - Canales Seleccionados", [Ventas_PY_YTD_USD]
+    )
+ORDER BY
+    [Crecimiento Nominal Ventas YTD (USD) - Canales Seleccionados] ASC, // Cambiado a ASC para "aportan menos"
+    [Producto] ASC"
+Pregunta 14: Productos que registran ventas en los últimos 12 meses y no antes.
+ Respuesta: 
+ EVALUATE 
+VAR MaxDataDate = MAX('Período a Analizar'[Fecha])
+VAR L12M_EndDate = MaxDataDate
+VAR L12M_StartDate = EDATE(MaxDataDate, -12) + 1 
+
+VAR L12M_Date_Filter =
+    FILTER(
+        ALLNOBLANKROW('Período a Analizar'[Fecha]),
+        'Período a Analizar'[Fecha] >= L12M_StartDate && 'Período a Analizar'[Fecha] <= L12M_EndDate
+    )
+
+VAR Prior_To_L12M_Date_Filter =
+    FILTER(
+        ALLNOBLANKROW('Período a Analizar'[Fecha]),
+        'Período a Analizar'[Fecha] < L12M_StartDate
+    )
+
+VAR SpecifiedChannels = {"LIC", "EXT", "INS", "LOC"}
+
+VAR ProductSalesAnalysis =
+    SUMMARIZECOLUMNS(
+        'Marca'[Marca], 
+        "Sales_L12M_USD", CALCULATE(
+                                SUM('Ventas Mensuales'[USD]),
+                                L12M_Date_Filter,
+                                'Canal'[IdCanal] IN SpecifiedChannels
+                            ),
+        "Sales_Prior_To_L12M_USD", CALCULATE(
+                                SUM('Ventas Mensuales'[USD]),
+                                Prior_To_L12M_Date_Filter,
+                                'Canal'[IdCanal] IN SpecifiedChannels
+                            )
+    )
+VAR NewInL12MProducts =
+    FILTER(
+        ProductSalesAnalysis,
+        (NOT ISBLANK([Sales_L12M_USD]) && [Sales_L12M_USD] > 0) &&
+        (ISBLANK([Sales_Prior_To_L12M_USD]) || [Sales_Prior_To_L12M_USD] = 0) // Corregido: OR cambiado a ||
+    )
+RETURN
+    SELECTCOLUMNS(
+        NewInL12MProducts,
+        "Producto", [Marca],
+        "Ventas Últimos 12 Meses (USD) - Canales Seleccionados", [Sales_L12M_USD]
+    )
+ORDER BY
+    [Producto] ASC
+
+Pregunta 15: Qué productos dejaron de tener ventas este mes y si tuvieron en el mes anterior
+ Respuesta: 
+ EVALUATE 
+VAR MaxDataDate = MAX('Período a Analizar'[Fecha])
+
+// Definir el Mes Actual (CM) basado en MaxDataDate
+VAR CM_Year = YEAR(MaxDataDate)
+VAR CM_MonthNumber = MONTH(MaxDataDate)
+VAR CM_Dates_Filter =
+    FILTER(
+        ALLNOBLANKROW('Período a Analizar'[Fecha]),
+        YEAR('Período a Analizar'[Fecha]) = CM_Year &&
+        MONTH('Período a Analizar'[Fecha]) = CM_MonthNumber
+    )
+
+// Definir el Mes Previo (PM)
+VAR PM_Date_ReferenceForCalc = DATE(CM_Year, CM_MonthNumber, 1) // Primer día del mes actual identificado
+VAR PM_StartDate = EDATE(PM_Date_ReferenceForCalc, -1) // Primer día del mes previo
+VAR PM_Year = YEAR(PM_StartDate)
+VAR PM_MonthNumber = MONTH(PM_StartDate)
+VAR PM_Dates_Filter =
+    FILTER(
+        ALLNOBLANKROW('Período a Analizar'[Fecha]),
+        YEAR('Período a Analizar'[Fecha]) = PM_Year &&
+        MONTH('Período a Analizar'[Fecha]) = PM_MonthNumber
+    )
+
+VAR SpecifiedChannels = {"LIC", "EXT", "INS", "LOC"}
+
+VAR ProductSalesMonthly =
+    SUMMARIZECOLUMNS(
+        'Marca'[Marca], // Nombre del Producto
+        "Sales_CM_USD", CALCULATE(
+                                SUM('Ventas Mensuales'[USD]),
+                                CM_Dates_Filter,
+                                'Canal'[IdCanal] IN SpecifiedChannels
+                            ),
+        "Sales_PM_USD", CALCULATE(
+                                SUM('Ventas Mensuales'[USD]),
+                                PM_Dates_Filter,
+                                'Canal'[IdCanal] IN SpecifiedChannels
+                            )
+    )
+VAR ProductsDroppedOff =
+    FILTER(
+        ProductSalesMonthly,
+        (ISBLANK([Sales_CM_USD]) OR [Sales_CM_USD] = 0) && // Sin ventas (o ventas cero) en el Mes Actual
+        [Sales_PM_USD] > 0                                 // Tuvieron ventas positivas en el Mes Previo
+    )
+RETURN
+    SELECTCOLUMNS(
+        ProductsDroppedOff,
+        "Producto", [Marca],
+        "Ventas Mes Anterior (USD) - Canales Seleccionados", [Sales_PM_USD],
+        "Ventas Este Mes (USD) - Canales Seleccionados", IF(ISBLANK([Sales_CM_USD]), 0, [Sales_CM_USD]) // Mostrar 0 en lugar de BLANK para claridad
+    )
+ORDER BY
+    [Ventas Mes Anterior (USD) - Canales Seleccionados] DESC, 
+    [Producto] ASC
+
+Pregunta 16: Qué producto crece dentro de los TOP 10 mas importantes en ventas vs año anterior
+ Respuesta: 
+ EVALUATE 
+VAR MaxDataDateValue = MAX('Período a Analizar'[Fecha])
+VAR CurrentYear = YEAR(MaxDataDateValue)
+VAR StartOfCurrentYear_Date = DATE(CurrentYear, 1, 1)
+
+VAR CY_YTD_DateFilter =
+    FILTER(
+        ALLNOBLANKROW('Período a Analizar'[Fecha]), 
+        'Período a Analizar'[Fecha] >= StartOfCurrentYear_Date &&
+        'Período a Analizar'[Fecha] <= MaxDataDateValue
+    )
+
+VAR AnioAnterior = CurrentYear - 1
+VAR StartOfPreviousYear_Date = DATE(AnioAnterior, 1, 1)
+VAR EndOfPreviousYear_Comparable_Date = DATE(AnioAnterior, MONTH(MaxDataDateValue), DAY(MaxDataDateValue))
+
+VAR PY_YTD_DateFilter =
+    FILTER(
+        ALLNOBLANKROW('Período a Analizar'[Fecha]),
+        'Período a Analizar'[Fecha] >= StartOfPreviousYear_Date &&
+        'Período a Analizar'[Fecha] <= EndOfPreviousYear_Comparable_Date
+    )
+
+VAR SpecifiedChannels = {"LIC", "EXT", "INS", "LOC"}
+
+VAR ProductSalesAndGrowth =
+    SUMMARIZECOLUMNS(
+        'Marca'[Marca], 
+        "Ventas_CY_YTD_USD", CALCULATE(
+                                SUM('Ventas Mensuales'[USD]),
+                                CY_YTD_DateFilter,
+                                'Canal'[IdCanal] IN SpecifiedChannels
+                            ),
+        "Ventas_PY_YTD_USD", CALCULATE(
+                                SUM('Ventas Mensuales'[USD]),
+                                PY_YTD_DateFilter,
+                                'Canal'[IdCanal] IN SpecifiedChannels
+                            )
+    )
+VAR ProductSalesAndGrowthWithNominal =
+    ADDCOLUMNS(
+        ProductSalesAndGrowth,
+        "Crecimiento_Nominal_USD", IF(ISBLANK([Ventas_CY_YTD_USD]) && ISBLANK([Ventas_PY_YTD_USD]), BLANK(), COALESCE([Ventas_CY_YTD_USD], 0) - COALESCE([Ventas_PY_YTD_USD], 0))
+    )
+VAR RankedProducts =
+    ADDCOLUMNS(
+        ProductSalesAndGrowthWithNominal,
+        "SalesRank_CY_YTD", IF(
+                                ISBLANK([Ventas_CY_YTD_USD]), 
+                                BLANK(), // O un número muy alto para que no aparezcan en el TOP 10
+                                RANKX(ProductSalesAndGrowthWithNominal, [Ventas_CY_YTD_USD], , DESC, DENSE)
+                            )
+    )
+VAR Top10GrowingProducts =
+    FILTER(
+        RankedProducts,
+        NOT ISBLANK([SalesRank_CY_YTD]) && [SalesRank_CY_YTD] <= 10 &&
+        NOT ISBLANK([Crecimiento_Nominal_USD]) && [Crecimiento_Nominal_USD] > 0
+    )
+RETURN
+    SELECTCOLUMNS(
+        Top10GrowingProducts,
+        "Producto", [Marca],
+        "Ranking Ventas YTD Actual", [SalesRank_CY_YTD],
+        "Ventas Este Año YTD (USD) - Canales Seleccionados", [Ventas_CY_YTD_USD],
+        "Ventas Año Pasado YTD (USD) - Canales Seleccionados", [Ventas_PY_YTD_USD],
+        "Crecimiento Nominal YTD (USD) - Canales Seleccionados", [Crecimiento_Nominal_USD]
+    )
+ORDER BY
+    [Ranking Ventas YTD Actual] ASC, 
+    [Crecimiento Nominal YTD (USD) - Canales Seleccionados] DESC
+
+Pregunta 17: Qué producto cae dentro de los TOP 10 mas importantes en ventas vs año anterior
+ Respuesta: 
+ EVALUATE 
+VAR MaxDataDateValue = MAX('Período a Analizar'[Fecha])
+VAR CurrentYear = YEAR(MaxDataDateValue)
+VAR StartOfCurrentYear_Date = DATE(CurrentYear, 1, 1)
+
+VAR CY_YTD_DateFilter =
+    FILTER(
+        ALLNOBLANKROW('Período a Analizar'[Fecha]), 
+        'Período a Analizar'[Fecha] >= StartOfCurrentYear_Date &&
+        'Período a Analizar'[Fecha] <= MaxDataDateValue
+    )
+
+VAR AnioAnterior = CurrentYear - 1
+VAR StartOfPreviousYear_Date = DATE(AnioAnterior, 1, 1)
+VAR EndOfPreviousYear_Comparable_Date = DATE(AnioAnterior, MONTH(MaxDataDateValue), DAY(MaxDataDateValue))
+
+VAR PY_YTD_DateFilter =
+    FILTER(
+        ALLNOBLANKROW('Período a Analizar'[Fecha]),
+        'Período a Analizar'[Fecha] >= StartOfPreviousYear_Date &&
+        'Período a Analizar'[Fecha] <= EndOfPreviousYear_Comparable_Date
+    )
+
+VAR SpecifiedChannels = {"LIC", "EXT", "INS", "LOC"}
+
+VAR ProductSalesAndGrowth =
+    SUMMARIZECOLUMNS(
+        'Marca'[Marca], 
+        "Ventas_CY_YTD_USD", CALCULATE(
+                                SUM('Ventas Mensuales'[USD]),
+                                CY_YTD_DateFilter,
+                                'Canal'[IdCanal] IN SpecifiedChannels
+                            ),
+        "Ventas_PY_YTD_USD", CALCULATE(
+                                SUM('Ventas Mensuales'[USD]),
+                                PY_YTD_DateFilter,
+                                'Canal'[IdCanal] IN SpecifiedChannels
+                            )
+    )
+VAR ProductSalesAndGrowthWithNominal =
+    ADDCOLUMNS(
+        ProductSalesAndGrowth,
+        "Crecimiento_Nominal_USD", IF(ISBLANK([Ventas_CY_YTD_USD]) && ISBLANK([Ventas_PY_YTD_USD]), BLANK(), COALESCE([Ventas_CY_YTD_USD], 0) - COALESCE([Ventas_PY_YTD_USD], 0))
+    )
+VAR RankedProducts =
+    ADDCOLUMNS(
+        ProductSalesAndGrowthWithNominal,
+        "SalesRank_CY_YTD", IF(
+                                ISBLANK([Ventas_CY_YTD_USD]) || [Ventas_CY_YTD_USD] = 0, 
+                                BLANK(), // O un número muy alto para que no aparezcan en el TOP 10 si las ventas son 0 o BLANK
+                                RANKX(ProductSalesAndGrowthWithNominal, [Ventas_CY_YTD_USD], , DESC, DENSE)
+                            )
+    )
+VAR Top10FallingProducts =
+    FILTER(
+        RankedProducts,
+        NOT ISBLANK([SalesRank_CY_YTD]) && [SalesRank_CY_YTD] <= 10 && // Dentro del TOP 10 en ventas actuales
+        NOT ISBLANK([Crecimiento_Nominal_USD]) && 
+        [Crecimiento_Nominal_USD] < 0 // Productos que caen en ventas
+    )
+RETURN
+    SELECTCOLUMNS(
+        Top10FallingProducts,
+        "Producto", [Marca],
+        "Ranking Ventas YTD Actual", [SalesRank_CY_YTD],
+        "Ventas Este Año YTD (USD) - Canales Seleccionados", [Ventas_CY_YTD_USD],
+        "Ventas Año Pasado YTD (USD) - Canales Seleccionados", [Ventas_PY_YTD_USD],
+        "Decrecimiento Nominal YTD (USD) - Canales Seleccionados", [Crecimiento_Nominal_USD] // Será un valor negativo
+    )
+ORDER BY
+    [Ranking Ventas YTD Actual] ASC, // Mostrar por su ranking dentro del TOP 10
+    [Decrecimiento Nominal YTD (USD) - Canales Seleccionados] ASC // Mostrar primero los que más caen (más negativos)

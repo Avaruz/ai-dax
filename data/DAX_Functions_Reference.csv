@@ -1,0 +1,394 @@
+Function,Type,Description,Syntax
+APPROXIMATEDISTINCTCOUNT,Aggregation,"Returns the approximate number of rows that contain distinct values in a column. This function can query large amounts of data with potentially better performance than DISTINCTCOUNT, with slight deviation from the exact result.",APPROXIMATEDISTINCTCOUNT(<columnName>)
+AVERAGE,Aggregation,Returns the average (arithmetic mean) of all the numbers in a column.,AVERAGE(<column>)
+AVERAGEA,Aggregation,Returns the average (arithmetic mean) of the values in a column. Handles text and non-numeric values.,AVERAGEA(<column>)
+AVERAGEX,Aggregation,Calculates the average (arithmetic mean) of a set of expressions evaluated over a table.,"AVERAGEX(<table>,<expression>)"
+COUNT,Aggregation,Counts the number of rows in the specified column that contain non-blank values.,COUNT(<column>)
+COUNTA,Aggregation,Counts the number of rows in the specified column that contain non-blank values.,COUNTA(<column>)
+COUNTAX,Aggregation,"The COUNTAX function counts non-blank results when evaluating the result of an expression over a table. That is, it works just like the COUNTA function, but is used to iterate through the rows in a table and count rows where the specified expressions results in a non-blank result.","COUNTAX(<table>,<expression>)"
+COUNTBLANK,Aggregation,Counts the number of blank cells in a column.,COUNTBLANK(<column>)
+COUNTROWS,Aggregation,"The COUNTROWS function counts the number of rows in the specified table, or in a table defined by an expression.",COUNTROWS([<table>])
+COUNTX,Aggregation,"Counts the number of rows that contain a non-blank value or an expression that evaluates to a non-blank value, when evaluating an expression over a table.","COUNTX(<table>,<expression>)"
+DISTINCTCOUNT,Aggregation,Counts the number of distinct values in a column.,DISTINCTCOUNT(<column>)
+DISTINCTCOUNTNOBLANK,Aggregation,Counts the number of distinct values in a column.,DISTINCTCOUNTNOBLANK (<column>)
+MAX,Aggregation,"Returns the largest value in a column, or between two scalar expressions.","MAX(<column>) OR, MAX(<expression1>, <expression2>)"
+MAXA,Aggregation,Returns the largest value in a column.,MAXA(<column>)
+MAXX,Aggregation,Evaluates an expression for each row of a table and returns the largest value.,"MAXX(<table>,<expression>)"
+MIN,Aggregation,"Returns the smallest value in a column, or between two scalar expressions.","MIN(<column>) OR, MIN(<expression1>, <expression2>)"
+MINA,Aggregation,Returns the smallest value in a column.,MINA(<column>)
+MINX,Aggregation,Returns the smallest value that results from evaluating an expression for each row of a table.,"MINX(<table>, < expression>)"
+PRODUCT,Aggregation,Returns the product of the numbers in a column.,PRODUCT(<column>)
+PRODUCTX,Aggregation,Returns the product of an expression evaluated for each row in a table.,"PRODUCTX(<table>, <expression>)"
+SUM,Aggregation,Adds all the numbers in a column.,SUM(<column>)
+SUMX,Aggregation,Returns the sum of an expression evaluated for each row in a table.,"SUMX(<table>, <expression>)"
+CALENDAR,Date & Time,"Returns a table with a single column named ""Date"" that contains a contiguous set of dates. The range of dates is from the specified start date to the specified end date, inclusive of those two dates.","CALENDAR(<start_date>, <end_date>)"
+CALENDARAUTO,Date & Time,"Returns a table with a single column named ""Date"" that contains a contiguous set of dates. The range of dates is calculated automatically based on data in the model.",CALENDARAUTO([fiscal_year_end_month])
+DATE,Date & Time,Returns the specified date in datetime format.,"DATE(<year>, <month>, <day>)"
+DATEDIFF,Date & Time,Returns the number of interval boundaries between two dates.,"DATEDIFF(<Date1>, <Date2>, <Interval>)"
+DATEVALUE,Date & Time,Converts a date in text format to a date in datetime format.,DATEVALUE(date_text)
+DAY,Date & Time,"Returns the day of the month, a number from 1 to 31.",DAY(<date>)
+EDATE,Date & Time,Returns the date that is the indicated number of months before or after the start date. Use EDATE to calculate maturity dates or due dates that fall on the same day of the month as the date of issue.,"EDATE(<start_date>, <months>)"
+EOMONTH,Date & Time,"Returns the date in datetime format of the last day of the month, before or after a specified number of months. Use EOMONTH to calculate maturity dates or due dates that fall on the last day of the month.","EOMONTH(<start_date>, <months>)"
+HOUR,Date & Time,Returns the hour as a number from 0 (12:00 A.M.) to 23 (11:00 P.M.).,HOUR(<datetime>)
+MINUTE,Date & Time,"Returns the minute as a number from 0 to 59, given a date and time value.",MINUTE(<datetime>)
+MONTH,Date & Time,Returns the month as a number from 1 (January) to 12 (December).,MONTH(<datetime>)
+NETWORKDAYS,Date & Time,Returns the number of whole workdays between two dates (inclusive). Parameters specify which and how many days are weekend days. Weekend days and days specified as holidays are not considered as workdays.,"NETWORKDAYS(<start_date>, <end_date>[, <weekend>, <holidays>])"
+NOW,Date & Time,"Returns the current date and time in datetime format.
+
+The NOW function is useful when you need to display the current date and time on a worksheet or calculate a value based on the current date and time, and have that value updated each time you open the worksheet.",NOW()
+QUARTER,Date & Time,Returns the quarter as a number from 1 (January – March) to 4 (October – December).,QUARTER(<date>)
+SECOND,Date & Time,"Returns the seconds of a time value, as a number from 0 to 59.",SECOND(<time>)
+TIME,Date & Time,"Converts hours, minutes, and seconds given as numbers to a time in datetime format.","TIME(hour, minute, second)"
+TIMEVALUE,Date & Time,Converts a time in text format to a time in datetime format.,TIMEVALUE(time_text)
+TODAY,Date & Time,Returns the current date.,TODAY()
+UTCNOW,Date & Time,Returns the current UTC date and time.,UTCNOW()
+UTCTODAY,Date & Time,Returns the current UTC date.,UTCTODAY()
+WEEKDAY,Date & Time,Returns a number from 1 to 7 identifying the day of the week of a date. By default the day ranges from 1 (Sunday) to 7 (Saturday).,"WEEKDAY(<date>, <return_type>)"
+WEEKNUM,Date & Time,"Returns the week number for the given date according to the return_type value. The week number indicates where the week falls numerically within a year.
+
+There are two systems used for this function:
+
+System 1 - The week containing January 1 is the first week of the year and is numbered week 1.
+System 2 - The week containing the first Thursday of the year is the first week of the year and is numbered as week 1. This system is the methodology specified in ISO 8601, which is commonly known as the European week numbering system.
+","WEEKNUM(<date>[, <return_type>])"
+YEAR,Date & Time,Returns the year of a date as a four digit integer in the range 1900-9999.,YEAR(<date>)
+YEARFRAC,Date & Time,Calculates the fraction of the year represented by the number of whole days between two dates. Use the YEARFRAC worksheet function to identify the proportion of a whole year's benefits or obligations to assign to a specific term.,"YEARFRAC(<start_date>, <end_date>, <basis>)"
+ALL,Filter,"Returns all the rows in a table, or all the values in a column, ignoring any filters that might have been applied. This function is useful for clearing filters and creating calculations on all the rows in a table.","ALL( [<table> | <column>[, <column>[, <column>[,…]]]] )"
+ALLCROSSFILTERED,Filter,Clear all filters which are applied to a table.,ALLCROSSFILTERED(<table>)
+ALLEXCEPT,Filter,Removes all context filters in the table except filters that have been applied to the specified columns.,"ALLEXCEPT(<table>,<column>[,<column>[,…]])"
+ALLNOBLANKROW,Filter,"From the parent table of a relationship, returns all rows but the blank row, or all distinct values of a column but the blank row, and disregards any context filters that might exist.","ALLNOBLANKROW( {<table> | <column>[, <column>[, <column>[,…]]]} )"
+ALLSELECTED,Filter,"Removes context filters from columns and rows in the current query, while retaining all other context filters or explicit filters.
+
+The ALLSELECTED function gets the context that represents all rows and columns in the query, while keeping explicit filters and contexts other than row and column filters. This function can be used to obtain visual totals in queries.","ALLSELECTED([<tableName> | <columnName>[, <columnName>[, <columnName>[,…]]]] )"
+CALCULATE,Filter,Evaluates an expression in a modified filter context.,"CALCULATE(<expression>[, <filter1> [, <filter2> [, …]]])"
+CALCULATETABLE,Filter,Evaluates a table expression in a modified filter context.,"CALCULATETABLE(<expression>[, <filter1> [, <filter2> [, …]]])"
+EARLIER,Filter,"Returns the current value of the specified column in an outer evaluation pass of the mentioned column.
+
+EARLIER is useful for nested calculations where you want to use a certain value as an input and produce calculations based on that input. In Microsoft Excel, you can do such calculations only within the context of the current row; however, in DAX you can store the value of the input and then make calculation using data from the entire table.
+
+EARLIER is mostly used in the context of calculated columns.","EARLIER(<column>, <number>)"
+EARLIEST,Filter,Returns the current value of the specified column in an outer evaluation pass of the specified column.,EARLIEST(<column>)
+FILTER,Filter,Returns a table that represents a subset of another table or expression.,"FILTER(<table>,<filter>)"
+KEEPFILTERS,Filter,Modifies how filters are applied while evaluating a CALCULATE or CALCULATETABLE function.,KEEPFILTERS(<expression>)
+LOOKUPVALUE,Filter,Returns the value for the row that meets all criteria specified by one or more search conditions.,"LOOKUPVALUE( 
+<result_columnName>, 
+<search_columnName>, 
+<search_value> 
+[, <search2_columnName>, <search2_value>]… 
+[, <alternateResult>] 
+)"
+REMOVEFILTERS,Filter,Clear filters from the specified tables or columns.,"REMOVEFILTERS([<table> | <column>[, <column>[, <column>[,…]]]])"
+SELECTEDVALUE,Filter,Returns the value when the context for columnName has been filtered down to one distinct value only. Otherwise returns alternateResult.,"SELECTEDVALUE(<columnName>[, <alternateResult>])"
+ACCRINT,Financial,Returns the accrued interest for a security that pays periodic interest.,"ACCRINT(
+<issue>,
+<first_interest>,
+<settlement>,
+<rate>,
+<par>,
+<frequency>
+[, <basis>[, <calc_method>]]
+)"
+ACCRINTM,Financial,Returns the accrued interest for a security that pays interest at maturity.,"ACCRINTM(<issue>, <maturity>, <rate>, <par>[, <basis>])"
+AMORDEGRC,Financial,"Returns the depreciation for each accounting period. This function is provided for the French accounting system. If an asset is purchased in the middle of the accounting period, the prorated depreciation is taken into account. The function is similar to AMORLINC, except that a depreciation coefficient is applied in the calculation depending on the life of the assets.","AMORDEGRC(
+<cost>,
+<date_purchased>,
+<first_period>,
+<salvage>,
+<period>,
+<rate>[, <basis>]
+)"
+AMORLINC,Financial,Returns the accrued interest for a security that pays interest at maturity.,"AMORLINC(
+<cost>,
+<date_purchased>,
+<first_period>,
+<salvage>,
+<period>,
+<rate>[, <basis>]
+)"
+COUPDAYBS,Financial,Returns the number of days from the beginning of a coupon period until its settlement date.,"COUPDAYBS(<settlement>, <maturity>, <frequency>[, <basis>])"
+COUPDAYS,Financial,Returns the number of days in the coupon period that contains the settlement date.,"COUPDAYS(<settlement>, <maturity>, <frequency>[, <basis>])"
+COUPDAYSNC,Financial,Returns the number of days from the settlement date to the next coupon date.,"COUPDAYSNC(<settlement>, <maturity>, <frequency>[, <basis>])"
+COUPNCD,Financial,Returns the next coupon date after the settlement date.,"COUPNCD(<settlement>, <maturity>, <frequency>[, <basis>])"
+COUPNUM,Financial,"Returns the number of coupons payable between the settlement date and maturity date, rounded up to the nearest whole coupon.","COUPNUM(<settlement>, <maturity>, <frequency>[, <basis>])"
+COUPPCD,Financial,Returns the previous coupon date before the settlement date.,"COUPPCD(<settlement>, <maturity>, <frequency>[, <basis>])"
+CUMIPMT,Financial,Returns the cumulative interest paid on a loan between start_period and end_period.,"CUMIPMT(<rate>, <nper>, <pv>, <start_period>, <end_period>, <type>)"
+CUMPRINC,Financial,Returns the cumulative principal paid on a loan between start_period and end_period.,"CUMPRINC(<rate>, <nper>, <pv>, <start_period>, <end_period>, <type>)"
+DB,Financial,Returns the depreciation of an asset for a specified period using the fixed-declining balance method.,"DB(<cost>, <salvage>, <life>, <period>[, <month>])"
+DDB,Financial,Returns the depreciation of an asset for a specified period using the double-declining balance method or some other method you specify.,"DDB(<cost>, <salvage>, <life>, <period>[, <factor>])"
+DISC,Financial,Returns the discount rate for a security.,"DISC(<settlement>, <maturity>, <pr>, <redemption>[, <basis>])"
+DOLLARDE,Financial,"Converts a dollar price expressed as an integer part and a fraction part, such as 1.02, into a dollar price expressed as a decimal number. Fractional dollar numbers are sometimes used for security prices.","DOLLARDE(<fractional_dollar>, <fraction>)"
+DOLLARFR,Financial,"Convert a price in dollars expressed as a whole number and a fractional part, such as 1.02, into a price in dollars expressed as a decimal number.",
+DURATION,Financial,Return the Macaulay duration of an assumed nominal value of 100 USD.,
+EFFECT,Financial,Return the effective annual interest rate if the nominal annual interest rate and the number of compounding periods per year are known.,
+FV,Financial,Calculate the future value of an investment based on a constant interest rate.,
+INTRATE,Financial,Return the yield to maturity of a fully invested negotiable security.,
+IPMT,Financial,"Return the interest payment during a specific period based on periodic and constant payments, and a constant interest rate.",
+ISPMT,Financial,Calculate the interest paid (or received) during the specified period of a loan (or investment) with fixed principal payments.,
+MDURATION,Financial,Return the modified Macaulay duration of a traded security with a nominal value of 100 USD.,
+NOMINAL,Financial,Return the nominal annual interest rate if the effective rate and the number of compounding periods per year are known.,
+NPER,Financial,"Return the number of periods of an investment based on periodic and constant payments, and a constant interest rate.",
+ODDFPRICE,Financial,Return the price per each 100 USD of face value of a tradable security that has a first odd (short or long) period,
+ODDFYIELD,Financial,Return the price per each 100 USD of nominal value of a negotiable security that has a first odd (short or long) period.,
+ODDLPRICE,Financial,Return the price per each 100 USD of nominal value of a negotiable security that has a last coupon period that is odd (short or long).,
+ODDLYIELD,Financial,Return the yield of a negotiable security that has a last odd (short or long) period.,
+PDURATION,Financial,Return the number of periods required for an investment to reach a specified value.,
+PMT,Financial,Calculate the payment of a loan based on constant payments and a constant interest rate.,
+PPMT,Financial,"Return the payment of the principal of an investment during a specific period based on periodic and constant payments, and a constant interest rate",
+PRICE,Financial,Return the price per each 100 USD of nominal value of a negotiable security that pays periodic interest.,
+PRICEDISC,Financial,Return the price per each 100 USD of nominal value of a discount negotiable security.,
+PRICEMAT,Financial,Return the price per each 100 USD of nominal value of a negotiable security that pays interest at maturity.,
+PV,Financial,"Calculate the present value of a loan or an investment, based on a constant interest rate.",
+RATE,Financial,Return the interest rate per period of an annuity.,
+RECEIVED,Financial,Return the amount received at maturity for a negotiable security invested in its entirety.,
+RRI,Financial,Return an equivalent interest rate for the growth of an investment.,
+SLN,Financial,Return the straight-line depreciation of an asset for a period.,
+SYD,Financial,Return the annuity depreciation of an asset for a specified period.,
+TBILLEQ,Financial,Return the equivalent yield of a Treasury Bill.,
+TBILLPRICE,Financial,Return the price for each $100 USD of nominal value of a treasury bill.,
+TBILLYIELD,Financial,Return the yield of a treasury bill.,
+VDB,Financial,"Return the amortization of an asset over a specific period, including partial periods, using the double declining balance method or another specified method of amortization.",
+XIRR,Financial,Return the internal rate of return of a cash flow schedule that is not necessarily periodic.,
+XNPV,Financial,Return the present value of a cash flow schedule that is not necessarily periodic.,
+YIELD,Financial,Return the yield of a tradable security that pays periodic interest.,
+YIELDDISC,Financial,Return the annual yield of a discount security.,
+YIELDMAT,Financial,Return the annual yield of a security that pays interest at maturity.,
+COLUMNSTATISTICS,Information,Return a statistics table for each column of each table in the model.,
+CONTAINS,Information,"Return true if the values of all referenced columns exist or are contained in those columns; otherwise, the function returns false.",
+CONTAINSROW,Information,"Return TRUE if a row of values exists or is included in a table; otherwise, return FALSE.",
+CONTAINSSTRING,Information,Return TRUE or FALSE to indicate whether a string contains another string.,
+CONTAINSSTRINGEXACT,Information,Return TRUE or FALSE to indicate whether a string contains another string.,
+CUSTOMDATA,Information,Return the contents of the CustomData property of the connection string.,
+HASONEFILTER,Information,"Return TRUE if the number of values directly filtered in columnName is one; otherwise, return FALSE.",
+HASONEVALUE,Information,"Return TRUE if the context of columnName has been filtered to a single distinct value. Otherwise, return FALSE.",
+ISAFTER,Information,A boolean function that emulates the behavior of a 'Start Date' clause and returns true for a row that meets all the condition parameters.,
+ISBLANK,Information,Check if a value is blank and return TRUE or FALSE.,
+ISCROSSFILTERED,Information,Return TRUE if columnName or another column from the same table or a related table is being filtered.,
+ISEMPTY,Information,Check if a table is empty.,
+ISERROR,Information,Check if a value is an error and return TRUE or FALSE.,
+ISEVEN,Information,Return TRUE if the number is even or FALSE if the number is odd.,
+ISFILTERED,Information,Return TRUE if columnName is being directly filtered.,
+ISINSCOPE,Information,Return true if the specified column is a level in a hierarchy of levels.,
+ISLOGICAL,Information,"Check if a value is logical (TRUE or FALSE), and return TRUE or FALSE.",
+ISNONTEXT,Information,Check if a value is not text (blank cells are not text) and return TRUE or FALSE.,
+ISNUMBER,Information,Check if a value is a number and return TRUE or FALSE.,
+ISODD,Information,Return TRUE if the number is odd or FALSE if it is even.,
+ISONORAFTER,Information,"A boolean function that emulates the behavior of a ""Start Date"" clause and returns true for a row that meets all the condition parameters.",
+ISSELECTEDMEASURE,Information,It is used in expressions for calculation elements to determine that the measure in context is one of those specified in the list of measures.,
+ISSUBTOTAL,Information,"Create another column in a SUMMARIZE expression that returns ""true"" if the row contains subtotal values of the column specified as an argument; otherwise, returns ""false"".",
+ISTEXT,Information,Checks whether a value is text and returns TRUE or FALSE.,
+NONVISUAL,Information,Marks a filter of values in a SUMMARIZECOLUMNS expression as non-visual.,
+SELECTEDMEASURE,Information,It is used in expressions so that calculation elements refer to the measure that is in context.,
+SELECTEDMEASUREFORMATSTRING,Information,It is used in expressions so that calculation elements retrieve the format string of the measure in context.,
+SELECTEDMEASURENAME,Information,It is used in expressions so that calculation elements determine by name the measure that is in context.,
+USERCULTURE,Information,Returns the current user's regional settings.,
+USERNAME,Information,Returns the domain name and username of the credentials provided to the system at the time of connection.,
+USEROBJECTID,Information,Devuelve el identificador de objeto o SID del usuario actual.,
+USERPRINCIPALNAME,Information,Devuelve el nombre principal de usuario.,
+AND,Logical,Checks if both arguments are TRUE and returns TRUE if they are both TRUE.,
+BITAND,Logical,Returns a bitwise 'AND' operation of two numbers.,
+BITLSHIFT,Logical,Returns a number shifted to the left by the specified number of bits.,
+BITOR,Logical,Returns a bitwise 'OR' operation of two numbers.,
+BITRSHIFT,Logical,Returns a number shifted right by the specified number of bits.,
+BITXOR,Logical,The function returns a bitwise 'XOR' operation of two numbers.,
+COALESCE,Logical,Returns the first expression that evaluates to a non-BLANK value.,
+FALSE,Logical,Returns the logical value FALSE.,
+IF,Logical,"Checks a condition and returns a value when it is ""TRUE""; otherwise, returns a second value.",
+IF.EAGER,Logical,"Checks a condition and returns a value when it is ""TRUE""; otherwise, returns a second value. Uses an eager evaluation plan that always evaluates the branching expressions regardless of the condition expression.",
+IFERROR,Logical,Evaluates an expression and returns a specified value if the expression returns an error.,
+NOT,Logical,Inverts FALSE to TRUE or TRUE to FALSE.,
+OR,Logical,Checks if one of the arguments is TRUE and returns TRUE if it is.,
+SWITCH,Logical,It evaluates an expression against a list of values and returns one of several possible result expressions.,
+TRUE,Logical,Returns the logical value True.,
+ABS,Math and trig,Returns the absolute value of a number.,
+ACOS,Math and trig,"Returns the arcocoseno, or inverse cosine, of a number.",
+ACOSH,Math and trig,Returns the inverse hyperbolic cosine of a number.,
+ACOT,Math and trig,"Returns the arcocotent, or inverse cotangent, of a number.",
+ACOTH,Math and trig,Returns the inverse hyperbolic cotangente of a number.,
+ASIN,Math and trig,"Returns the arcoseno, or reverse sinus, of a number.",
+ASINH,Math and trig,Returns the inverse hyperbolic sine of a number.,
+ATAN,Math and trig,"Returns the arcangent, or inverse tangent, of a number.",
+ATANH,Math and trig,Returns the inverse hyperbolic tangent of a number.,
+CEILING,Math and trig,Round up an integer or the closest significant multiple.,
+CONVERT,Math and trig,Convert an expression from one type of data to another.,
+COS,Math and trig,Returns the cosine of the given angle.,
+COSH,Math and trig,Returns the hyperbolic cosine of a number.,
+COT,Math and trig,Returns the cotangente of an angle specified in Radianes.,
+COTH,Math and trig,Returns the hyperbolic cotangent of a hyperbolic angle.,
+CURRENCY,Math and trig,Evaluate the argument and return the result as a type of currency data.,
+DEGREES,Math and trig,Turn the radians into degrees.,
+DIVIDE,Math and trig,Performs the division and returns an alternative or blank () result by dividing it by 0.,
+EVEN,Math and trig,Returns the upward rounded number to the nearest torque.,
+EXP,Math and trig,Returns and raised to the power of a certain number.,
+FACT,Math and trig,"Returns the factorial of a number, equal to series 1*2*3*...*, which ends in the given number.",
+FLOOR,Math and trig,"It rounds a downward number, to zero, to the nearest significance.",
+GCD,Math and trig,Returns the maximum common divisor of two or more integers.,
+INT,Math and trig,Round a downward number to the closest integer.,
+ISO.CEILING,Math and trig,"It rounds a number up, the whole or the closest significant multiple.",
+LCM,Math and trig,Returns the minimum common multiple of integers.,
+LN,Math and trig,Returns the natural logarithm of a number.,
+LOG,Math and trig,Returns the logarithm of a number at the specified base.,
+LOG10,Math and trig,Returns the base-10 logarithm of a number.,
+MOD,Math and trig,Returns the rest after dividing a number between a divisor. The result always has the same sign as the divisor.,
+MROUND,Math and trig,Returns a rounded number to the desired multiple.,
+ODD,Math and trig,Returns an upward rounded number to the nearest odd whole.,
+PI,Math and trig,"Returns the value of Pi (3,14159265358979) with 15 digit precision.",
+POWER,Math and trig,Returns the result of a high number to a power.,
+QUOTIENT,Math and trig,Make the division and only return the entire part of the result.,
+RADIANS,Math and trig,Turn the degrees into radians.,
+RAND,Math and trig,Returns a random number greater than or equal to 0 and less than 1 uniformly distributed.,
+RANDBETWEEN,Math and trig,Returns a random number in the interval between two numbers that specify.,
+ROUND,Math and trig,Round a number to the specified number of digits.,
+ROUNDDOWN,Math and trig,"Round a downward number, to zero.",
+ROUNDUP,Math and trig,"Round up an upward number, moving away from 0 (zero).",
+SIGN,Math and trig,"Determine the sign of a number, the result of a calculation or a value in a column.",
+SIN,Math and trig,Returns the breast of the given angle.,
+SINH,Math and trig,Returns the hyperbolic sinus of a number.,
+SQRT,Math and trig,Return the square root of a number.,
+SQRTPI,Math and trig,Returns the square root of (number * pi).,
+TAN,Math and trig,Returns the tangent of the given angle.,
+TANH,Math and trig,Returns the hyperbolic tangent of a number.,
+TRUNC,Math and trig,Trunca a decimal number in an integer when removing the decimal or fractional part of the number.,
+BLANK,Others,Returns a blank space.,
+ERROR,Others,It generates an error with an error message.,
+EVALUATEANDLOG,Others,Returns the value of the first argument and records it in an event of the Dax Evaluation Registry Profiles.,
+TOCSV,Others,Returns a table like a CSV format chain.,
+TOJSON,Others,Returns a table like a chain in JSON format.,
+PATH,Parent and child,Returns a defined text chain with the identifiers of all the primary elements of the current identifier.,"PATH(<ID_columnName>, <parent_columnName>)"
+PATHCONTAINS,Parent and child,Returns True if the specified element exists on the specified access route.,"PATHCONTAINS(<path>, <item>)"
+PATHITEM,Parent and child,Returns the element located in the specified position value of a chain that results from the evaluation of a path function.,"PATHITEM(<path>, <position>[, <type>])"
+PATHITEMREVERSE,Parent and child,Returns the element located in the specified position value of a chain that results from the evaluation of a path function.,"PATHITEMREVERSE(<path>, <position>[, <type>])"
+PATHLENGTH,Parent and child,"Returns the number of primary elements of the element specified in a specific path result, including itself.",PATHLENGTH(<path>)
+CROSSFILTER,Relationship,Specifies the cross filtering address that will be used in a calculation of a relationship that exists between two columns.,
+RELATED,Relationship,Returns a related value of another table.,
+RELATEDTABLE,Relationship,Evaluate a table expression in a context modified by the specified filters.,
+USERELATIONSHIP,Relationship,Specifies the relationship to be used in a specific calculation such as that between columnname1 and columnname2.,
+BETA.DIST,Statistical,Returns the beta distribution.,
+BETA.INV,Statistical,Returns the inverse of the Beta cumulative probability density function (Beta.dist).,
+CHISQ.DIST,Statistical,Returns the chi square distribution.,
+CHISQ.DIST.RT,Statistical,Returns the right tail probability of the Chi Cuadrado distribution.,
+CHISQ.INV,Statistical,Returns the inverse of the probability of the left tail of the Chi Cuadrado distribution.,
+CHISQ.INV.RT,Statistical,Returns the inverse of the right tail probability of the Chi Square distribution.,
+COMBIN,Statistical,Returns the number of combinations of a certain amount of elements.,
+COMBINA,Statistical,Returns the amount of combinations (with repetitions) of a certain number of elements.,
+CONFIDENCE.NORM,Statistical,The confidence interval is a range of values.,
+CONFIDENCE.T,Statistical,Returns the confidence interval of a population average with a Student T distribution.,
+EXPON.DIST,Statistical,Returns the exponential distribution.,
+GEOMEAN,Statistical,Returns the geometric mean of the numbers of a column.,
+GEOMEANX,Statistical,Returns the geometric mean of an expression evaluated from each row of a table.,
+MEDIAN,Statistical,Returns the median numbers of a column.,
+MEDIANX,Statistical,Returns the median of an expression evaluated for each row of a table.,
+NORM.DIST,Statistical,Returns the normal distribution for the specified average and standard deviation.,
+NORM.INV,Statistical,Inverse of the normal cumulative distribution for the specified average and standard deviation.,
+NORM.S.DIST,Statistical,Returns the standard normal distribution (it has an average of zero and a standard deviation of one).,
+NORM.S.INV,Statistical,Returns the inverse of the standard normal cumulative distribution.,
+PERCENTILE.EXC,Statistical,"Returns the k-eth of the values ​​of an interval, where k is in interval 0..1, exclusive.",
+PERCENTILE.INC,Statistical,"Returns the k-eth of the values ​​of an interval, where k is in interval 0..1, inclusive.",
+PERCENTILEX.EXC,Statistical,Returns the percentile number of an expression evaluated for each row of a table.,
+PERCENTILEX.INC,Statistical,Returns the percentile number of an expression evaluated for each row of a table.,
+PERMUT,Statistical,Returns the number of permutations of a certain number of objects that can be selected from Number objects.,
+POISSON.DIST,Statistical,Returns the distribution of Poisson.,
+RANK.EQ,Statistical,Returns the classification of a number on a list of numbers.,
+RANKX,Statistical,Returns the classification of a number on a list of numbers for each row of the table table.,
+SAMPLE,Statistical,Returns a sample of n rows of the specified table.,
+STDEV.P,Statistical,Returns the standard deviation of the entire population.,
+STDEV.S,Statistical,Returns the standard deviation of a sample population.,
+STDEVX.P,Statistical,Returns the standard deviation of the entire population.,
+STDEVX.S,Statistical,Returns the standard deviation of a sample population.,
+T.DIST,Statistical,Returns Student's left tail distribution.,
+T.DIST.2T,Statistical,Returns the bilateral distribution of Student.,
+T.DIST.RT,Statistical,Returns the Student Tow -cool T distribution.,
+T.INV,Statistical,Returns the Left Cola of Student T distribution.,
+T.INV.2t,Statistical,Returns the Bilateral Inverse of Student's T distribution.,
+VAR.P,Statistical,Returns the variance of the total population.,
+VAR.S,Statistical,Returns the variance of a sample population.,
+VARX.P,Statistical,Returns the variance of the total population.,
+VARX.S,Statistical,Returns the variance of a sample population.,
+ADDCOLUMNS,Table Manipulation,Add calculated columns to the given table or expression.,"ADDCOLUMNS(<table>, <name>, <expression>[, <name>, <expression>]…)"
+ADDMISSINGITEMS,Table Manipulation,"Add combinations of elements of several columns to a table, if they still do not exist.","ADDMISSINGITEMS ( [<showAll_columnName> [, <showAll_columnName> [, … ] ] ], <table> [, <groupBy_columnName> [, [<filterTable>] [, <groupBy_columnName> [, [<filterTable>] [, … ] ] ] ] ] ] )"
+CROSSJOIN,Table Manipulation,Returns a table that contains the Cartesian product of all the ranks of all argument tables.,"CROSSJOIN(<table>, <table>[, <table>]…)"
+CURRENTGROUP,Table Manipulation,Returns a set of ranks of the table argument of a Groupby expression.,CURRENTGROUP ( )
+DATATABLE,Table Manipulation,It provides a mechanism to declare an inserted set of data values.,"DATATABLE (ColumnName1, DataType1, ColumnName2, DataType2..., {{Value1, Value2...}, {ValueN, ValueN+1...}...})"
+DETAILROWS,Table Manipulation,Evaluate an expression of rows of details defined for a measure and return the data.,DETAILROWS([Measure])
+DISTINCT (column),Table Manipulation,Returns a table of a column that contains the different values ​​of the specified column.,DISTINCT(<column>)
+DISTINCT (table),Table Manipulation,Returns a table by removing the duplicate rows from another table or expression.,DISTINCT(<table>)
+EXCEPT,Table Manipulation,Returns the ranks of a table that do not appear in another table.,"EXCEPT(<table_expression1>, <table_expression2>)"
+FILTERS,Table Manipulation,Returns a table of values ​​that are applied directly as filters to columnme.,FILTERS(<columnName>)
+GENERATE,Table Manipulation,Returns a table with the Cartesian product between each row of table1 and the table that is obtained when evaluating table2 in the context of the current table of table1.,"GENERATE(<table1>, <table2>)"
+GENERATEALL,Table Manipulation,Returns a table with the Cartesian product between each row of table1 and the table that is obtained when evaluating table2 in the context of the current table of table1.,"GENERATEALL(<table1>, <table2>)"
+GENERATESERIES,Table Manipulation,Returns a single column table that contains the values ​​of an arithmetic series.,"GENERATESERIES(<startValue>, <endValue>[, <incrementValue>])"
+GROUPBY,Table Manipulation,"Similar to the Summarize function, Groupby does not perform an implicit calculate operation for the extension columns.","GROUPBY (<table> [, <groupBy_columnName> [, <groupBy_columnName> [, …]]] [, <name>, <expression> [, <name>, <expression> [, …]]])"
+IGNORE,Table Manipulation,Modifies Summarizecolumns by omission of specific expressions of the Blank/Null evaluation.,IGNORE(<expression>)
+INTERSECT,Table Manipulation,Returns the intersection of two tables and retains the duplicates.,"INTERSECT(<table_expression1>, <table_expression2>)"
+NATURALINNERJOIN,Table Manipulation,Make an internal combination of one table with another.,"NATURALINNERJOIN(<LeftTable>, <RightTable>)"
+NATURALLEFTOUTERJOIN,Table Manipulation,Make a combination of Leftable with rorchtable.,"NATURALLEFTOUTERJOIN(<LeftTable>, <RightTable>)"
+ROLLUP,Table Manipulation,Modifies Summarize's behavior by incorporating accumulation ranks into the result in the columns that defines the groupby_columname parameter.,"ROLLUP ( <groupBy_columnName> [, <groupBy_columnName> [, … ] ] )"
+ROLLUPADDISSUBTOTAL,Table Manipulation,Modifies the behavior of Summarizecolumns by incorporating accumulation or subtotal rows to the result based on the columns of Groupby_Columnname.,"ROLLUPADDISSUBTOTAL ( [<grandtotalFilter>], <groupBy_columnName>, <name> [, [<groupLevelFilter>] [, <groupBy_columnName>, <name> [, [<groupLevelFilter>] [, … ] ] ] ] )"
+ROLLUPISSUBTOTAL,Table Manipulation,Associates the accumulation groups with the column that adds rollupaddissubtotal in an expression Addmsingitems.,"ROLLUPGROUP ( <groupBy_columnName> [, <groupBy_columnName> [, … ] ] )"
+ROLLUPGROUP,Table Manipulation,Modifies the behavior of Summarize and Summarizecolumns by incorporating accumulation rows into the columns that defines the groupby_columnname parameter.,"ROLLUPISSUBTOTAL ( [<grandTotalFilter>], <groupBy_columnName>, <isSubtotal_columnName> [, [<groupLevelFilter>] [, <groupBy_columnName>, <isSubtotal_columnName> [, [<groupLevelFilter>] [, … ] ] ] ] )"
+ROW,Table Manipulation,Returns a table with a single row that contains the values ​​resulting from the expressions provided to each column.,"ROW(<name>, <expression>[[,<name>, <expression>]…])"
+SELECTCOLUMNS,Table Manipulation,Add calculated columns to the given table or expression.,"SELECTCOLUMNS(<Table>, [<Name>], <Expression>, [<Name>], …)"
+SUBSTITUTEWITHINDEX,Table Manipulation,Returns a table that represents a left semicombination of the two tables provided as arguments.,"SUBSTITUTEWITHINDEX(<table>, <indexColumnName>, <indexColumnsTable>, [<orderBy_expression>, [<order>][, <orderBy_expression>, [<order>]]…])"
+SUMMARIZE,Table Manipulation,Returns a summary table of the totals requested in a group of groups.,"SUMMARIZE (<table>, <groupBy_columnName>[, <groupBy_columnName>]…[, <name>, <expression>]…)"
+SUMMARIZECOLUMNS,Table Manipulation,Returns a summary table on a group of groups.,"SUMMARIZECOLUMNS( <groupBy_columnName> [, < groupBy_columnName >]…, [<filterTable>]…[, <name>, <expression>]…)"
+Table constructor,Table Manipulation,Returns a table of one or several columns.,"{ <scalarExpr1>, <scalarExpr2>, … } 
+{ ( <scalarExpr1>, <scalarExpr2>, … ), ( <scalarExpr1>, <scalarExpr2>, … ), … }"
+TOPN,Table Manipulation,Returns the upper rows of the specified table.,"TOPN(<N_Value>, <Table>, <OrderBy_Expression>, [<Order>[, <OrderBy_Expression>, [<Order>]]…])"
+TREATAS,Table Manipulation,Apply the result of a table expression as filters to the columns of an unrelated table.,"TREATAS(table_expression, <column>[, <column>[, <column>[,…]]]} )"
+UNION,Table Manipulation,Create a union table (combination) from a couple of tables.,"UNION(<table_expression1>, <table_expression2> [,<table_expression>]…)"
+VALUES,Table Manipulation,Returns a table of a column that contains the different values ​​of the specified table or column.,VALUES(<TableNameOrColumnName>)
+COMBINEVALUES,Text,Combine two or more text chains in one.,
+CONCATENATE,Text,Combine two text chains in one.,
+CONCATENATEX,Text,Concatena the result of an expression evaluated for each row of a table.,
+EXACT,Text,"Compare two text chains and return True if they are exactly the same, or false otherwise.",
+FIND,Text,Returns the first position of a text chain in another.,
+FIXED,Text,It rounds a number to the specified number of decimals and returns the result as text.,
+FORMAT,Text,Converts a text value according to the specified format.,
+LEFT,Text,Returns the number of characters specified from the beginning of a text chain.,
+LEN,Text,Returns the number of characters in a text chain.,
+LOWER,Text,Convert all the letters from a text chain to lowercase.,
+MID,Text,Returns a character string of half of a text chain from an initial position and a length.,
+REPLACE,Text,"Replace replaces the part of a text chain, according to the number of characters specified, by another text chain.",
+REPT,Text,Repeat the text a certain number of times.,
+RIGHT,Text,"Returns the last character or characters of a text chain, depending on the number of characters that you specify.",
+SEARCH,Text,"Returns the number of the character in which a specific character or text chain is found for the first time, from left to right.",
+SUBSTITUTE,Text,Replaces existing text by a new one in a text chain.,
+TRIM,Text,"Remove all the spaces of the text, except the individual spaces between words.",
+UNICHAR,Text,Returns the unicode character to which the numerical value refers.,
+UNICODE,Text,Returns the numerical code that corresponds to the first character of the text chain.,
+UPPER,Text,Convert a text chain to capital letters.,
+VALUE,Text,A text chain that represents a number becomes a number.,
+CLOSINGBALANCEMONTH,Time Intelligence,Evaluate the expression value on the last date of the month in the current context.,"CLOSINGBALANCEMONTH(<expression>,<dates>[,<filter>])"
+CLOSINGBALANCEQUARTER,Time Intelligence,Evaluate the expression value on the last date of the quarter in the current context.,"CLOSINGBALANCEQUARTER(<expression>,<dates>[,<filter>])"
+CLOSINGBALANCEYEAR,Time Intelligence,Evaluate the expression value on the last date of the year in the current context.,"CLOSINGBALANCEYEAR(<expression>,<dates>[,<filter>][,<year_end_date>])"
+DATEADD,Time Intelligence,"Returns a table that contains a column of dates, displaced forward or backward over time, by the specified number of intervals from the current context dates.","DATEADD(<dates>,<number_of_intervals>,<interval>)"
+DATESBETWEEN,Time Intelligence,Returns a table that contains a column of dates that begins with a specified start date and continues to a specified end date.,"DATESBETWEEN(<Dates>, <StartDate>, <EndDate>)"
+DATESINPERIOD,Time Intelligence,Returns a table that contains a column of dates that starts by a specific start date and follows up to the number and type of specified dates intervals.,"DATESINPERIOD(<dates>, <start_date>, <number_of_intervals>, <interval>)"
+DATESMTD,Time Intelligence,"Returns a table that contains a column with the dates of the month to date, in the current context.",DATESMTD(<dates>)
+DATESQTD,Time Intelligence,"Returns a table that contains a column with the trimester dates to date, in the current context.",DATESQTD(<dates>)
+DATESYTD,Time Intelligence,"Returns a table that contains a column with the dates of the year to date, in the current context.","DATESYTD(<dates> [,<year_end_date>])"
+ENDOFMONTH,Time Intelligence,Returns the last date of the month of the current context for the specified dates column.,ENDOFMONTH(<dates>)
+ENDOFQUARTER,Time Intelligence,Returns the last date of the trimester of the current context for the specified dates column.,ENDOFQUARTER(<dates>)
+ENDOFYEAR,Time Intelligence,Returns the last date of the current context for the specified dates column.,"ENDOFYEAR(<dates> [,<year_end_date>])"
+FIRSTDATE,Time Intelligence,Returns the first date of the current context for the specified dates column.,FIRSTDATE(<dates>)
+FIRSTNONBLANK,Time Intelligence,"Returns the first value of the column, column, filtered by the current context, where expression is not blank.",
+LASTDATE,Time Intelligence,Returns the last date of the current context for the specified dates column.,LASTDATE(<dates>)
+LASTNONBLANK,Time Intelligence,"Returns the last value of the column, column, filtered by the current context, where expression is not blank.",
+NEXTDAY,Time Intelligence,"Returns a table that contains a column of all dates of the next day, depending on the first date specified in the column of current context dates.",NEXTDAY(<dates>)
+NEXTMONTH,Time Intelligence,"Returns a table that contains a column of all dates of the following month, depending on the first date of the column of dates of the current context.",NEXTMONTH(<dates>)
+NEXTQUARTER,Time Intelligence,"Returns a table that contains a column of all dates of the following quarter, depending on the first date of the current context dates column.",NEXTQUARTER(<dates>)
+NEXTYEAR,Time Intelligence,"Returns a table that contains a column of all dates of the following year, depending on the first date of the current context dates column.","NEXTYEAR(<dates>[,<year_end_date>])"
+OPENINGBALANCEMONTH,Time Intelligence,Evaluate Expression on the first date of the month of the current context.,"OPENINGBALANCEMONTH(<expression>,<dates>[,<filter>])"
+OPENINGBALANCEQUARTER,Time Intelligence,Evaluate Expression on the first date of the quarter of the current context.,"OPENINGBALANCEQUARTER(<expression>,<dates>[,<filter>])"
+OPENINGBALANCEYEAR,Time Intelligence,Evaluate Expression on the first date of the year in the current context.,"OPENINGBALANCEYEAR(<expression>,<dates>[,<filter>][,<year_end_date>])"
+PARALLELPERIOD,Time Intelligence,"Returns a table that contains a column of dates that represents a parallel period to the dates of the specified dates column, in the current context, with the displaced dates a number of intervals forward or backward over time.","PARALLELPERIOD(<dates>,<number_of_intervals>,<interval>)"
+PREVIOUSDAY,Time Intelligence,"Returns a table that contains a column of all dates that represent the day before the first date of the dates column, in the current context.",PREVIOUSDAY(<dates>)
+PREVIOUSMONTH,Time Intelligence,"Returns a table that contains a column of all dates of the previous month, depending on the first date of the column of dates of the current context.",PREVIOUSMONTH(<Dates>)
+PREVIOUSQUARTER,Time Intelligence,"Returns a table that contains a column of all dates of the previous quarter, depending on the first date of the current context dates column.",PREVIOUSQUARTER(<dates>)
+PREVIOUSYEAR,Time Intelligence,"Returns a table that contains a column of all dates of the previous year, depending on the last date of the current context dates column.","PREVIOUSYEAR(<dates>[,<year_end_date>])"
+SAMEPERIODLASTYEAR,Time Intelligence,"Returns a table that contains a column of displaced dates a year ago in time from the dates of the specified dates column, in the current context.",SAMEPERIODLASTYEAR(<dates>)
+STARTOFMONTH,Time Intelligence,Returns the first date of the month of the current context for the specified dates column.,STARTOFMONTH(<dates>)
+STARTOFQUARTER,Time Intelligence,Returns the first date of the quarter of the current context for the specified dates column.,STARTOFQUARTER(<dates>)
+STARTOFYEAR,Time Intelligence,Returns the first date of the current context for the specified dates column.,STARTOFYEAR(<dates>)
+TOTALMTD,Time Intelligence,Evaluate the expression value of the month to date in the current context.,"TOTALMTD(<expression>,<dates>[,<filter>])"
+TOTALQTD,Time Intelligence,Evaluate the expression value of the trimester dates to date in the current context.,"TOTALQTD(<expression>,<dates>[,<filter>])"
+TOTALYTD,Time Intelligence,Evaluate the value of Year-To-Date of Expression in the current context.,"TOTALYTD(<expression>,<dates>[,<filter>][,<year_end_date>])"
