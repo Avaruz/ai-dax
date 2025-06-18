@@ -5,9 +5,7 @@
     "columns": [
       {
         "name": "Año",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "Año"
+        "dataType": "int64"
       }
     ]
   },
@@ -17,45 +15,31 @@
     "columns": [
       {
         "name": "IdAreaTerapeutica",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdAreaTerapeutica"
+        "dataType": "string"
       },
       {
         "name": "Área Terapéutica",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Área Terapéutica"
+        "dataType": "string"
       },
       {
         "name": "ImgAreaTerapeutica",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "ImgAreaTerapeutica"
+        "dataType": "string"
       },
       {
         "name": "Nombre Leading",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Nombre Leading"
+        "dataType": "string"
       },
       {
         "name": "Área Terapéutica BI",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": null
+        "dataType": null
       },
       {
         "name": "Área Terapéutica BI (KeyProduct)",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": null
+        "dataType": null
       },
       {
         "name": "Área Terapéutica BI (English)",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": null
+        "dataType": null
       }
     ]
   },
@@ -65,15 +49,11 @@
     "columns": [
       {
         "name": "IdCanal",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdCanal"
+        "dataType": "string"
       },
       {
         "name": "DescCanal",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "DescCanal"
+        "dataType": "string"
       }
     ]
   },
@@ -83,15 +63,11 @@
     "columns": [
       {
         "name": "IdCategoria",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdCategoria"
+        "dataType": "string"
       },
       {
         "name": "Categoría",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Categoría"
+        "dataType": "string"
       }
     ]
   },
@@ -101,403 +77,11 @@
     "columns": [
       {
         "name": "IdCompania",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdCompania"
+        "dataType": "string"
       },
       {
         "name": "Compañía",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Compañía"
-      }
-    ]
-  },
-  {
-    "table": "Costo / Presupuesto",
-    "description": "Tabla que contiene información sobre los costos y presupuestos de productos.",
-    "columns": [
-      {
-        "name": "IdPeriodo",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdPeriodo"
-      },
-      {
-        "name": "IdCompania-IdProductoCompania",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdCompania-IdProductoCompania"
-      },
-      {
-        "name": "IdProductoCompania",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdProductoCompania"
-      },
-      {
-        "name": "IdCompania",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdCompania"
-      },
-      {
-        "name": "IdCanal",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdCanal"
-      },
-      {
-        "name": "IdProducto",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "IdProducto"
-      },
-      {
-        "name": "IdLinea",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdLinea"
-      },
-      {
-        "name": "IdFamilia",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdFamilia"
-      },
-      {
-        "name": "IdAreaTerapeutica",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdAreaTerapeutica"
-      },
-      {
-        "name": "IdIndicacion",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdIndicacion"
-      },
-      {
-        "name": "IdPais",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdPais"
-      },
-      {
-        "name": "IdPais-IdZonaGestion",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdPais-IdZonaGestion"
-      },
-      {
-        "name": "IdProductoMPh",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "IdProductoMPh"
-      },
-      {
-        "name": "IdZonaGestion",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdZonaGestion"
-      },
-      {
-        "name": "IdTipoNegocio",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdTipoNegocio"
-      },
-      {
-        "name": "IdTipoProducto",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdTipoProducto"
-      },
-      {
-        "name": "IdFabricante",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "IdFabricante"
-      },
-      {
-        "name": "IdFormaFarmaceutica",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdFormaFarmaceutica"
-      },
-      {
-        "name": "ClasificacionOtcOtx",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "ClasificacionOtcOtx"
-      },
-      {
-        "name": "CostoConsolidado",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "CostoConsolidado"
-      },
-      {
-        "name": "CostoConsolidadoUnitario",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "CostoConsolidadoUnitario"
-      },
-      {
-        "name": "FechaCostoConsolidado",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "FechaCostoConsolidado"
-      },
-      {
-        "name": "Fecha",
-        "dataType": null,
-        "formatString": [
-          "General Date",
-          "0",
-          "0"
-        ],
-        "sourceColumn": null
-      },
-      {
-        "name": "UNPresupuestada",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "UNPresupuestada"
-      },
-      {
-        "name": "UNEstimada",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "UNEstimada"
-      },
-      {
-        "name": "UNSTDPresupuestada",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "UNSTDPresupuestada"
-      },
-      {
-        "name": "UNSTDEstimada",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "UNSTDEstimada"
-      },
-      {
-        "name": "MLPresupuestado",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "MLPresupuestado"
-      },
-      {
-        "name": "MLEstimado",
-        "dataType": "double",
-        "formatString": "#,0",
-        "sourceColumn": "MLEstimado"
-      },
-      {
-        "name": "USDPresupuestado",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "USDPresupuestado"
-      },
-      {
-        "name": "USDEstimado",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "USDEstimado"
-      },
-      {
-        "name": "UNEstimadaMLB",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "UNEstimadaMLB"
-      },
-      {
-        "name": "UNSTDEstimadaMLB",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "UNSTDEstimadaMLB"
-      },
-      {
-        "name": "MLEstimadoMLB",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "MLEstimadoMLB"
-      },
-      {
-        "name": "USDEstimadoMLB",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "USDEstimadoMLB"
-      },
-      {
-        "name": "QPresupuestado",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "QPresupuestado"
-      },
-      {
-        "name": "QEstimado",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "QEstimado"
-      },
-      {
-        "name": "TargetPRoduct",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "TargetPRoduct"
-      },
-      {
-        "name": "CovidProduct",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "CovidProduct"
-      },
-      {
-        "name": "MLPresupuestadoAjustado",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "MLPresupuestadoAjustado"
-      },
-      {
-        "name": "Trim",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Trim"
-      },
-      {
-        "name": "UNEstimadaBC",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "UNEstimadaBC"
-      },
-      {
-        "name": "UNSTDEstimadaBC",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "UNSTDEstimadaBC"
-      },
-      {
-        "name": "MLEstimadoBC",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "MLEstimadoBC"
-      },
-      {
-        "name": "USDEstimadoBC",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "USDEstimadoBC"
-      },
-      {
-        "name": "MarcaBud",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "MarcaBud"
-      }
-    ]
-  },
-  {
-    "table": "DimMarcaBudg",
-    "description": "Tabla que contiene información sobre las marcas y presupuestos asociados.",
-    "columns": [
-      {
-        "name": "MarcaBud",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "MarcaBud"
-      },
-      {
-        "name": "ATBudg",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "ATBudg"
-      }
-    ]
-  },
-  {
-    "table": "EstimadoPptoBudget",
-    "description": "Tabla que contiene información sobre los presupuestos estimados",
-    "columns": [
-      {
-        "name": "IdCompania-IdProductoCompania",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdCompania-IdProductoCompania"
-      },
-      {
-        "name": "MarcaBud",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "MarcaBud"
-      },
-      {
-        "name": "ATBudg",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "ATBudg"
-      },
-      {
-        "name": "Categoria",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Categoria"
-      },
-      {
-        "name": "CUnitEstimado",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "CUnitEstimado"
-      },
-      {
-        "name": "CUnitPresupuestado",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "CUnitPresupuestado"
-      },
-      {
-        "name": "Cantidad",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "Cantidad"
-      },
-      {
-        "name": "BusUnitBud",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "BusUnitBud"
-      },
-      {
-        "name": "AnioEstimado",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "AnioEstimado"
-      },
-      {
-        "name": "CostoEstimado",
-        "dataType": "double",
-        "formatString": "#,0",
-        "sourceColumn": "CostoEstimado"
-      },
-      {
-        "name": "AnioPresupuesto",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "AnioPresupuesto"
-      },
-      {
-        "name": "CostoPresupuesto",
-        "dataType": "double",
-        "formatString": "#,0",
-        "sourceColumn": "CostoPresupuesto"
-      },
-      {
-        "name": "Origen",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Origen"
+        "dataType": "string"
       }
     ]
   },
@@ -507,15 +91,11 @@
     "columns": [
       {
         "name": "IdFabricante",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "IdFabricante"
+        "dataType": "int64"
       },
       {
         "name": "Descripcion",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Descripcion"
+        "dataType": "string"
       }
     ]
   },
@@ -525,21 +105,15 @@
     "columns": [
       {
         "name": "IdFamilia",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdFamilia"
+        "dataType": "string"
       },
       {
         "name": "Familia",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Familia"
+        "dataType": "string"
       },
       {
         "name": "Nombre Leading Products",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Nombre Leading Products"
+        "dataType": "string"
       }
     ]
   },
@@ -549,27 +123,19 @@
     "columns": [
       {
         "name": "IdFormaFarmaceutica",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdFormaFarmaceutica"
+        "dataType": "string"
       },
       {
         "name": "Forma Farmacéutica",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Forma Farmacéutica"
+        "dataType": "string"
       },
       {
         "name": "IdTipoForma",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdTipoForma"
+        "dataType": "string"
       },
       {
         "name": "CantStandard",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "CantStandard"
+        "dataType": "int64"
       }
     ]
   },
@@ -579,9 +145,7 @@
     "columns": [
       {
         "name": "KeyProduct",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "KeyProduct"
+        "dataType": "string"
       }
     ]
   },
@@ -591,21 +155,15 @@
     "columns": [
       {
         "name": "IdLinea",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdLinea"
+        "dataType": "string"
       },
       {
         "name": "Línea Comercial",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Línea Comercial"
+        "dataType": "string"
       },
       {
         "name": "Laboratorio",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Laboratorio"
+        "dataType": "string"
       }
     ]
   },
@@ -615,39 +173,27 @@
     "columns": [
       {
         "name": "IdProducto",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "IdProducto"
+        "dataType": "int64"
       },
       {
         "name": "Marca",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Marca"
+        "dataType": "string"
       },
       {
         "name": "KeyProduct",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "KeyProduct"
+        "dataType": "string"
       },
       {
         "name": "Leading Brands",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Leading Brands"
+        "dataType": "string"
       },
       {
         "name": "IdMarca",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdMarca"
+        "dataType": "string"
       },
       {
         "name": "Marca (grupos)",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": null
+        "dataType": null
       }
     ]
   },
@@ -657,15 +203,11 @@
     "columns": [
       {
         "name": "IdPais",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdPais"
+        "dataType": "string"
       },
       {
         "name": "DescPais",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "DescPais"
+        "dataType": "string"
       }
     ]
   },
@@ -675,129 +217,87 @@
     "columns": [
       {
         "name": "IdPais-IdZonaGestion",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdPais-IdZonaGestion"
+        "dataType": "string"
       },
       {
         "name": "IdPais",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdPais"
+        "dataType": "string"
       },
       {
         "name": "DescripcionPais",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "DescripcionPais"
+        "dataType": "string"
       },
       {
         "name": "IdZonaGestion",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdZonaGestion"
+        "dataType": "string"
       },
       {
         "name": "DescripcionZG",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "DescripcionZG"
+        "dataType": "string"
       },
       {
         "name": "Zona Geográfica",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": null
+        "dataType": null
       },
       {
         "name": "IdTipoNegocio",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdTipoNegocio"
+        "dataType": "string"
       },
       {
         "name": "IdTipoCrecimiento",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdTipoCrecimiento"
+        "dataType": "string"
       },
       {
         "name": "TipoZonaGestion",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "TipoZonaGestion"
+        "dataType": "string"
       },
       {
         "name": "Zona Geográfica (groups)",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": null
+        "dataType": null
       },
       {
         "name": "Img",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Img"
+        "dataType": "string"
       },
       {
         "name": "Origen",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Origen"
+        "dataType": "string"
       },
       {
         "name": "DescripcionPaisIMS",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": null
+        "dataType": null
       },
       {
         "name": "Zona Reporte Mensual",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": null
+        "dataType": null
       },
       {
         "name": "DescripcionZG (Organic)",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": null
+        "dataType": null
       },
       {
         "name": "DescripcionZG (Mega Own Lines)",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": null
+        "dataType": null
       },
       {
         "name": "DescripcionZG (Exportaciones)",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": null
+        "dataType": null
       },
       {
         "name": "DescripcionZG (Mega Pharma)",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": null
+        "dataType": null
       },
       {
         "name": "DescripcionZG (Public Sales Ecuador)",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": null
+        "dataType": null
       },
       {
         "name": "Región",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": null
+        "dataType": null
       },
       {
         "name": "Grupo Gestiones",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Grupo Gestiones"
+        "dataType": "string"
       }
     ]
   },
@@ -807,64 +307,41 @@
     "columns": [
       {
         "name": "Anio",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "Anio"
+        "dataType": "int64"
       },
       {
         "name": "Mes",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "Mes"
+        "dataType": "int64"
       },
       {
         "name": "Fecha",
-        "dataType": null,
-        "formatString": "mmmm \"de\" yyyy",
-        "sourceColumn": null
+        "dataType": null
       },
       {
         "name": "Quarter",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Quarter"
+        "dataType": "string"
       }
     ]
   },
   {
     "table": "Período a Analizar",
-    "description": "Tabla que contiene información sobre los períodos a analizar.",
+    "description": "Es la tabla Calendario que contiene información sobre los períodos a analizar.",
     "columns": [
       {
         "name": "Año",
-        "dataType": null,
-        "formatString": "0",
-        "sourceColumn": null
+        "dataType": "int64"
       },
       {
         "name": "Mes",
-        "dataType": null,
-        "formatString": [
-          "0",
-          "0",
-          "0",
-          "0",
-          "0",
-          "0"
-        ],
-        "sourceColumn": null
+        "dataType": "int64"
       },
       {
         "name": "Quarter",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": "Período[Quarter]"
+        "dataType": "string"
       },
       {
         "name": "Fecha",
-        "dataType": null,
-        "formatString": "mmmm \"de\" yyyy",
-        "sourceColumn": "Período[Fecha]"
+        "dataType": "dateTime"
       }
     ]
   },
@@ -874,39 +351,27 @@
     "columns": [
       {
         "name": "Periodo",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Periodo"
+        "dataType": "string"
       },
       {
         "name": "Fecha",
-        "dataType": "dateTime",
-        "formatString": "Long Date",
-        "sourceColumn": "Fecha"
+        "dataType": "dateTime"
       },
       {
         "name": "Fecha ultima",
-        "dataType": "dateTime",
-        "formatString": "Long Date",
-        "sourceColumn": "Fecha ultima"
+        "dataType": "dateTime"
       },
       {
         "name": "Index",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "Index"
+        "dataType": "int64"
       },
       {
         "name": "Real/Proy",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Real/Proy"
+        "dataType": "string"
       },
       {
         "name": "Column6",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Column6"
+        "dataType": "string"
       }
     ]
   },
@@ -916,21 +381,15 @@
     "columns": [
       {
         "name": "IdProductoMPh",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "IdProductoMPh"
+        "dataType": "int64"
       },
       {
         "name": "Producto MPh",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Producto MPh"
+        "dataType": "string"
       },
       {
         "name": "IdProductoFabricante",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdProductoFabricante"
+        "dataType": "string"
       }
     ]
   },
@@ -940,48 +399,31 @@
     "columns": [
       {
         "name": "IdProductoCompania",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdProductoCompania"
+        "dataType": "string"
       },
       {
         "name": "Presentación",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Presentación"
+        "dataType": "string"
       },
       {
         "name": "FechaLanzamiento",
-        "dataType": "dateTime",
-        "formatString": [
-          "mmmm yyyy",
-          "0"
-        ],
-        "sourceColumn": "FechaLanzamiento"
+        "dataType": "dateTime"
       },
       {
         "name": "IdCompania",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdCompania"
+        "dataType": "string"
       },
       {
         "name": "IdCompania-IdProductoCompania",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdCompania-IdProductoCompania"
+        "dataType": "string"
       },
       {
         "name": "Fecha",
-        "dataType": null,
-        "formatString": "General Date",
-        "sourceColumn": null
+        "dataType": null
       },
       {
         "name": "FechaLanzamientoQuarter",
-        "dataType": null,
-        "formatString": null,
-        "sourceColumn": null
+        "dataType": null
       }
     ]
   },
@@ -991,21 +433,15 @@
     "columns": [
       {
         "name": "IdProducto",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "IdProducto"
+        "dataType": "int64"
       },
       {
         "name": "Marca",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Marca"
+        "dataType": "string"
       },
       {
         "name": "SubFamilia",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "SubFamilia"
+        "dataType": "string"
       }
     ]
   },
@@ -1015,9 +451,7 @@
     "columns": [
       {
         "name": "Target Product",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Target Product"
+        "dataType": "string"
       }
     ]
   },
@@ -1027,15 +461,11 @@
     "columns": [
       {
         "name": "IdTipoProducto",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdTipoProducto"
+        "dataType": "string"
       },
       {
         "name": "Descripcion",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Descripcion"
+        "dataType": "string"
       }
     ]
   },
@@ -1045,222 +475,140 @@
     "columns": [
       {
         "name": "IdPeriodo",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdPeriodo"
+        "dataType": "string"
       },
       {
         "name": "IdProductoCompania",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdProductoCompania"
+        "dataType": "string"
       },
       {
         "name": "IdCompania",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdCompania"
+        "dataType": "string"
       },
       {
         "name": "IdCanal",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdCanal"
+        "dataType": "string"
       },
       {
         "name": "IdProducto",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "IdProducto"
+        "dataType": "int64"
       },
       {
         "name": "IdLinea",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdLinea"
+        "dataType": "string"
       },
       {
         "name": "IdFamilia",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdFamilia"
+        "dataType": "string"
       },
       {
         "name": "IdAreaTerapeutica",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdAreaTerapeutica"
+        "dataType": "string"
       },
       {
         "name": "IdIndicacion",
         "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdIndicacion"
+        "description": "Las indicaciones son las enfermedades o condiciones que el producto trata."
       },
       {
         "name": "IdPais",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdPais"
+        "dataType": "string"
       },
       {
         "name": "IdProductoMPh",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "IdProductoMPh"
+        "dataType": "int64"
       },
       {
         "name": "IdZonaGestion",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdZonaGestion"
+        "dataType": "string"
       },
       {
         "name": "UN",
-        "dataType": "double",
-        "formatString": "#,0",
-        "sourceColumn": "UN"
+        "dataType": "double"
       },
       {
         "name": "UNSTD",
-        "dataType": "double",
-        "formatString": "#,0",
-        "sourceColumn": "UNSTD"
+        "dataType": "double"
       },
       {
         "name": "ML",
-        "dataType": "double",
-        "formatString": "#,0",
-        "sourceColumn": "ML"
+        "dataType": "double"
       },
       {
         "name": "USD",
-        "dataType": "double",
-        "formatString": "#,0",
-        "sourceColumn": "USD"
+        "dataType": "double"
       },
       {
         "name": "Fecha",
-        "dataType": null,
-        "formatString": "mmmm \"de\" yyyy",
-        "sourceColumn": null
+        "dataType": null
       },
       {
         "name": "IdTipoNegocio",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdTipoNegocio"
+        "dataType": "string"
       },
       {
         "name": "IdTipoProducto",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdTipoProducto"
+        "dataType": "string"
       },
       {
         "name": "IdFabricante",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "IdFabricante"
+        "dataType": "int64"
       },
       {
         "name": "IdFormaFarmaceutica",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdFormaFarmaceutica"
+        "dataType": "string"
       },
       {
         "name": "ClasificacionOtcOtx",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "ClasificacionOtcOtx"
+        "dataType": "string"
       },
       {
         "name": "IdCompania-IdProductoCompania",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdCompania-IdProductoCompania"
+        "dataType": "string"
       },
       {
         "name": "IdPais-IdZonaGestion",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdPais-IdZonaGestion"
+        "dataType": "string"
       },
       {
         "name": "IdCliente",
-        "dataType": "string",
-        "formatString": [
-          "0",
-          "General Date"
-        ],
-        "sourceColumn": "IdCliente"
-      },
-      {
-        "name": "Q",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "Q"
+        "dataType": "string"
       },
       {
         "name": "TargetProduct",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "TargetProduct"
+        "dataType": "string"
       },
       {
         "name": "CovidProduct",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "CovidProduct"
+        "dataType": "string"
       },
       {
         "name": "CantidadElog",
-        "dataType": "int64",
-        "formatString": "0",
-        "sourceColumn": "CantidadElog"
-      },
-      {
-        "name": "CostoConsolidadoUnitario",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "CostoConsolidadoUnitario"
+        "dataType": "int64"
       },
       {
         "name": "UnidadOtros",
-        "dataType": "double",
-        "formatString": null,
-        "sourceColumn": "UnidadOtros"
+        "dataType": "double"
       },
       {
         "name": "IdProductoFabricante",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdProductoFabricante"
+        "dataType": "string"
       },
       {
         "name": "PharmaceuticalDivision",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "PharmaceuticalDivision"
+        "dataType": "string"
       },
       {
         "name": "Marca Paragua",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Marca Paragua"
+        "dataType": "string"
       },
       {
         "name": "CategoriaFamilia",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "CategoriaFamilia"
+        "dataType": "string"
       },
       {
         "name": "Idzonageografica",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Idzonageografica"
+        "dataType": "string"
       }
     ]
   },
@@ -1270,33 +618,23 @@
     "columns": [
       {
         "name": "IdZonaGestion",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdZonaGestion"
+        "dataType": "string"
       },
       {
         "name": "Descripcion",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "Descripcion"
+        "dataType": "string"
       },
       {
         "name": "IdTipoNegocio",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdTipoNegocio"
+        "dataType": "string"
       },
       {
         "name": "IdTipoCrecimiento",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "IdTipoCrecimiento"
+        "dataType": "string"
       },
       {
         "name": "TipoZonaGestion",
-        "dataType": "string",
-        "formatString": null,
-        "sourceColumn": "TipoZonaGestion"
+        "dataType": "string"
       }
     ]
   }

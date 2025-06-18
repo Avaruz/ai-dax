@@ -1,0 +1,4 @@
+{
+  "DAX": "EVALUATE\nSUMMARIZECOLUMNS (\n    'País'[DescPais],\n    \"Total_Ventas\",\n    CALCULATE (\n        ROUND(SUM ( 'Ventas Mensuales'[USD] ), 0),\n        'Ventas Mensuales'[IdCanal] IN { \"LIC\", \"EXT\", \"INS\", \"LOC\" }\n    )\n)\nORDER BY\n    'País'[DescPais]",
+  "Question": "¿Cuál es el total de ventas por país?"
+}

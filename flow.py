@@ -11,15 +11,9 @@ Funcionalidad:
 
 import os
 import json
-import argparse
-from typing import Dict, Any
-
-# LangChain y dependencias de Google
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.exceptions import LangChainException
-
-# Para cargar variables de entorno de forma segura desde un archivo .env
 from dotenv import load_dotenv
 
 class DAXAssistant:
@@ -78,7 +72,6 @@ Relaciones:
             temperature=temperature,
             google_api_key=api_key
         )
-        print(f"Modelo '{model_name}' inicializado correctamente.")
 
     def _load_json_as_string(self, file_path: str) -> str:
         """
@@ -93,10 +86,8 @@ Relaciones:
                 data = json.load(f)
                 return json.dumps(data, indent=2, ensure_ascii=False)
         except FileNotFoundError:
-            print(f"Advertencia: El archivo '{file_path}' no fue encontrado. Se usará un objeto JSON vacío.")
             return "{}"
         except json.JSONDecodeError:
-            print(f"Advertencia: Error al decodificar JSON en '{file_path}'. Se usará un objeto JSON vacío.")
             return "{}"
 
     def generate_dax_query(self, user_question: str, model_data_path: str, relations_path: str) -> str:
@@ -109,11 +100,11 @@ Relaciones:
         Returns:
             La consulta DAX generada por el modelo como una cadena de texto.
         """
-        print("Cargando archivos de contexto...")
+        # Cargar archivos de contexto
         model_data_content = self._load_json_as_string(model_data_path)
         relations_content = self._load_json_as_string(relations_path)
 
-        print("Construyendo el prompt final...")
+        # Construir el prompt final
         system_prompt = self.SYSTEM_PROMPT_TEMPLATE.format(
             modelo_datos=model_data_content,
             relaciones=relations_content
@@ -124,68 +115,23 @@ Relaciones:
             HumanMessage(content=user_question),
         ]
 
-        print(f"Enviando la pregunta al modelo: '{user_question}'")
         try:
             response = self.model.invoke(messages)
-            return response.content
-        except LangChainException as e:
-            print(f"Ocurrió un error al invocar el modelo de IA: {e}")
+            import re
+            consulta = response.content
+            if isinstance(consulta, str):
+                # Eliminar bloques markdown y encabezados
+                consulta = re.sub(r"^```dax[\r\n]+|^```[\r\n]+|```$", "", consulta, flags=re.MULTILINE).strip()
+                # Eliminar encabezados tipo 'DAX', '---', y líneas vacías al inicio
+                lines = consulta.splitlines()
+                cleaned = []
+                for line in lines:
+                    if line.strip() in ("", "DAX", "---"): continue
+                    cleaned.append(line)
+                consulta = "\n".join(cleaned).strip()
+                print(f"Consulta DAX generada: {consulta}")
+            return consulta
+        except LangChainException:
             return "Error: No se pudo generar la consulta DAX."
-        except Exception as e:
-            print(f"Ocurrió un error inesperado: {e}")
+        except Exception:
             return "Error: Falla inesperada en el sistema."
-
-
-def main():
-    """
-    Función principal para ejecutar el asistente DAX desde la línea de comandos.
-    """
-    # Configura el parser de argumentos para aceptar una pregunta desde la terminal
-    parser = argparse.ArgumentParser(description="Asistente para generar consultas DAX usando IA.")
-    parser.add_argument(
-        "pregunta",
-        type=str,
-        nargs='?',
-        default=None,  # No valor por defecto, así forzamos a pedirlo si no se pasa
-        help="La pregunta en lenguaje natural para generar la consulta DAX."
-    )
-    parser.add_argument(
-        "--modelo_datos",
-        type=str,
-        default="D:\\ai-dax\\modelo_datos.json",
-        help="Ruta al archivo JSON del modelo de datos."
-    )
-    parser.add_argument(
-        "--relaciones",
-        type=str,
-        default="D:\\ai-dax\\relaciones.json",
-        help="Ruta al archivo JSON de las relaciones del modelo."
-    )
-    args = parser.parse_args()
-
-    # Si no se pasó la pregunta como argumento, pedirla por consola
-    if not args.pregunta:
-        args.pregunta = input("Introduce la pregunta en lenguaje natural para generar la consulta DAX: ")
-
-    try:
-        # Instancia y ejecuta el asistente
-        asistente = DAXAssistant()
-        consulta_dax = asistente.generate_dax_query(
-            user_question=args.pregunta,
-            model_data_path=args.modelo_datos,
-            relations_path=args.relaciones
-        )
-        
-        # Imprime el resultado final
-        print("\n" + "="*25 + " CONSULTA DAX GENERADA " + "="*25)
-        print(consulta_dax)
-        print("="*73 + "\n")
-
-    except ValueError as e:
-        print(f"\nError de configuración: {e}")
-    except Exception as e:
-        print(f"\nOcurrió un error crítico: {e}")
-
-# Punto de entrada del script
-if __name__ == "__main__":
-    main()
